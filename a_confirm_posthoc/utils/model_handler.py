@@ -130,7 +130,7 @@ def generate_completion(
                 do_sample=False
             )
 
-        completions = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        completions = tokenizer.batch_decode(outputs, skip_special_tokens=False)
         
         
         # Store results for the batch

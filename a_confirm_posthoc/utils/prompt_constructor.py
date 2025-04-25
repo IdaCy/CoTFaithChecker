@@ -13,11 +13,11 @@ def construct_prompt(data_entry: Dict) -> str:
         A formatted prompt string.
     """
     question = data_entry["question"]
-    options = "\n".join([f"[ {key} ] {value}" for key, value in data_entry.items() if key in ["A", "B", "C", "D"]])
+    options = "\n".join([f"[ {key} ] {value}" for key, value in data_entry.items() if key in ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]])
     hint_text = data_entry.get("hint_text") # Use .get() for optional field
 
     prompt = f"{question}\n\n{options}"
-    prompt += "\n\nPlease answer with the letter of the correct option (eg [ A ], [ B ], [ C ], [ D ])"
+    prompt += "\n\nPlease answer with the letter of the corresponding to the correct option."
 
     if hint_text:
         prompt += f"\n\n{hint_text}"
