@@ -33,43 +33,36 @@ def _generate(
     hidden_layers: List[int],
     save_attention: bool,
     attn_layers: List[int],
+    temperature: float,
+    top_p: float,
 ) -> Dict:
     """
-    Core batched generation, keeping hidden/attention if requested.
-    No try/except: any failure stops the run and will be visible in the notebook & log.
+    Batched generation with nucleus sampling.
+    Generates *one* completion per prompt. Sampling parameters are now
+    explicit so the caller can produce multiple reasoning chains.
     """
-    #encodings = tokenizer(prompts, return_tensors="pt", padding=True).to(device)
     encodings = tokenizer(prompts, return_tensors="pt", padding=True).to(device)
-    prompt_len = encodings.input_ids.shape[1]   # length of the fixed prompt
+    prompt_len = encodings.input_ids.shape[1]
 
-    """with torch.no_grad():
-        outputs = model.generate(
-            **encodings,
-            max_new_tokens=max_new_tokens,
-            output_hidden_states=save_hidden,
-            output_attentions=save_attention,
-            return_dict_in_generate=True,
-        )"""
-    # ---------------- generation kwargs ----------------
     gen_kwargs = {
-        "output_hidden_states": save_hidden,
-        "output_attentions":   save_attention,
-        "return_dict_in_generate": True,
-        # if the caller passed None fall back to 128 tokens
-        "max_new_tokens": 1024 if max_new_tokens is None else max_new_tokens,
+        "output_hidden_states":     save_hidden,
+        "output_attentions":        save_attention,
+        "return_dict_in_generate":  True,
+        "max_new_tokens":           1024 if max_new_tokens is None else max_new_tokens,
+        # NEW sampling controls ↓↓↓
+        "do_sample":   True,
+        "temperature": temperature,
+        "top_p":       top_p,
     }
 
     with torch.no_grad():
         outputs = model.generate(**encodings, **gen_kwargs)
 
-    #completions = tokenizer.batch_decode(outputs.sequences, skip_special_tokens=True)
-    # keep only the NEW tokens (drop the prompt echo)
     completions = tokenizer.batch_decode(
-        outputs.sequences[:, prompt_len:],
-        skip_special_tokens=True,
+        outputs.sequences[:, prompt_len:], skip_special_tokens=True
     )
 
-    extra = {}
+    extra: Dict[str, List] = {}
     if save_hidden:
         hidden = [
             [outputs.hidden_states[i][layer].cpu() for layer in hidden_layers]
@@ -100,59 +93,72 @@ def _process_single_file(
     save_attention: bool,
     attn_layers: List[int],
     output_dir: Path,
+    n_runs: int,
+    temperature: float,
+    top_p: float,
 ) -> Path:
     """
-    Process one dataset JSON; write a *completion* JSON next to it and return its Path.
+    Run `n_runs` independent samplings per question.
+    Every output record now carries the `run` index (0-based).
     """
     logger.info(f"Processing {json_path.name}")
-    data = load_dataset(json_path)
-    questions: List[Dict] = data["questions"]
+    data       = load_dataset(json_path)
+    questions  = data["questions"]
+    prompts    = prompt_builder.batch([q["q_str"] for q in questions])
+    records: List[Dict] = []
 
-    prompts = prompt_builder.batch([q["q_str"] for q in questions])
+    for run_idx in range(n_runs):
+        logger.debug(f"  ↳ run {run_idx + 1}/{n_runs}")
+        completions: List[str] = []
 
-    # Batch-wise generation
-    completions: List[str] = []
-    for i in range(0, len(prompts), batch_size):
-        batch_prompts = prompts[i : i + batch_size]
-        gen_out = _generate(
-            model,
-            tokenizer,
-            batch_prompts,
-            device,
-            max_new_tokens,
-            save_hidden,
-            hidden_layers,
-            save_attention,
-            attn_layers,
-        )
-        completions.extend(gen_out["completions"])
+        # batched sampling for this run
+        for i in range(0, len(prompts), batch_size):
+            batch_prompts = prompts[i : i + batch_size]
+            gen_out = _generate(
+                model,
+                tokenizer,
+                batch_prompts,
+                device,
+                max_new_tokens,
+                save_hidden,
+                hidden_layers,
+                save_attention,
+                attn_layers,
+                temperature,
+                top_p,
+            )
+            completions.extend(gen_out["completions"])
 
-        # optionals
-        if save_hidden:
-            out_hidden = output_dir / f"{json_path.stem}_hidden.pt"
-            _save_hidden_or_attention(gen_out["hidden"], out_hidden)
-        if save_attention:
-            out_attn = output_dir / f"{json_path.stem}_attn.pt"
-            _save_hidden_or_attention(gen_out["attention"], out_attn)
+            # optional tensor dumps – include run-index in filename so they
+            # don’t overwrite each other
+            if save_hidden:
+                _save_hidden_or_attention(
+                    gen_out["hidden"],
+                    output_dir / f"{json_path.stem}_run{run_idx}_hidden.pt",
+                )
+            if save_attention:
+                _save_hidden_or_attention(
+                    gen_out["attention"],
+                    output_dir / f"{json_path.stem}_run{run_idx}_attn.pt",
+                )
 
-    output_records = []
-    for q, comp in zip(questions, completions):
-        entry = {
-            "question_id": q["question_id"],
-            "completion": comp,
-        }
-        # keep cross-link IDs
-        if "yes_question_id" in q:
-            entry["yes_question_id"] = q["yes_question_id"]
-        if "no_question_id" in q:
-            entry["no_question_id"] = q["no_question_id"]
-        output_records.append(entry)
+        # keep bookkeeping for every completion
+        for q, comp in zip(questions, completions):
+            row = {
+                "question_id": q["question_id"],
+                "run":         run_idx,
+                "completion":  comp,
+            }
+            if "yes_question_id" in q:
+                row["yes_question_id"] = q["yes_question_id"]
+            if "no_question_id" in q:
+                row["no_question_id"] = q["no_question_id"]
+            records.append(row)
 
-    fname = f"{json_path.stem}_{model_name}_completions.json"
-    out_path = output_dir / fname
+    out_path = output_dir / f"{json_path.stem}_{model_name}_completions.json"
     with out_path.open("w") as f:
-        json.dump(output_records, f, indent=2)
-    logger.info(f"Saved completions → {out_path}")
+        json.dump(records, f, indent=2)
+    logger.info(f"Saved {len(records)} completions → {out_path}")
     return out_path
 
 
@@ -170,13 +176,16 @@ def run_inference(
     save_attention: bool,
     attn_layers: List[int],
     output_dir: Path,
+    n_runs: int,
+    temperature: float,
+    top_p: float,
 ):
     output_dir.mkdir(parents=True, exist_ok=True)
     buckets: defaultdict[tuple, list] = defaultdict(list)
-    # matches “…_gt_YES_…”  or “…_lt_NO_…”
     pattern = re.compile(r"_(gt|lt)_(YES|NO)_")
+
     for fp in dataset_files:
-        out_path =_process_single_file(
+        out_path = _process_single_file(
             fp,
             prompt_builder,
             model,
@@ -190,12 +199,14 @@ def run_inference(
             save_attention,
             attn_layers,
             output_dir,
+            n_runs,
+            temperature,
+            top_p,
         )
-        
-            # ───── aggregate per cluster & answer type ─────
-        match = pattern.search(fp.stem)
-        if match:
-            comparison, expected = match.group(1), match.group(2)
+
+        # aggregation unchanged …
+        if match := pattern.search(fp.stem):
+            comparison, expected = match.groups()
         else:
             comparison, expected = "unknown", "unknown"
 
@@ -203,15 +214,12 @@ def run_inference(
         with out_path.open() as f:
             buckets[(cluster, comparison, expected)].extend(json.load(f))
 
-    # ───── save aggregated cluster files ─────
+    # … remainder of function unchanged …
     cluster_dir = output_dir / "clusters"
     cluster_dir.mkdir(parents=True, exist_ok=True)
 
-    for (cluster, cmp, exp), records in buckets.items():
+    for (cluster, cmp, exp), recs in buckets.items():
         fname = f"{cluster}_{cmp}_{exp}_{model_name}_completions.json"
         with (cluster_dir / fname).open("w") as f:
-            json.dump(records, f, indent=2)
-        logger.info(
-            f"Aggregated {len(records)} records → {cluster_dir / fname}"
-        )
-
+            json.dump(recs, f, indent=2)
+        logger.info(f"Aggregated {len(recs)} records → {cluster_dir / fname}")
