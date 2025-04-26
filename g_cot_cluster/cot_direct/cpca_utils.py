@@ -2,7 +2,7 @@
 "Contrastive PCA helpers."
 import numpy as np
 import matplotlib.pyplot as plt
-from cpca import CPCA
+from contrastive import CPCA
 
 __all__ = ["run_cpca", "plot_cpca_projection"]
 
