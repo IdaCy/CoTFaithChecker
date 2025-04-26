@@ -20,7 +20,17 @@ CLUSTER_PATTERNS = {
     "us":     re.compile(r"^wm-us-"),
     "world":  re.compile(r"^wm-world-"),
     "us-and-world":  re.compile(r"^wm-(us|world)-"),
+    "us_spec":  re.compile(r"^wm-(wm-us-county-lat|wm-us-county-long|wm-us-county-popu|wm-us-natural-lat|wm-us-natural-long|wm-us-structure|wm-us-zip|wm-world-structure)-"),
 }
+"""
+not - already done:
+wm-us-city-dens_gt_YES_1_60629297_DeepSeek-R1-Distill-Llama-8B_completions
+wm-us-city-lat_gt_YES_1_2a33a48d_DeepSeek-R1-Distill-Llama-8B_completions
+wm-us-city-long_gt_YES_1_45faecb7_DeepSeek-R1-Distill-Llama-8B_completions.json
+wm-us-city-popu_gt_YES_1_8af18eca_DeepSeek-R1-Distill-Llama-8B_completions
+wm-us-college-lat_gt_YES_1_2f416a49_DeepSeek-R1-Distill-Llama-8B_completions
+wm-us-college-long_gt_YES_1_5d3e577e_DeepSeek-R1-Distill-Llama-8B_completions.json
+"""
 
 def detect_cluster(file_stem: str) -> str:
     """
