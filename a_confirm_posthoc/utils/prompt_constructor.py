@@ -26,6 +26,8 @@ def construct_prompt(data_entry: Dict) -> str:
     if hint_text:
         prompt = f"{hint_text}\n\n{prompt}"
 
+    return prompt
+
 
 #     return prompt
 # Example usage (can be removed later or put under if __name__ == '__main__')

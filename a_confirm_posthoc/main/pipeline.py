@@ -15,9 +15,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # Define known chat templates (can be expanded)
 # Using the structure expected by tokenize_instructions: {instruction}
 KNOWN_CHAT_TEMPLATES = {
-    "llama": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n",
-    "llama3": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n",
-    "qwen": "<|im_start|>user\n{instruction}<|im_end|>\n<|im_start|>assistant\n"
+    "llama": """<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n""",
+    "llama3": """<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n""",
+    "qwen": """<|im_start|>user\n{instruction}<|im_end|>\n<|im_start|>assistant\n"""
 
 }
 
