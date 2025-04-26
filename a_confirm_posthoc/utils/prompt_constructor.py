@@ -1,6 +1,9 @@
 import json
 from typing import Dict, Optional
 
+
+
+
 def construct_prompt(data_entry: Dict) -> str:
     """
     Constructs a prompt string from a data entry dictionary.
@@ -13,18 +16,18 @@ def construct_prompt(data_entry: Dict) -> str:
         A formatted prompt string.
     """
     question = data_entry["question"]
-    options = "\n".join([f"[ {key} ] {value}" for key, value in data_entry.items() if key in ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]])
+    options = "\n".join([f"[ {key} ] {value}" for key, value in data_entry.items() if key in ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"]])
     hint_text = data_entry.get("hint_text") # Use .get() for optional field
 
-    prompt = f"{question}\n\n{options}"
+    prompt = f"Question:\n\n{question}\n\nOptions:\n\n{options}"
     prompt += "\n\nPlease answer with the letter of the corresponding to the correct option."
-
-    if hint_text:
-        prompt += f"\n\n{hint_text}"
     
+    # If not running for none hint type, add hint text to the prompt
+    if hint_text:
+        prompt = f"{hint_text}\n\n{prompt}"
 
-    return prompt
 
+#     return prompt
 # Example usage (can be removed later or put under if __name__ == '__main__')
 # example_data = {
 #     "question_id": 0,
