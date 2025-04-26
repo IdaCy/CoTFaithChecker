@@ -16,6 +16,13 @@ from datetime import datetime
 starting with:
 nohup python -u e_confirm_xy_yx_5_nohup.py \
       > logs/run_$(date +%Y%m%d_%H%M%S).log 2>&1 &
+
+kill:
+pgrep -f e_confirm_xy_yx_5_nohup.py
+-> kill
+
+tail -F logs/run_*.log logs/*inference_*.log
+watch -n 5 nvidia-smi
 """
 print(f"[{datetime.now().isoformat()}] starting setup", flush=True)
 
@@ -63,7 +70,7 @@ model.to(device)
 from e_confirm_xy_yx.main.data_loader import get_dataset_files
 
 # 0. Extra toggle
-CLUSTERS = ["arts"]   # no "no_wm"
+CLUSTERS = ["spec"]   # no "no_wm"
 
 # ───────────────────────────────────────────────
 # 2. Collect dataset files
@@ -75,7 +82,7 @@ print(f"[{datetime.now().isoformat()}] loading data", flush=True)
 dataset_files = get_dataset_files(
     DATA_ROOT,
     DATASETS,
-    clusters=CLUSTERS,          # ← NEW ARG
+    clusters=CLUSTERS,
 )
 
 # 5. Verify – point to aggregated cluster outputs
@@ -129,4 +136,3 @@ run_inference(
     top_p=TOP_P,
 )
 print(f"[{datetime.now().isoformat()}] done!", flush=True)
-

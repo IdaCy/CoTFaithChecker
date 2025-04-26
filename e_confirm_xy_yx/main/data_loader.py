@@ -15,6 +15,7 @@ logger = init_logger(log_dir=Path.cwd() / "logs", script_name="data_loader")
 # ────────── cluster detection helpers ──────────
 CLUSTER_PATTERNS = {
     #"arts":   re.compile(r"^wm-(book)"),
+    "spec":   re.compile(r"^wm-(nyc|person|song|world-structure)"),
     "arts":   re.compile(r"^wm-(book|movie|nyt|nyc|person|song)"),
     "thing":   re.compile(r"^wm-(book|movie|nyt)"),
     "human":   re.compile(r"^wm-(nyc|person|song)"),
