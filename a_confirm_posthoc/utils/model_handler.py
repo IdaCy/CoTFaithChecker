@@ -112,37 +112,55 @@ def generate_completion(
         current_batch_size = len(batch_prompt_texts)
         logging.info(f"Processing batch {i // batch_size + 1}/{(len(prompts) + batch_size - 1) // batch_size} (Size: {current_batch_size}, QIDs: {min(batch_question_ids)}-{max(batch_question_ids)})")
 
+        # Format prompts using the chat template *before* tokenization
+        formatted_prompts = [chat_template.format(instruction=text) for text in batch_prompt_texts]
+
         encodings = tokenize_instructions(
             tokenizer,
-            batch_prompt_texts, 
+            batch_prompt_texts, # Pass original texts here, formatting happens inside tokenize_instructions now
             chat_template
         )
         
         input_ids = encodings["input_ids"].to(model.device)
         attention_mask = encodings["attention_mask"].to(model.device)
-
+        input_length = input_ids.shape[1] # Get length of input tokens
 
         with torch.no_grad():
             outputs = model.generate(
                 input_ids,
                 attention_mask=attention_mask,
                 max_new_tokens=gen_max_tokens, # Use the determined value
-                do_sample=False
+                do_sample=False,
+                pad_token_id=tokenizer.eos_token_id # Ensure pad token is set for generation
             )
 
-        completions = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-        
+        # Decode only the generated part for each item in the batch
+        generated_texts = []
+        # Get the string representation of the EOS token used for padding
+        eos_token_str = tokenizer.decode([tokenizer.eos_token_id], skip_special_tokens=False)
+
+        for j in range(outputs.shape[0]):
+            generated_ids = outputs[j, input_length:]
+            generated_text = tokenizer.decode(generated_ids, skip_special_tokens=False)
+
+            # Remove any trailing EOS tokens (which are padding in this case)
+            while generated_text.endswith(eos_token_str):
+                generated_text = generated_text[:-len(eos_token_str)]
+
+            generated_texts.append(generated_text)
+
+        # Reconstruct the full completion by prepending the original formatted prompt
+        # Note: We need the formatted prompts from *before* tokenization
+        formatted_prompts_for_batch = [chat_template.format(instruction=item['prompt_text']) for item in batch_prompts_data]
         
         # Store results for the batch
-        for qid, completion_text in zip(batch_question_ids, completions):
+        for qid, original_formatted_prompt, generated_part in zip(batch_question_ids, formatted_prompts_for_batch, generated_texts):
+            full_completion_text = original_formatted_prompt + "<think>\n" + generated_part
             results.append({
                 "question_id": qid,
-                "completion": completion_text # Already stripped
+                "completion": full_completion_text 
             })
 
-
-
-        
     return results
 
 # Remove cleanup code from here as it's now managed by the caller
