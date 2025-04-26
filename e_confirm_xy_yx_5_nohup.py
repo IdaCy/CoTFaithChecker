@@ -7,8 +7,17 @@
 # ───────────────────────────────────────────────
 # 0. Manual configuration
 # ───────────────────────────────────────────────
+print("CoTFaithChecker/e_confirm_xy_yx_5_nohup.py starting!")
 from pathlib import Path
 import torch
+from datetime import datetime
+
+"""
+starting with:
+nohup python -u e_confirm_xy_yx_5_nohup.py \
+      > logs/run_$(date +%Y%m%d_%H%M%S).log 2>&1 &
+"""
+print(f"[{datetime.now().isoformat()}] starting setup", flush=True)
 
 DATA_ROOT = Path("data/chainscope/questions_json")
 TEMPLATE_PATH = Path("data/chainscope/templates/instructions.json")
@@ -41,6 +50,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # ───────────────────────────────────────────────
 # 1. Load model & tokenizer  (your helper)
 # ───────────────────────────────────────────────
+print(f"[{datetime.now().isoformat()}] loading model & tokenizer", flush=True)
 from a_confirm_posthoc.utils.model_handler import load_model_and_tokenizer
 
 model, tokenizer, model_name, device = load_model_and_tokenizer(MODEL_PATH)
@@ -55,7 +65,13 @@ from e_confirm_xy_yx.main.data_loader import get_dataset_files
 # 0. Extra toggle
 CLUSTERS = ["arts"]   # no "no_wm"
 
+# ───────────────────────────────────────────────
 # 2. Collect dataset files
+# ───────────────────────────────────────────────
+print(f"[{datetime.now().isoformat()}] loading data", flush=True)
+
+#from e_confirm_xy_yx.main.data_loader import get_dataset_files
+#dataset_files = get_dataset_files(DATA_ROOT, DATASETS)
 dataset_files = get_dataset_files(
     DATA_ROOT,
     DATASETS,
@@ -82,12 +98,6 @@ pairs = [
 
 
 # ───────────────────────────────────────────────
-# 2. Collect dataset files
-# ───────────────────────────────────────────────
-#from e_confirm_xy_yx.main.data_loader import get_dataset_files
-#dataset_files = get_dataset_files(DATA_ROOT, DATASETS)
-
-# ───────────────────────────────────────────────
 # 3. Prepare prompt builder
 # ───────────────────────────────────────────────
 from e_confirm_xy_yx.main.prompt_builder import PromptBuilder
@@ -96,6 +106,8 @@ pb = PromptBuilder(template_path=TEMPLATE_PATH, style="instr-v0", mode="cot")
 # ───────────────────────────────────────────────
 # 4. Run inference
 # ───────────────────────────────────────────────
+print(f"[{datetime.now().isoformat()}] running inference", flush=True)
+
 from e_confirm_xy_yx.main.inference import run_inference
 
 run_inference(
@@ -116,54 +128,5 @@ run_inference(
     temperature=TEMPERATURE,
     top_p=TOP_P,
 )
-
-
-# In[ ]:
-
-
-"""
-# ───────────────────────────────────────────────
-# 5. Verify model answers
-# ───────────────────────────────────────────────
-from e_confirm_xy_yx.main.verifier import run_verification
-completion_files = sorted((OUT_DIR / "completions").glob("*_completions.json"))
-
-run_verification(
-    completion_files=completion_files,
-    n_questions=N_VERIFY,
-    output_dir=OUT_DIR / "verified",
-)
-"""
-
-
-# In[ ]:
-
-
-"""
-# ───────────────────────────────────────────────
-# 6. Cross-match YES vs NO answers
-# ───────────────────────────────────────────────
-from e_confirm_xy_yx.main.match_checker import check_matches
-verified_files = sorted((OUT_DIR / "verified").glob("*_verified.json"))
-
-# pair them: every gt_NO_X file with its matching gt_YES_X (adapt if lt)
-pairs = [
-    (
-        vf,
-        vf.parent
-        / vf.name.replace("gt_NO", "gt_YES")
-    )
-    for vf in verified_files
-    if "_NO_" in vf.name
-]
-
-for no_file, yes_file in pairs:
-    out_match = (
-        OUT_DIR
-        / "matches"
-        / f"{no_file.stem.replace('_verified','')}_match.json"
-    )
-    out_match.parent.mkdir(parents=True, exist_ok=True)
-    check_matches(no_file, yes_file, out_match)
-"""
+print(f"[{datetime.now().isoformat()}] done!", flush=True)
 
