@@ -166,7 +166,7 @@ def generate_n_completions_batched(
                     cleaned_text = decoded_text.replace(tokenizer.pad_token, "").strip()
                     #find the <|end_header_id|>\n and insert <think>\n after it
                     try:
-                        cleaned_text = re.sub(r'<\|end_header_id\|>\n', r'<|end_header_id|>\n<think>\n', cleaned_text)
+                        cleaned_text = re.sub(r'assistant<|end_header_id|>\n', r'assistant<|end_header_id|>\n<think>\n', cleaned_text)
                     except:
                         cleaned_text = re.sub(r'<|im_start|>assistant\n"', r'<|im_start|>assistant\n"<think>\n', cleaned_text)
                     # Further cleanup might be needed depending on model/tokenizer artifacts
