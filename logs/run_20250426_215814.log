@@ -918,3 +918,167 @@ Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
 2025-04-27 08:29:18,942 - DEBUG -   ↳ run 2/10
 Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
 Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:31:52,567 - DEBUG -   ↳ run 3/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:34:25,858 - DEBUG -   ↳ run 4/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:36:59,163 - DEBUG -   ↳ run 5/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:39:32,425 - DEBUG -   ↳ run 6/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:42:06,393 - DEBUG -   ↳ run 7/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:44:40,631 - DEBUG -   ↳ run 8/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:47:15,315 - DEBUG -   ↳ run 9/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:49:48,696 - DEBUG -   ↳ run 10/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+inference — INFO — Saved 1000 completions → e_confirm_xy_yx/outputs/gt_lt_completions_10/wm-nyc-place-long_lt_YES_1_5cd497f3_DeepSeek-R1-Distill-Llama-8B_completions.json
+2025-04-27 08:52:22,021 - INFO - Saved 1000 completions → e_confirm_xy_yx/outputs/gt_lt_completions_10/wm-nyc-place-long_lt_YES_1_5cd497f3_DeepSeek-R1-Distill-Llama-8B_completions.json
+inference — INFO — Processing wm-person-age_lt_YES_1_66bf5fba.json
+2025-04-27 08:52:22,028 - INFO - Processing wm-person-age_lt_YES_1_66bf5fba.json
+2025-04-27 08:52:22,029 - DEBUG - Loading data/chainscope/questions_json/lt_YES_1/wm-person-age_lt_YES_1_66bf5fba.json
+2025-04-27 08:52:22,029 - DEBUG -   ↳ run 1/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:54:53,324 - DEBUG -   ↳ run 2/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:57:24,902 - DEBUG -   ↳ run 3/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 08:59:56,124 - DEBUG -   ↳ run 4/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:02:27,812 - DEBUG -   ↳ run 5/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:04:59,596 - DEBUG -   ↳ run 6/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:07:30,718 - DEBUG -   ↳ run 7/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:10:02,848 - DEBUG -   ↳ run 8/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:12:35,040 - DEBUG -   ↳ run 9/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:15:06,301 - DEBUG -   ↳ run 10/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+inference — INFO — Saved 1000 completions → e_confirm_xy_yx/outputs/gt_lt_completions_10/wm-person-age_lt_YES_1_66bf5fba_DeepSeek-R1-Distill-Llama-8B_completions.json
+2025-04-27 09:17:37,261 - INFO - Saved 1000 completions → e_confirm_xy_yx/outputs/gt_lt_completions_10/wm-person-age_lt_YES_1_66bf5fba_DeepSeek-R1-Distill-Llama-8B_completions.json
+inference — INFO — Processing wm-person-birth_lt_YES_1_78c0beeb.json
+2025-04-27 09:17:37,269 - INFO - Processing wm-person-birth_lt_YES_1_78c0beeb.json
+2025-04-27 09:17:37,269 - DEBUG - Loading data/chainscope/questions_json/lt_YES_1/wm-person-birth_lt_YES_1_78c0beeb.json
+2025-04-27 09:17:37,269 - DEBUG -   ↳ run 1/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:20:08,835 - DEBUG -   ↳ run 2/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:22:39,755 - DEBUG -   ↳ run 3/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:25:11,005 - DEBUG -   ↳ run 4/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:27:42,029 - DEBUG -   ↳ run 5/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:30:12,683 - DEBUG -   ↳ run 6/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:32:43,409 - DEBUG -   ↳ run 7/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:35:14,160 - DEBUG -   ↳ run 8/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:37:44,922 - DEBUG -   ↳ run 9/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:40:15,593 - DEBUG -   ↳ run 10/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+inference — INFO — Saved 1000 completions → e_confirm_xy_yx/outputs/gt_lt_completions_10/wm-person-birth_lt_YES_1_78c0beeb_DeepSeek-R1-Distill-Llama-8B_completions.json
+2025-04-27 09:42:46,390 - INFO - Saved 1000 completions → e_confirm_xy_yx/outputs/gt_lt_completions_10/wm-person-birth_lt_YES_1_78c0beeb_DeepSeek-R1-Distill-Llama-8B_completions.json
+inference — INFO — Processing wm-person-death_lt_YES_1_7be720cc.json
+2025-04-27 09:42:46,396 - INFO - Processing wm-person-death_lt_YES_1_7be720cc.json
+2025-04-27 09:42:46,396 - DEBUG - Loading data/chainscope/questions_json/lt_YES_1/wm-person-death_lt_YES_1_7be720cc.json
+2025-04-27 09:42:46,397 - DEBUG -   ↳ run 1/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:45:17,320 - DEBUG -   ↳ run 2/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:47:48,141 - DEBUG -   ↳ run 3/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:50:18,980 - DEBUG -   ↳ run 4/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:52:49,993 - DEBUG -   ↳ run 5/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:55:20,892 - DEBUG -   ↳ run 6/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 09:57:51,773 - DEBUG -   ↳ run 7/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:00:22,682 - DEBUG -   ↳ run 8/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:02:53,559 - DEBUG -   ↳ run 9/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:05:24,452 - DEBUG -   ↳ run 10/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+inference — INFO — Saved 1000 completions → e_confirm_xy_yx/outputs/gt_lt_completions_10/wm-person-death_lt_YES_1_7be720cc_DeepSeek-R1-Distill-Llama-8B_completions.json
+2025-04-27 10:07:55,285 - INFO - Saved 1000 completions → e_confirm_xy_yx/outputs/gt_lt_completions_10/wm-person-death_lt_YES_1_7be720cc_DeepSeek-R1-Distill-Llama-8B_completions.json
+inference — INFO — Processing wm-song-release_lt_YES_1_30b9c099.json
+2025-04-27 10:07:55,292 - INFO - Processing wm-song-release_lt_YES_1_30b9c099.json
+2025-04-27 10:07:55,292 - DEBUG - Loading data/chainscope/questions_json/lt_YES_1/wm-song-release_lt_YES_1_30b9c099.json
+2025-04-27 10:07:55,292 - DEBUG -   ↳ run 1/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:10:25,514 - DEBUG -   ↳ run 2/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:12:55,713 - DEBUG -   ↳ run 3/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:15:25,982 - DEBUG -   ↳ run 4/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:17:54,171 - DEBUG -   ↳ run 5/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:20:14,575 - DEBUG -   ↳ run 6/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:22:44,879 - DEBUG -   ↳ run 7/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:25:15,223 - DEBUG -   ↳ run 8/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:27:45,503 - DEBUG -   ↳ run 9/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 10:30:15,777 - DEBUG -   ↳ run 10/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
