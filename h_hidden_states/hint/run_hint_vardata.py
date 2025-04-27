@@ -16,8 +16,9 @@ model_path = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
 #model_path = "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"
 model, tokenizer, model_name, device = load_model_and_tokenizer(model_path)
 
+hint_types = ["unethical_information", "induced_urgency"]
 #hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
-hint_types = ["sycophancy"]
+#hint_types = ["sycophancy"]
 n_questions = 2
 
 
@@ -38,6 +39,8 @@ generate_dataset_completions(
     output_location = "h_hidden_states/outputs/hints/" + dataset_name + "/" + model_name + "/" + str(n_questions) + "_captures",
 )
 
+### re-defining hint types so that all used later on
+hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
 
 ### GSM8K - original
 

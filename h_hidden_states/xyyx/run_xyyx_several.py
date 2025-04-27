@@ -35,7 +35,7 @@ print(f"[{datetime.now().isoformat()}] starting setup", flush=True)
 DATA_ROOT = Path("data/chainscope/questions_json")
 TEMPLATE_PATH = Path("data/chainscope/templates/instructions.json")
 LOG_DIR = Path("logs")
-OUT_DIR = Path("h_hidden_states/outputs/xyyx")          # completions, verification, matches
+OUT_DIR = Path("h_hidden_states/outputs/xyyx_deterministic")          # completions, verification, matches
 MODEL_PATH = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
 
 # choose folder subsets
@@ -58,10 +58,11 @@ random.seed(SEED)
 np.random.seed(SEED)
 # ──────────────────────────────────────────────────────────────────────
 
-OUT_GEN = Path("h_hidden_states/outputs/xyyx/" + MAIN_TYPE + "_" + MAIN_TYPE_2 + "_completions_" + str(N_RUNS))
+#OUT_GEN = Path(OUT_DIR / MAIN_TYPE + "_" + MAIN_TYPE_2 + "_completions_" + str(N_RUNS))
+OUT_GEN = OUT_DIR / f"{MAIN_TYPE}_{MAIN_TYPE_2}_completions_{N_RUNS}"
 
 SAVE_HIDDEN, SAVE_ATTN = True, False
-HIDDEN_LAYERS, ATTN_LAYERS = list(range(0, 32, 4)), []
+HIDDEN_LAYERS, ATTN_LAYERS = list(range(4, 33, 4)), []
 N_VERIFY = 0   # 0 == verify all
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -79,7 +80,7 @@ model.to(device)
 from e_confirm_xy_yx.main.data_loader import get_dataset_files
 
 # 0. Extra toggle
-CLUSTERS = ["arts"]   # no "no_wm"
+CLUSTERS = ["arts", "ny", "human"]   # no "no_wm"
 
 # ───────────────────────────────────────────────
 # 2. Collect dataset files
@@ -139,6 +140,7 @@ run_inference(
     n_runs=N_RUNS,
     temperature=TEMPERATURE,
     top_p=TOP_P,
+    n_samples=N_RUNS,
 )
 print(f"[{datetime.now().isoformat()}] done!", flush=True)
 
@@ -175,10 +177,11 @@ random.seed(SEED)
 np.random.seed(SEED)
 # ──────────────────────────────────────────────────────────────────────
 
-OUT_GEN = Path("h_hidden_states/outputs/xyyx/" + MAIN_TYPE + "_" + MAIN_TYPE_2 + "_completions_" + str(N_RUNS))
+#OUT_GEN = Path(OUT_DIR / MAIN_TYPE + "_" + MAIN_TYPE_2 + "_completions_" + str(N_RUNS))
+OUT_GEN = OUT_DIR / f"{MAIN_TYPE}_{MAIN_TYPE_2}_completions_{N_RUNS}"
 
 SAVE_HIDDEN, SAVE_ATTN = True, False
-HIDDEN_LAYERS, ATTN_LAYERS = list(range(0, 32, 4)), []
+HIDDEN_LAYERS, ATTN_LAYERS = list(range(4, 33, 4)), []
 N_VERIFY = 0   # 0 == verify all
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -189,7 +192,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"[{datetime.now().isoformat()}] loading model & tokenizer", flush=True)
 
 # 0. Extra toggle
-CLUSTERS = ["human"]   # no "no_wm"
+CLUSTERS = ["arts", "ny"]   # no "no_wm"
 
 # ───────────────────────────────────────────────
 # 2. Collect dataset files
@@ -249,6 +252,7 @@ run_inference(
     n_runs=N_RUNS,
     temperature=TEMPERATURE,
     top_p=TOP_P,
+    n_samples=N_RUNS,
 )
 print(f"[{datetime.now().isoformat()}] done!", flush=True)
 
