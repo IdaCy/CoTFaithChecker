@@ -36,8 +36,10 @@ def load_segmented_directory(directory: str | pathlib.Path) -> pd.DataFrame:
     directory = pathlib.Path(directory)
     rows = []
     pattern = "segmented_completions_*.json"
+    prefix = "segmented_completions_"
+    
     for path in directory.glob(pattern):
-        hint_type = path.stem.split("_")[-1]  # e.g. *sycophancy* / *none*
+        hint_type = path.stem[len(prefix):]  # e.g. *sycophancy* / *none*
         with path.open() as fh:
             data = json.load(fh)
         for q in data:
@@ -93,49 +95,56 @@ def extract_predicted_answer(text: str) -> str | None:
 import json, pathlib
 from typing import List
 
+from pathlib import Path
+import json
+import pandas as pd
+
 def load_accuracy_logs(
-    hint_dir: str | pathlib.Path,
-    mcq_file: str | pathlib.Path,
-    none_log: str | pathlib.Path = "answers_none.json",
-) -> pd.DataFrame:
+    base_dir: str | Path,
+    mcq_file: str | Path,
+    none_log: str | Path = "answers_none.json",
+):
     """
-    Build a tidy DataFrame with columns
-
-        question_id · hint_type · accuracy (0/1)
-        switched · to_intended_hint · hint_option
-
-    - `hint_dir`  : directory that contains the four *switch-logs*,
-                    one per hint type
-    - `mcq_file`  : master file that stores the correct options
-    - `none_log`  : the file that records answers when **no** hint was given
+    base_dir/
+        induced_urgency/          switch_analysis_with_500.json
+        sycophancy/               switch_analysis_with_500.json
+        misleading_justification/ switch_analysis_with_500.json
+        missing_chain/            switch_analysis_with_500.json
     """
-    hint_dir  = pathlib.Path(hint_dir)
-    mcq_file  = pathlib.Path(mcq_file)
-    none_log  = pathlib.Path(none_log)
+    base_dir  = Path(base_dir)
+    mcq_file  = Path(mcq_file)
+    none_log  = Path(none_log)
 
-    # map question → correct option  (e.g. {"0": "D", ...})
+    # ------------------------------------------------------------------ #
+    # map question_id → correct option
+    # ------------------------------------------------------------------ #
     correct = {int(row["question_id"]): row["correct"]
                for row in json.load(mcq_file.open())}
 
-    rows: List[dict] = []
+    rows = []
 
-    # ----------   hinted conditions   ----------
-    for path in hint_dir.glob("*_log.json"):        # adjust the glob to your files
-        hint_type = path.stem.split("_")[-2]        # e.g. sycophancy / unethical_information …
-        for rec in json.load(path.open()):
-            qid = int(rec["question_id"])
-            rows.append(
-                dict(
-                    question_id=qid,
-                    hint_type=hint_type,
-                    accuracy=int(rec["is_correct_option"]),
-                    switched=bool(rec["switched"]),
-                    to_intended_hint=bool(rec["to_intended_hint"]),
-                    hint_option=rec["hint_option"],
+    # ------------------------------------------------------------------ #
+    # hinted conditions (search *recursively*)
+    # ------------------------------------------------------------------ #
+    for path in base_dir.rglob("switch*_*.json"):
+        hint_type = path.parent.name              # folder name = hint label
+        with path.open() as fh:
+            for rec in json.load(fh):
+                qid = int(rec["question_id"])
+                rows.append(
+                    dict(
+                        question_id=qid,
+                        hint_type=hint_type,
+                        accuracy=int(rec["is_correct_option"]),
+                        switched=bool(rec["switched"]),
+                        to_intended_hint=bool(rec["to_intended_hint"]),
+                        hint_option=rec["hint_option"],
+                    )
                 )
-            )
 
-    # ----------   no-hint baseline   ----------
+    # ------------------------------------------------------------------ #
+    # no-hint baseline
+    # ------------------------------------------------------------------ #
     with none_log.open() as fh:
         for rec in json.load(fh):
             qid  = int(rec["question_id"])

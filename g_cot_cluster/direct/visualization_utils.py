@@ -38,7 +38,7 @@ def bar_category_freq(freq_df: pd.DataFrame, normalize: bool = True):
 
 def heatmap_transition(matrix: pd.DataFrame, title: str):
     plt.figure(figsize=(8, 6))
-    sns.heatmap(matrix, cmap="mako", square=True, vmin=0, vmax=1)
+    sns.heatmap(matrix, cmap="Blues", square=True, vmin=0, vmax=1)
     plt.title(title)
     plt.xlabel("→ To category")
     plt.ylabel("From category →")
@@ -93,7 +93,7 @@ def scatter_backtracking(metrics_df: pd.DataFrame, accuracy):
 # ---------------------------------------------------------------------------
 
 def plot_roc(fpr, tpr, label: str):
-    plt.figure(figsize=(4, 4))
+    plt.figure(figsize=(7, 5))
     plt.plot(fpr, tpr, linewidth=2, label=label)
     plt.plot([0, 1], [0, 1], "--", linewidth=1)
     plt.xlabel("False positive rate")
