@@ -86,7 +86,7 @@ model.to(device)
 from e_confirm_xy_yx.main.data_loader import get_dataset_files
 
 # 0. Extra toggle
-CLUSTERS = ["one"]   # no "no_wm"
+CLUSTERS = ["arts"]   # no "no_wm"
 
 # ───────────────────────────────────────────────
 # 2. Collect dataset files

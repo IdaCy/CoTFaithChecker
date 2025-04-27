@@ -125,7 +125,7 @@ def generate_completion(
         input_ids = encodings["input_ids"].to(model.device)
         attention_mask = encodings["attention_mask"].to(model.device)
 
-        # ----------  capture resid_post activations  ----------
+        #  capture resid_post activations 
         with torch.no_grad():
             prefix_out = model(
                 input_ids,
@@ -154,7 +154,7 @@ def generate_completion(
 
         os.makedirs(output_location, exist_ok=True)
         torch.save(acts, f"{output_location}_batch_{i}.pt")
-        # -------------------------------------------------------
+        #-----
 
         with torch.no_grad():
             outputs = model.generate(
@@ -166,14 +166,21 @@ def generate_completion(
                 top_p=1.0
             )
 
-        completions = tokenizer.batch_decode(outputs, skip_special_tokens=False)
+        #completions = tokenizer.batch_decode(outputs, skip_special_tokens=False)
         
-        
-        # Store results for the batch
+        # decode only the newly generated tokens
+        prompt_len = input_ids.size(1)            # length of the prompt portion
+        gen_ids    = outputs[:, prompt_len:]      # slice off the prompt
+        completions = tokenizer.batch_decode(     # ids → strings, clean
+            gen_ids,
+            skip_special_tokens=True              # drops <|begin_of_text|>, etc.
+        )
+
+        # store result
         for qid, completion_text in zip(batch_question_ids, completions):
             results.append({
                 "question_id": qid,
-                "completion": completion_text # Already stripped
+                "completion": completion_text.lstrip()   # optional whitespace trim
             })
 
     return results

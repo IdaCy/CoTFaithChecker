@@ -31,9 +31,9 @@ model, tokenizer, model_name, device = load_model_and_tokenizer(model_path)
 
 
 dataset_name = "mmlu"
-#hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
-hint_types = ["none"]
-n_questions = 1
+hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
+#hint_types = ["none"]
+n_questions = 500
 
 
 # In[9]:
