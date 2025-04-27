@@ -50,7 +50,7 @@ def _generate(
         "return_dict_in_generate":  True,
         "max_new_tokens":           2048 if max_new_tokens is None else max_new_tokens,
         # NEW sampling controls ↓↓↓
-        "do_sample":   False,
+        "do_sample":   temperature != 1.0 or top_p < 1.0 or n_runs > 1,
         "temperature": temperature,
         "top_p":       top_p,
     }

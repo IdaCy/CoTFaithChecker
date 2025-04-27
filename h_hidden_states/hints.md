@@ -11,7 +11,6 @@ nohup python -u h_hidden_states/xyyx/run_xyyx.py > logs/run_h_xyyx_$(date +%Y%m%
 ```
 
 test:
-
 ```
 nohup python -u h_hidden_states/hint/run_hint_vardata.py > logs/run_h_hint_vardata_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 ```
