@@ -14,3 +14,4 @@ logs/*
 f_cot_cluster/main/__pycache__
 g_cot_cluster/cot_direct/__pycache__/
 a_confirm_posthoc/utils/__pycache__/
+analysis_cache/
