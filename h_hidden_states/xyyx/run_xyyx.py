@@ -48,7 +48,7 @@ MAIN_TYPE_2 = "lt"
 DATASETS = [MAIN_TYPE + "_NO_1", MAIN_TYPE + "_YES_1", MAIN_TYPE_2 + "_NO_1", MAIN_TYPE_2 + "_YES_1"]
 #DATASETS = [MAIN_TYPE + "_NO_1"]
 
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 MAX_NEW_TOKENS = None
 
 # ─── multi-run & sampling ────────────────────────────────────────
@@ -131,7 +131,7 @@ pb = PromptBuilder(template_path=TEMPLATE_PATH, style="instr-v0", mode="cot")
 # ───────────────────────────────────────────────
 print(f"[{datetime.now().isoformat()}] running inference", flush=True)
 
-from e_confirm_xy_yx.main.inference import run_inference
+from h_hidden_states.xyyx.inference import run_inference
 
 run_inference(
     dataset_files=dataset_files,
