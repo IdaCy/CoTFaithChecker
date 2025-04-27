@@ -45,8 +45,8 @@ MODEL_PATH = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
 # choose folder subsets
 MAIN_TYPE = "gt"
 MAIN_TYPE_2 = "lt"
-#DATASETS = [MAIN_TYPE + "_NO_1", MAIN_TYPE + "_YES_1", MAIN_TYPE_2 + "_NO_1", MAIN_TYPE_2 + "_YES_1"]
-DATASETS = [MAIN_TYPE + "_NO_1"]
+DATASETS = [MAIN_TYPE + "_NO_1", MAIN_TYPE + "_YES_1", MAIN_TYPE_2 + "_NO_1", MAIN_TYPE_2 + "_YES_1"]
+#DATASETS = [MAIN_TYPE + "_NO_1"]
 
 BATCH_SIZE = 64
 MAX_NEW_TOKENS = None
