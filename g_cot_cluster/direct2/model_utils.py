@@ -88,3 +88,4 @@ def train_xtp_logreg(
     y_score = pipe.predict_proba(X_test)[:, 1]
     fpr, tpr, _ = roc_curve(y_test, y_score)
     return pipe, fpr, tpr, auc(fpr, tpr)
+

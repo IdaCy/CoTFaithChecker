@@ -38,7 +38,7 @@ def bar_category_freq(freq_df: pd.DataFrame, normalize: bool = True):
 
 def heatmap_transition(matrix: pd.DataFrame, title: str):
     plt.figure(figsize=(8, 6))
-    sns.heatmap(matrix, cmap="mako", square=True, vmin=0, vmax=1)
+    sns.heatmap(matrix, cmap="Blues", square=True, vmin=0, vmax=1)
     plt.title(title)
     plt.xlabel("→ To category")
     plt.ylabel("From category →")
