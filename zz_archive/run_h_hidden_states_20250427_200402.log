@@ -1,0 +1,18 @@
+nohup: ignoring input
+Working dir: /root/CoTFaithChecker
+2025-04-27 20:04:06,397 - INFO - CUDA is available. Using GPU.
+2025-04-27 20:04:06,397 - INFO - Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:817: UserWarning: `return_dict_in_generate` is NOT set to `True`, but `output_hidden_states` is. When `return_dict_in_generate` is not `True`, `output_hidden_states` is ignored.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.50s/it]
+2025-04-27 20:04:18,468 - INFO - Model and tokenizer loaded successfully.
+2025-04-27 20:04:18,468 - INFO - Using chat template: <|begin_of_text|><|start_header_id|>user<|end_header_id|>{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+2025-04-27 20:04:18,468 - INFO - --- Processing dataset for hint type: none ---
+2025-04-27 20:04:18,479 - ERROR - Data file not found: data/mmlu/hints_none.json
+2025-04-27 20:04:18,479 - INFO - Generating completions for none...
+Traceback (most recent call last):
+  File "/root/CoTFaithChecker/h_hidden_states/hint/run_hint.py", line 42, in <module>
+    generate_dataset_completions(
+  File "/root/CoTFaithChecker/h_hidden_states/hint/pipeline.py", line 125, in generate_dataset_completions
+    results = generate_completion(
+TypeError: generate_completion() takes from 5 to 7 positional arguments but 8 were given

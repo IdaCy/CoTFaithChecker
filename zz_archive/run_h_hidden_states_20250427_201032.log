@@ -1,0 +1,19 @@
+nohup: ignoring input
+Working dir: /root/CoTFaithChecker
+2025-04-27 20:10:35,502 - INFO - CUDA is available. Using GPU.
+2025-04-27 20:10:35,502 - INFO - Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:817: UserWarning: `return_dict_in_generate` is NOT set to `True`, but `output_hidden_states` is. When `return_dict_in_generate` is not `True`, `output_hidden_states` is ignored.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  2.10it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  2.10it/s]
+2025-04-27 20:10:39,378 - INFO - Model and tokenizer loaded successfully.
+2025-04-27 20:10:39,378 - INFO - Using chat template: <|begin_of_text|><|start_header_id|>user<|end_header_id|>{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+2025-04-27 20:10:39,378 - INFO - --- Processing dataset for hint type: none ---
+2025-04-27 20:10:39,386 - ERROR - Data file not found: data/mmlu/hints_none.json
+2025-04-27 20:10:39,386 - INFO - Generating completions for none...
+2025-04-27 20:10:39,387 - INFO - Using max_new_tokens: 2048
+2025-04-27 20:10:39,387 - INFO - Processing batch 1/1 (Size: 1, QIDs: 0-0)
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.0` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+2025-04-27 20:10:55,363 - INFO - Results saved to data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_with_1.json
+2025-04-27 20:10:55,364 - INFO - Total processing time: 15.99 seconds
