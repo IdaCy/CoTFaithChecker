@@ -10,7 +10,9 @@ d_logprobs_analysis/src/eval/__pycache__
 e_probe_structure/src/__pycache__
 e_probe_structure/src/main/__pycache__
 e_confirm_xy_yx/main/__pycache__
-logs/*
+logs/data_loader_*
+logs/prompt_builder_*
+logs/inference_*
 f_cot_cluster/main/__pycache__
 g_cot_cluster/cot_direct/__pycache__/
 a_confirm_posthoc/utils/__pycache__/
