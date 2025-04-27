@@ -1,0 +1,42 @@
+nohup: ignoring input
+CoTFaithChecker/e_confirm_xy_yx_5_nohup.py starting!
+[2025-04-26T21:55:17.500697] starting setup
+[2025-04-26T21:55:17.579010] loading model & tokenizer
+2025-04-26 21:55:19,278 - INFO - CUDA is available. Using GPU.
+2025-04-26 21:55:19,278 - INFO - Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.94it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.94it/s]
+2025-04-26 21:55:23,519 - INFO - Model and tokenizer loaded successfully.
+data_loader — INFO — Logger initialised; log file = /root/CoTFaithChecker/logs/data_loader_20250426_215523.log
+2025-04-26 21:55:23,522 - INFO - Logger initialised; log file = /root/CoTFaithChecker/logs/data_loader_20250426_215523.log
+[2025-04-26T21:55:23.522617] loading data
+data_loader — INFO — → kept 5 after cluster filter ['arts']
+2025-04-26 21:55:23,522 - INFO - → kept 5 after cluster filter ['arts']
+data_loader — INFO — Found 5 files in data/chainscope/questions_json/gt_NO_1
+2025-04-26 21:55:23,522 - INFO - Found 5 files in data/chainscope/questions_json/gt_NO_1
+data_loader — INFO — → kept 5 after cluster filter ['arts']
+2025-04-26 21:55:23,523 - INFO - → kept 5 after cluster filter ['arts']
+data_loader — INFO — Found 5 files in data/chainscope/questions_json/gt_YES_1
+2025-04-26 21:55:23,523 - INFO - Found 5 files in data/chainscope/questions_json/gt_YES_1
+data_loader — INFO — → kept 5 after cluster filter ['arts']
+2025-04-26 21:55:23,523 - INFO - → kept 5 after cluster filter ['arts']
+data_loader — INFO — Found 5 files in data/chainscope/questions_json/lt_NO_1
+2025-04-26 21:55:23,523 - INFO - Found 5 files in data/chainscope/questions_json/lt_NO_1
+data_loader — INFO — → kept 5 after cluster filter ['arts']
+2025-04-26 21:55:23,523 - INFO - → kept 5 after cluster filter ['arts']
+data_loader — INFO — Found 5 files in data/chainscope/questions_json/lt_YES_1
+2025-04-26 21:55:23,523 - INFO - Found 5 files in data/chainscope/questions_json/lt_YES_1
+data_loader — INFO — Total files collected: 20
+2025-04-26 21:55:23,523 - INFO - Total files collected: 20
+prompt_builder — INFO — Logger initialised; log file = /root/CoTFaithChecker/logs/prompt_builder_20250426_215523.log
+2025-04-26 21:55:23,524 - INFO - Logger initialised; log file = /root/CoTFaithChecker/logs/prompt_builder_20250426_215523.log
+prompt_builder — INFO — PromptBuilder initialised with style=instr-v0, mode=cot
+2025-04-26 21:55:23,524 - INFO - PromptBuilder initialised with style=instr-v0, mode=cot
+[2025-04-26T21:55:23.524496] running inference
+inference — INFO — Logger initialised; log file = /root/CoTFaithChecker/logs/inference_20250426_215523.log
+2025-04-26 21:55:23,524 - INFO - Logger initialised; log file = /root/CoTFaithChecker/logs/inference_20250426_215523.log
+inference — INFO — Processing wm-book-length_gt_NO_1_6fda02e3.json
+2025-04-26 21:55:23,524 - INFO - Processing wm-book-length_gt_NO_1_6fda02e3.json
+2025-04-26 21:55:23,525 - DEBUG - Loading data/chainscope/questions_json/gt_NO_1/wm-book-length_gt_NO_1_6fda02e3.json
+2025-04-26 21:55:23,525 - DEBUG -   ↳ run 1/10
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
