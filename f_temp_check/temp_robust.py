@@ -312,12 +312,13 @@ def run_analysis_phase(args):
     # --- 1. Setup ---
     model_name_suffix = args.model_path.split("/")[-1]
     output_dir = args.output_dir or os.path.join("f_temp_check", "outputs", args.dataset_name, model_name_suffix, args.hint_type)
-    raw_output_file = os.path.join(output_dir, f"temp_generations_raw_{args.dataset_name}_{args.n_questions}.json")
-    detailed_analysis_file = os.path.join(output_dir, f"temp_analysis_details_{args.dataset_name}_{args.n_questions}.json")
-    summary_analysis_file = os.path.join(output_dir, f"temp_analysis_summary_{args.dataset_name}_{args.n_questions}.json")
-    logging.info(f"Reading raw generations from: {raw_output_file}")
-    logging.info(f"Detailed analysis file: {detailed_analysis_file}")
-    logging.info(f"Summary analysis file: {summary_analysis_file}")
+    os.makedirs(output_dir, exist_ok=True) # Ensure the full path is created
+    raw_output_file = os.path.join(output_dir, f"temp_generations_raw_{args.dataset_name}_{args.n_questions}.json") # Keep dataset here for clarity maybe?
+    # Simplify analysis filenames
+    detailed_analysis_file = os.path.join(output_dir, f"temp_analysis_details_{args.n_questions}.json")
+    summary_analysis_file = os.path.join(output_dir, f"temp_analysis_summary_{args.n_questions}.json")
+    logging.info(f"Output directory: {output_dir}")
+    logging.info(f"Raw output file: {raw_output_file}")
 
     # --- 2. Load Raw Generations ---
     try:
@@ -451,30 +452,40 @@ def run_analysis_phase(args):
         match_count = 0
         verbalize_count = 0
         match_and_verbalize_count = 0
+        na_or_error_count = 0 # Add counter for N/A or errors
         valid_generations_count = 0
         total_generations_in_record = len(question_result['generation_details'])
 
         for detail in question_result['generation_details']:
             # Check if generation and analysis were successful
-            is_gen_error = detail['extracted_answer'] == "GENERATION_ERROR"
-            is_analysis_error = isinstance(detail['verification_output'], dict) and 'error' in detail['verification_output']
+            extracted_ans = detail['extracted_answer']
+            is_gen_error = extracted_ans == "GENERATION_ERROR"
+            is_extract_error = extracted_ans == "ERROR_EXTRACTING_ANSWER"
+            is_na = extracted_ans == "N/A"
+            is_hint_verif_error = isinstance(detail['verification_output'], dict) and 'error' in detail['verification_output']
 
-            if is_gen_error or is_analysis_error:
-                continue # Skip generations with errors for summary stats
+            # Count N/A or Error in answer extraction
+            if is_gen_error or is_extract_error or is_na:
+                na_or_error_count += 1
+                # Skip further analysis for this generation if answer extraction failed
+                if is_gen_error or is_extract_error:
+                    continue
 
-            valid_generations_count += 1
-            matched_hint_flag = detail['matched_hint_option']
-            verif_output = detail['verification_output']
+            # Count generations where hint verification was successful (needed for verbalization stats)
+            if not is_hint_verif_error:
+                valid_generations_count += 1 # Count generations suitable for verbalization analysis
+                matched_hint_flag = detail['matched_hint_option'] # This already checks for valid answer
+                verif_output = detail['verification_output']
 
-            # Safely check verbalizes_hint status
-            does_verbalize = isinstance(verif_output, dict) and verif_output.get('verbalizes_hint', False)
+                # Safely check verbalizes_hint status
+                does_verbalize = isinstance(verif_output, dict) and verif_output.get('verbalizes_hint', False)
 
-            if matched_hint_flag:
-                match_count += 1
-            if does_verbalize:
-                verbalize_count += 1
                 if matched_hint_flag:
-                    match_and_verbalize_count += 1
+                    match_count += 1
+                if does_verbalize:
+                    verbalize_count += 1
+                    if matched_hint_flag:
+                        match_and_verbalize_count += 1
 
         # Store summary for this question
         question_summary = {
@@ -483,7 +494,8 @@ def run_analysis_phase(args):
             'hint_option': question_result['hint_option'],
             'aggregated_counts': {
                 'num_generations_attempted': total_generations_in_record,
-                'num_generations_analyzed': valid_generations_count,
+                'num_generations_analyzed_for_verbalization': valid_generations_count, # Renamed for clarity
+                'num_answer_na_or_error': na_or_error_count, # Added N/A count
                 'match_hint_count': match_count,
                 'verbalize_hint_count': verbalize_count,
                 'match_and_verbalize_count': match_and_verbalize_count
@@ -494,7 +506,9 @@ def run_analysis_phase(args):
         # Update overall group counts
         group_counts = overall_counters[original_verbalizes]
         group_counts['total_questions'] += 1
-        group_counts['total_analyzed_generations'] += valid_generations_count
+        group_counts['total_attempted_generations'] += total_generations_in_record
+        group_counts['total_analyzed_generations_for_verbalization'] += valid_generations_count # Renamed
+        group_counts['total_answer_na_or_error'] += na_or_error_count # Added
         group_counts['total_match_hint'] += match_count
         group_counts['total_verbalize_hint'] += verbalize_count
         group_counts['total_match_and_verbalize'] += match_and_verbalize_count
@@ -503,17 +517,25 @@ def run_analysis_phase(args):
     overall_summary = {}
     for group_flag, counts in overall_counters.items():
         total_q = counts['total_questions']
-        total_gen = counts['total_analyzed_generations']
+        total_attempted_gen = counts['total_attempted_generations']
+        total_analyzed_gen = counts['total_analyzed_generations_for_verbalization'] # Use renamed var
+        total_na_error = counts['total_answer_na_or_error'] # Added
         total_match = counts['total_match_hint']
         total_verbalize = counts['total_verbalize_hint']
         total_match_and_verbalize = counts['total_match_and_verbalize']
 
         overall_summary[f'group_original_verbalize_{str(group_flag).lower()}'] = {
             'total_questions_in_group': total_q,
-            'total_analyzed_generations': total_gen,
-            'avg_match_hint_proportion': (total_match / total_gen) if total_gen > 0 else 0,
-            'avg_verbalize_hint_proportion': (total_verbalize / total_gen) if total_gen > 0 else 0,
-            'avg_match_and_verbalize_proportion': (total_match_and_verbalize / total_gen) if total_gen > 0 else 0,
+            'total_attempted_generations': total_attempted_gen,
+            'total_analyzed_generations_for_verbalization': total_analyzed_gen,
+            'total_answer_na_or_error': total_na_error, # Add total count
+            'total_match_hint': total_match,            # Raw count
+            'total_verbalize_hint': total_verbalize,      # Raw count
+            'total_match_and_verbalize': total_match_and_verbalize, # Add this raw count
+            'avg_na_or_error_proportion': (total_na_error / total_attempted_gen) if total_attempted_gen > 0 else 0, # Added proportion
+            'avg_match_hint_proportion': (total_match / total_analyzed_gen) if total_analyzed_gen > 0 else 0, # Denom uses analyzed gen
+            'avg_verbalize_hint_proportion': (total_verbalize / total_analyzed_gen) if total_analyzed_gen > 0 else 0, # Denom uses analyzed gen
+            'avg_match_and_verbalize_proportion': (total_match_and_verbalize / total_analyzed_gen) if total_analyzed_gen > 0 else 0, # Denom uses analyzed gen
             'conditional_verbalize_given_match_proportion': (total_match_and_verbalize / total_match) if total_match > 0 else 0
         }
 
@@ -537,15 +559,15 @@ def run_analysis_phase(args):
 # Default configuration
 config = {
     "model_path": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",  # Example model path
-    "dataset_name": "mmlu_pro",
+    "dataset_name": "mmlu",
     "hint_type": "sycophancy",
     "n_questions": 300,
-    "output_dir": "f_temp_check/outputs",
+    "output_dir": None, # Add back with None value
     "demo_mode_limit": None,  # Set to None to process all questions
     "num_generations": 10,
     "temperature": 0.7,
     "max_new_tokens": 2000,
-    "batch_size": 10
+    "batch_size": 15
 }
 
 # Create a simple args object to pass to the functions
