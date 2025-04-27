@@ -1,85 +1,163 @@
-"""Utilities for loading and preprocessing segmented CoT files."""
+"""
+data_utils.py
+Utility functions to load and structure segmented chain‑of‑thought data.
+"""
 from __future__ import annotations
-
 import json
-import re
+import pathlib
+from typing import List, Dict
 from collections import Counter
-from pathlib import Path
-from typing import List, Dict, Any, Sequence, Optional
-
 import pandas as pd
+import re
 
-# Regular expression that tries to pull the model's predicted answer
-_RE_BRACKET = re.compile(r"\[\s*([A-Za-z0-9]+)\s*\]")
-
-_HINT_REGEX = re.compile(r"segmented_completions_(.+?)\.json$")
-
-
-################################################################################
-# Loading helpers
-################################################################################
-
-def _extract_hint_type(path: Path) -> str:
-    m = _HINT_REGEX.search(path.name)
-    return m.group(1) if m else "unknown"
-
-
-def _extract_predicted_answer(segments: Sequence[Dict[str, Any]]) -> Optional[str]:
-    for s in segments[::-1]:
-        if s.get("phrase_category") == "answer_reporting":
-            text = s.get("text", "")
-            m = _RE_BRACKET.search(text)
-            return m.group(1) if m else text.strip()
-    return None
+CATEGORY_ORDER: List[str] = [
+    "problem_restating",
+    "knowledge_recall",
+    "concept_definition",
+    "quantitative_calculation",
+    "logical_deduction",
+    "option_elimination",
+    "assumption_validation",
+    "uncertainty_expression",
+    "self_questioning",
+    "backtracking_revision",
+    "decision_confirmation",
+    "answer_reporting",
+]
 
 
-def _has_backtracking(segments: Sequence[Dict[str, Any]]) -> bool:
-    return any(s.get("phrase_category") == "backtracking_revision" for s in segments)
+def load_segmented_directory(directory: str | pathlib.Path) -> pd.DataFrame:
+    """Load every *segmented_completions_*.json* file inside *directory* and
+    return a flat :pyclass:`pandas.DataFrame` with one row per segment.
 
-
-def load_data(root_dir: str | Path) -> pd.DataFrame:
-    """Load **all** `segmented_completions_*.json` files from *root_dir*.
-
-    Returns
-    -------
-    DataFrame  with one row per question and columns:
-        question_id, hint_type, segments, category_sequence,
-        full_text, has_backtracking, predicted_answer, is_correct (nullable)
+    Columns: ``question_id``, ``hint_type``, ``segment_idx``, ``phrase_category``,
+    ``text``, ``start``, ``end``.
     """
-    root = Path(root_dir)
+    directory = pathlib.Path(directory)
     rows = []
-    for fp in root.glob("segmented_completions_*.json"):
-        hint_type = _extract_hint_type(fp)
-        with fp.open("r", encoding="utf-8") as fh:
+    pattern = "segmented_completions_*.json"
+    prefix = "segmented_completions_"
+    
+    for path in directory.glob(pattern):
+        hint_type = path.stem[len(prefix):]  # e.g. *sycophancy* / *none*
+        with path.open() as fh:
             data = json.load(fh)
         for q in data:
-            segments: List[Dict[str, Any]] = q["segments"]
-            cat_seq = [s["phrase_category"] for s in segments]
-            rows.append(
-                {
-                    "question_id": q.get("question_id"),
-                    "hint_type": hint_type,
-                    "segments": segments,
-                    "category_sequence": cat_seq,
-                    "full_text": " ".join(s["text"] for s in segments),
-                    "has_backtracking": _has_backtracking(segments),
-                    "predicted_answer": _extract_predicted_answer(segments),
-                    "is_correct": q.get("is_correct"),  # may be None
-                }
-            )
+            qid = q["question_id"]
+            for idx, seg in enumerate(q["segments"]):
+                rows.append(
+                    {
+                        "question_id": qid,
+                        "hint_type": hint_type,
+                        "segment_idx": idx,
+                        "phrase_category": seg["phrase_category"],
+                        "text": seg["text"],
+                        "start": seg["start"],
+                        "end": seg["end"],
+                    }
+                )
     df = pd.DataFrame(rows)
+    df["phrase_category"] = pd.Categorical(
+        df["phrase_category"], categories=CATEGORY_ORDER, ordered=True
+    )
     return df
 
 
-def merge_accuracy(df: pd.DataFrame, answer_key: pd.DataFrame) -> pd.DataFrame:
-    """Attach ground‑truth correctness.
-
-    *answer_key* must have columns [question_id, correct_answer].
+def sequence_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    """Collapse the segment‑level dataframe into one row per *question_id* &
+    *hint_type*, adding ordered lists of categories and the concatenated text.
     """
-    answer_key = answer_key.rename(columns={"correct_answer": "_gt"})
-    out = df.merge(answer_key, on="question_id", how="left")
-    out["is_correct"] = out["is_correct"].fillna(
-        out.apply(lambda r: r["predicted_answer"] == r["_gt"], axis=1)
+    seq_df = (
+        df.sort_values(["question_id", "segment_idx"])
+        .groupby(["question_id", "hint_type"])
+        .agg(
+            category_sequence=("phrase_category", list),
+            full_text=("text", lambda x: "\n".join(x)),
+        )
+        .reset_index()
     )
-    out = out.drop(columns="_gt")
-    return out
+    return seq_df
+
+
+ANSWER_PATTERN = re.compile(r"\*\*Answer:\*\*\s*\[?\s*([A-Za-z0-9]+)\s*\]?", re.IGNORECASE)
+
+def extract_predicted_answer(text: str) -> str | None:
+    """Extract the reported answer (e.g. ``"A"`` or ``"42"``) from a segment
+    containing the typical pattern ``**Answer:** [ D ]``.
+    Returns *None* if no answer is found.
+    """
+    m = ANSWER_PATTERN.search(text)
+    return m.group(1).upper() if m else None
+
+# ---------------------------------------------------------------------------
+# Accuracy & “switch” information
+# ---------------------------------------------------------------------------
+import json, pathlib
+from typing import List
+
+from pathlib import Path
+import json
+import pandas as pd
+
+def load_accuracy_logs(
+    base_dir: str | Path,
+    mcq_file: str | Path,
+    none_log: str | Path = "answers_none.json",
+):
+    """
+    base_dir/
+        induced_urgency/          switch_analysis_with_500.json
+        sycophancy/               switch_analysis_with_500.json
+        misleading_justification/ switch_analysis_with_500.json
+        missing_chain/            switch_analysis_with_500.json
+    """
+    base_dir  = Path(base_dir)
+    mcq_file  = Path(mcq_file)
+    none_log  = Path(none_log)
+
+    # ------------------------------------------------------------------ #
+    # map question_id → correct option
+    # ------------------------------------------------------------------ #
+    correct = {int(row["question_id"]): row["correct"]
+               for row in json.load(mcq_file.open())}
+
+    rows = []
+
+    # ------------------------------------------------------------------ #
+    # hinted conditions (search *recursively*)
+    # ------------------------------------------------------------------ #
+    for path in base_dir.rglob("switch*_*.json"):
+        hint_type = path.parent.name              # folder name = hint label
+        with path.open() as fh:
+            for rec in json.load(fh):
+                qid = int(rec["question_id"])
+                rows.append(
+                    dict(
+                        question_id=qid,
+                        hint_type=hint_type,
+                        accuracy=int(rec["is_correct_option"]),
+                        switched=bool(rec["switched"]),
+                        to_intended_hint=bool(rec["to_intended_hint"]),
+                        hint_option=rec["hint_option"],
+                    )
+                )
+
+    # ------------------------------------------------------------------ #
+    # no-hint baseline
+    # ------------------------------------------------------------------ #
+    with none_log.open() as fh:
+        for rec in json.load(fh):
+            qid  = int(rec["question_id"])
+            pred = rec["verified_answer"]
+            rows.append(
+                dict(
+                    question_id=qid,
+                    hint_type="none",
+                    accuracy=int(pred == correct[qid]),
+                    switched=False,
+                    to_intended_hint=False,
+                    hint_option=pred,
+                )
+            )
+
+    return pd.DataFrame(rows)
