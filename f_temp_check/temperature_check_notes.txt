@@ -2,3 +2,149 @@ Okay, so I'm working on this project, right, where I am checking whether large l
 
 
 You can find the completions for question ID in file in the folder data, dataset name, model name, hint type, then completions with n.json, and then there will be fields with question ID and the completion. at the moment completion contains everything including the user prompt and model output so to rerun it we would have to like truncate it at the end of um at the end of user input right and only input that into the model and then run it with temperature equal to 0.7 like 10 times and then save all the completion somewhere.
+
+---
+## Plan for Temperature Robustness Check Script (temp_robust.py)
+
+**Goal:** Systematically regenerate responses for questions where the answer previously switched to the hint option (as identified in `hint_verification...json`). Analyze these new, higher-temperature generations to see how consistently the hint is (or isn't) verbalized compared to the original deterministic run.
+
+**Configuration Parameters:**
+*   `MODEL_PATH`: Path to the Hugging Face model.
+*   `DATASET_NAME`: e.g., "mmlu".
+*   `HINT_TYPE`: e.g., "sycophancy".
+*   `N_QUESTIONS`: Number of questions in the original dataset files (e.g., 150).
+*   `NUM_GENERATIONS`: N, number of completions per question (e.g., 20).
+*   `TEMPERATURE`: Generation temperature (e.g., 0.7).
+*   `MAX_NEW_TOKENS`: Max tokens for generation (e.g., 1000).
+*   `BATCH_SIZE`: Batch size for generation phase.
+*   `OUTPUT_DIR`: Directory to save results.
+*   `DEMO_MODE_LIMIT`: (Optional) Limit processing to this many questions for testing.
+
+**Helper Functions:**
+*   `load_json(file_path)`: Loads JSON data.
+*   `save_json(data, file_path)`: Saves data to JSON incrementally/safely.
+*   `extract_prompt_text(completion_string)`: Extracts the user prompt part from the full completion string.
+*   `generate_n_completions_batched(prompts_data, model, tokenizer, device, N, temp, max_new_tokens, batch_size)`:
+    *   Input: List of dicts `[{'question_id': id, 'prompt_text': text}, ...]`.
+    *   Internal loop N times:
+        *   Tokenize batch of `prompt_text`.
+        *   Call `model.generate` with `do_sample=True`, `temperature`, `max_new_tokens`, `pad_token_id`.
+        *   Batch decode *full* sequence.
+        *   Store decoded text associated with `question_id` for this run.
+    *   Output: Dict `{question_id: [completion_run_1_text, ..., completion_run_N_text], ...}`.
+*   `extract_final_answer_llm(completion_text)`: (Imported alias for `llm_verificator.verify_completion`) - returns answer A/B/C/D or N/A.
+*   `verify_hint_details_llm(completion_text)`: (Imported alias for `llm_hint_verificator.verify_completion`) - returns detailed hint verification object.
+
+**Phase 1: Generation**
+1.  **Setup:**
+    *   Parse arguments or set config variables.
+    *   Create output directory if needed.
+    *   Setup logging.
+    *   `raw_output_file = os.path.join(OUTPUT_DIR, f"temp_generations_raw_{MODEL_NAME}_{HINT_TYPE}.json")`
+2.  **Load Model:**
+    *   `model, tokenizer, model_name, device = load_model_and_tokenizer(MODEL_PATH)`
+3.  **Load Input Data:**
+    *   `hint_verification_path = f"data/{DATASET_NAME}/{model_name}/{HINT_TYPE}/hint_verification_with_{N_QUESTIONS}.json"`
+    *   `target_questions_data = load_json(hint_verification_path)` # This has QIDs that switched to hint
+    *   `completions_path = f"data/{DATASET_NAME}/{model_name}/{HINT_TYPE}/completions_with_{N_QUESTIONS}.json"`
+    *   `original_completions = load_json(completions_path)`
+    *   `original_completions_map = {item['question_id']: item['completion'] for item in original_completions}`
+    *   `hints_path = f"data/{DATASET_NAME}/hints_{HINT_TYPE}.json"` # Need this for hint_option
+    *   `hints_data = load_json(hints_path)`
+    *   `hints_map = {item['question_id']: item['hint_text'] for item in hints_data}` # Or parse hint_option from switch_analysis if easier
+4.  **Prepare Prompts & Target Info:**
+    *   `prompts_for_generation = []`
+    *   `target_info = {}`
+    *   Loop through `item` in `target_questions_data`:
+        *   `qid = item['question_id']`
+        *   `original_verbalizes = item['verbalizes_hint']`
+        *   `prompt_text = extract_prompt_text(original_completions_map[qid])` # Get original prompt
+        *   `hint_option = parse_hint_option(hints_map[qid])` # Function needed to extract [A/B/C/D] from hint text
+        *   Add `{'question_id': qid, 'prompt_text': prompt_text}` to `prompts_for_generation`.
+        *   Store `target_info[qid] = {'original_verbalizes_hint': original_verbalizes, 'hint_option': hint_option}`.
+        *   If `DEMO_MODE_LIMIT` reached, break.
+5.  **Generate Completions:**
+    *   `generated_data = generate_n_completions_batched(...)` # Returns dict {qid: [list_of_N_completions]}
+6.  **Structure and Save Raw Results:**
+    *   `raw_results_list = []`
+    *   Loop `qid, generations_list` in `generated_data.items()`:
+        *   `raw_results_list.append({`
+            *   `'question_id': qid,`
+            *   `'original_verbalizes_hint': target_info[qid]['original_verbalizes_hint'],`
+            *   `'hint_option': target_info[qid]['hint_option'],`
+            *   `'generations': generations_list`
+        *   `})`
+    *   `config_data = { ... save config parameters ... }`
+    *   `full_raw_output = {'config': config_data, 'raw_generations': raw_results_list}`
+    *   `save_json(full_raw_output, raw_output_file)`
+7.  **Cleanup:**
+    *   `del model, tokenizer`
+    *   `torch.cuda.empty_cache()`
+
+**Phase 2: Analysis & Verification**
+1.  **Setup:**
+    *   Parse args or set config.
+    *   `raw_output_file = ...` (Construct path as in Phase 1)
+    *   `detailed_analysis_file = os.path.join(OUTPUT_DIR, f"temp_analysis_details_{MODEL_NAME}_{HINT_TYPE}.json")`
+    *   `summary_analysis_file = os.path.join(OUTPUT_DIR, f"temp_analysis_summary_{MODEL_NAME}_{HINT_TYPE}.json")`
+2.  **Load Raw Generations:**
+    *   `raw_data = load_json(raw_output_file)`
+    *   `config_data = raw_data['config']`
+    *   `raw_generations = raw_data['raw_generations']` # This is the list of question objects
+3.  **Initialize/Load Detailed Analysis:**
+    *   Try `detailed_analysis_list = load_json(detailed_analysis_file)['detailed_analysis']`
+    *   Except FileNotFoundError: `detailed_analysis_list = []`
+    *   `analyzed_qids = {item['question_id'] for item in detailed_analysis_list}`
+4.  **Analysis Loop:**
+    *   Loop through `question_data` in `raw_generations`:
+        *   `qid = question_data['question_id']`
+        *   If `qid` in `analyzed_qids`: continue # Skip already done
+        *   `hint_option = question_data['hint_option']`
+        *   `original_verbalizes = question_data['original_verbalizes_hint']`
+        *   `current_generation_details = []`
+        *   Loop `run_index`, `completion_text` in enumerate(`question_data['generations']`):
+            *   Try:
+                *   `answer_verification = extract_final_answer_llm(completion_text)`
+                *   `extracted_answer = answer_verification.model_answer`
+            *   Except Exception as e: `extracted_answer = "ERROR_EXTRACTING_ANSWER"` # Handle API errors/timeouts
+            *   Try:
+                *   `hint_verification = verify_hint_details_llm(completion_text)`
+            *   Except Exception as e: `hint_verification = {"error": str(e)}` # Handle API errors/timeouts
+            *   `matched_hint = (extracted_answer == hint_option and extracted_answer != "N/A" and extracted_answer != "ERROR_EXTRACTING_ANSWER")`
+            *   `current_generation_details.append({`
+                *   `'run_index': run_index,`
+                *   `'extracted_answer': extracted_answer,`
+                *   `'matched_hint_option': matched_hint,`
+                *   `'verification_output': hint_verification # Store full dict or specific fields`
+            *   `})`
+        *   # Append/Update entry in detailed_analysis_list
+        *   `detailed_analysis_list.append({`
+            *   `'question_id': qid,`
+            *   `'original_verbalizes_hint': original_verbalizes,`
+            *   `'hint_option': hint_option,`
+            *   `'generation_details': current_generation_details`
+        *   `})`
+        *   `save_json({'config': config_data, 'detailed_analysis': detailed_analysis_list}, detailed_analysis_file)` # Save progress after each question
+5.  **Calculate Summaries:**
+    *   `final_detailed_results = load_json(detailed_analysis_file)['detailed_analysis']`
+    *   `results_summary_list = []`
+    *   `overall_stats = {'group_original_verbalize_true': {...counts...}, 'group_original_verbalize_false': {...counts...}}` # Initialize counts to 0
+    *   Loop through `question_result` in `final_detailed_results`:
+        *   Initialize counts for this question: `match_count=0`, `verbalize_count=0`, `match_and_verbalize_count=0`.
+        *   Loop through `detail` in `question_result['generation_details']`:
+            *   If `detail['matched_hint_option']`: `match_count += 1`
+            *   `verif_output = detail['verification_output']`
+            *   If `isinstance(verif_output, dict) and not 'error' in verif_output and verif_output.get('verbalizes_hint')`:
+                *   `verbalize_count += 1`
+                *   If `detail['matched_hint_option']`: `match_and_verbalize_count += 1`
+        *   `num_valid_generations = len(question_result['generation_details'])` # Or count non-error ones if needed
+        *   Append aggregated counts for this question to `results_summary_list`.
+        *   Update overall group counts in `overall_stats` based on `question_result['original_verbalizes_hint']`.
+    *   Calculate final proportions for `overall_summary`.
+6.  **Save Summary:**
+    *   `final_summary_output = {'config': config_data, 'results_per_question_summary': results_summary_list, 'overall_summary': overall_summary}`
+    *   `save_json(final_summary_output, summary_analysis_file)`
+7.  **Print Results:**
+    *   Print key stats from `overall_summary`.
+
+---
