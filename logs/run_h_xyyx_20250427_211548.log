@@ -1,28 +1,0 @@
-nohup: ignoring input
-Working dir: /root/CoTFaithChecker
-CoTFaithChecker/e_confirm_xy_yx_5_nohup.py starting!
-[2025-04-27T21:15:49.882346] starting setup
-[2025-04-27T21:15:49.900956] loading model & tokenizer
-2025-04-27 21:15:51,546 - INFO - CUDA is available. Using GPU.
-2025-04-27 21:15:51,546 - INFO - Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
-/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:817: UserWarning: `return_dict_in_generate` is NOT set to `True`, but `output_hidden_states` is. When `return_dict_in_generate` is not `True`, `output_hidden_states` is ignored.
-  warnings.warn(
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.97it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.97it/s]
-2025-04-27 21:15:55,640 - INFO - Model and tokenizer loaded successfully.
-data_loader — INFO — Logger initialised; log file = /root/CoTFaithChecker/logs/data_loader_20250427_211555.log
-2025-04-27 21:15:55,642 - INFO - Logger initialised; log file = /root/CoTFaithChecker/logs/data_loader_20250427_211555.log
-[2025-04-27T21:15:55.643640] loading data
-data_loader — INFO — → kept 0 after cluster filter ['one']
-2025-04-27 21:15:55,643 - INFO - → kept 0 after cluster filter ['one']
-data_loader — INFO — Found 0 files in data/chainscope/questions_json/gt_NO_1
-2025-04-27 21:15:55,644 - INFO - Found 0 files in data/chainscope/questions_json/gt_NO_1
-data_loader — INFO — Total files collected: 0
-2025-04-27 21:15:55,644 - INFO - Total files collected: 0
-prompt_builder — INFO — Logger initialised; log file = /root/CoTFaithChecker/logs/prompt_builder_20250427_211555.log
-2025-04-27 21:15:55,644 - INFO - Logger initialised; log file = /root/CoTFaithChecker/logs/prompt_builder_20250427_211555.log
-prompt_builder — INFO — PromptBuilder initialised with style=instr-v0, mode=cot
-2025-04-27 21:15:55,644 - INFO - PromptBuilder initialised with style=instr-v0, mode=cot
-[2025-04-27T21:15:55.644828] running inference
-inference — INFO — Logger initialised; log file = /root/CoTFaithChecker/logs/inference_20250427_211555.log
-2025-04-27 21:15:55,645 - INFO - Logger initialised; log file = /root/CoTFaithChecker/logs/inference_20250427_211555.log
-[2025-04-27T21:15:55.645352] done!

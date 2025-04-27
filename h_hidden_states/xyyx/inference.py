@@ -35,6 +35,7 @@ def _generate(
     attn_layers: List[int],
     temperature: float,
     top_p: float,
+    n_samples: int,
 ) -> Dict:
     """
     Batched generation with nucleus sampling.
@@ -48,9 +49,9 @@ def _generate(
         "output_hidden_states":     False,
         "output_attentions":        save_attention,
         "return_dict_in_generate":  True,
-        "max_new_tokens":           1024 if max_new_tokens is None else max_new_tokens,
-        # NEW sampling controls ↓↓↓
-        "do_sample":   False,
+        "max_new_tokens":           2048 if max_new_tokens is None else max_new_tokens,
+        # sampling controls
+        "do_sample":   temperature != 1.0 or top_p < 1.0 or n_samples > 1,
         "temperature": temperature,
         "top_p":       top_p,
     }
@@ -89,6 +90,10 @@ def _generate(
             ]
             hidden.append(per_layer)
         extra["hidden"] = hidden
+
+        # ─── FREE the 33-layer tensor tuple that’s still on GPU ───
+        del prefix_out                # drop reference so Python can release it
+        torch.cuda.empty_cache()      # let CUDA allocator reclaim the memory
     # -------------------------------------------------------
 
     if save_attention:
@@ -118,6 +123,7 @@ def _process_single_file(
     n_runs: int,
     temperature: float,
     top_p: float,
+    n_samples: int,
 ) -> Path:
     """
     Run `n_runs` independent samplings per question.
@@ -148,6 +154,7 @@ def _process_single_file(
                 attn_layers,
                 temperature,
                 top_p,
+                n_samples,
             )
             completions.extend(gen_out["completions"])
 
@@ -201,6 +208,7 @@ def run_inference(
     n_runs: int,
     temperature: float,
     top_p: float,
+    n_samples: int,
 ):
     output_dir.mkdir(parents=True, exist_ok=True)
     buckets: defaultdict[tuple, list] = defaultdict(list)
@@ -224,6 +232,7 @@ def run_inference(
             n_runs,
             temperature,
             top_p,
+            n_samples,
         )
 
         # aggregation unchanged …

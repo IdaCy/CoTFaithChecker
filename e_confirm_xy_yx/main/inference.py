@@ -48,7 +48,7 @@ def _generate(
         "output_hidden_states":     save_hidden,
         "output_attentions":        save_attention,
         "return_dict_in_generate":  True,
-        "max_new_tokens":           1024 if max_new_tokens is None else max_new_tokens,
+        "max_new_tokens":           2048 if max_new_tokens is None else max_new_tokens,
         # NEW sampling controls ↓↓↓
         "do_sample":   True,
         "temperature": temperature,

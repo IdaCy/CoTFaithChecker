@@ -15,16 +15,26 @@ logger = init_logger(log_dir=Path.cwd() / "logs", script_name="data_loader")
 # ────────── cluster detection helpers ──────────
 CLUSTER_PATTERNS = {
     #"arts":   re.compile(r"^wm-(book)"),
+    "arts":   re.compile(r"^wm-(book|movie)"),
+    "ny":   re.compile(r"^wm-(nyt|nyc)"),
+    "human":   re.compile(r"^wm-(person|song)"),
+    "us":     re.compile(r"^wm-us-"),
+    "world":  re.compile(r"^wm-world-"),
+    "one":   re.compile(r"^wm-(only-an-example)"),
+}
+"""# ────────── cluster detection helpers ──────────
+CLUSTER_PATTERNS = {
+    #"arts":   re.compile(r"^wm-(book)"),
+    "arts":   re.compile(r"^wm-(book|movie|nyt|nyc|person|song)"),
+    "human":   re.compile(r"^wm-(nyc|person|song)"),
     "one":   re.compile(r"^wm-(only-an-example)"),
     "spec":   re.compile(r"^wm-(nyc|person|song|world-structure)"),
-    "arts":   re.compile(r"^wm-(book|movie|nyt|nyc|person|song)"),
     "thing":   re.compile(r"^wm-(book|movie|nyt)"),
-    "human":   re.compile(r"^wm-(nyc|person|song)"),
     "us":     re.compile(r"^wm-us-"),
     "world":  re.compile(r"^wm-world-"),
     "us-and-world":  re.compile(r"^wm-(us|world)-"),
     "us_spec":  re.compile(r"^wm-(wm-us-county-lat|wm-us-county-long|wm-us-county-popu|wm-us-natural-lat|wm-us-natural-long|wm-us-structure|wm-us-zip|wm-world-structure)-"),
-}
+}"""
 """
 not - already done:
 wm-us-city-dens_gt_YES_1_60629297_DeepSeek-R1-Distill-Llama-8B_completions

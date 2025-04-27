@@ -134,13 +134,19 @@ def generate_completion(
                 return_dict=True
             )
 
-        # find where the *first* “thought” token ends the prefix
-        thought_id = tokenizer.encode("</think>", add_special_tokens=False)[0]
-        prefix_end = [
-            ((seq == thought_id).nonzero(as_tuple=False)[0, 0].item() + 1)
-                if (seq == thought_id).any() else seq.size(0)
-            for seq in input_ids
-        ]
+        # ---- robust boundary search (multi-token safe) ---------------------------
+        boundary_ids = tokenizer.encode("</think>", add_special_tokens=False)  # e.g. 3 ids
+
+        def first_after(seq: torch.Tensor, pat: list[int]) -> int:
+            """index just after first occurrence of pat in seq; else len(seq)."""
+            pat = torch.tensor(pat, device=seq.device)
+            for j in range(seq.size(0) - pat.size(0) + 1):
+                if torch.equal(seq[j : j + pat.size(0)], pat):
+                    return j + pat.size(0)        # inclusive; use j to cut before tag
+            return seq.size(0)                    # not found → keep whole prompt
+
+        prefix_end = [first_after(seq, boundary_ids) for seq in input_ids]
+        # --------------------------------------------------------------------------
 
         layers = list(range(4, 33, 4))        # 4, 8, 12 … 32
         acts   = {}                            # will hold FP16 tensors
