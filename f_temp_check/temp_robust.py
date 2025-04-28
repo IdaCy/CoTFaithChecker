@@ -561,7 +561,7 @@ config = {
     "model_path": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",  # Example model path
     "dataset_name": "mmlu",
     "hint_type": "sycophancy",
-    "n_questions": 300,
+    "n_questions": 301,
     "output_dir": None, # Add back with None value
     "demo_mode_limit": None,  # Set to None to process all questions
     "num_generations": 10,
