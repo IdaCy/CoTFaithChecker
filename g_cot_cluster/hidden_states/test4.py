@@ -341,7 +341,7 @@ def layer_effort(reps, cats, layers):
 
 def contradiction_scores():
     """Stub – delegates to existing verifier script if available."""
-    SCRIPT = ROOT / "g_cot_cluster/hidden_states2/llm_verifier.py"
+    SCRIPT = ROOT / "g_cot_cluster/hidden_states/llm_verifier.py"
     if not SCRIPT.exists():
         LOGGER.warning("Verifier script not found – skipping contradiction")
         return None
