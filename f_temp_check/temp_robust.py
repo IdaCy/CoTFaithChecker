@@ -145,6 +145,7 @@ def generate_n_completions_batched(
             # Generate
             try:
                 with torch.no_grad():
+                    input_length = input_ids.shape[1] # Get input length BEFORE generation
                     outputs = model.generate(
                         input_ids,
                         attention_mask=attention_mask,
@@ -155,22 +156,17 @@ def generate_n_completions_batched(
                         # top_p=0.95 # Added common sampling parameter
                     )
 
-                # Decode full sequence
-                decoded_texts = tokenizer.batch_decode(outputs, skip_special_tokens=False) # Keep special tokens for now
-                
+                # Decode only the generated part and reconstruct
+                for j, qid in enumerate(batch_qids):
+                    original_prompt = batch_prompts[j]
+                    generated_ids = outputs[j, input_length:]
+                    generated_part = tokenizer.decode(generated_ids, skip_special_tokens=True)
 
-                # Store results
-                for qid, decoded_text in zip(batch_qids, decoded_texts):
-                    # Basic cleanup: remove padding token string if tokenizer adds it explicitly at the end
-                    # Note: skip_special_tokens=False often handles this, but some tokenizers might behave differently.
-                    cleaned_text = decoded_text.replace(tokenizer.pad_token, "").strip()
-                    #find the <|end_header_id|>\n and insert <think>\n after it
-                    try:
-                        cleaned_text = re.sub(r'assistant<|end_header_id|>\n', r'assistant<|end_header_id|>\n<think>\n', cleaned_text)
-                    except:
-                        cleaned_text = re.sub(r'<|im_start|>assistant\n"', r'<|im_start|>assistant\n"<think>\n', cleaned_text)
-                    # Further cleanup might be needed depending on model/tokenizer artifacts
-                    results_store[qid].append(cleaned_text)
+                    # Construct the final string with <think> token
+                    # Ensure original_prompt ends correctly (it should from extract_prompt_text)
+                    final_completion = original_prompt + "<think>\n" + generated_part.strip()
+
+                    results_store[qid].append(final_completion)
 
             except Exception as e:
                  logging.error(f"Error during generation for batch starting with QID {batch_qids[0]} in run {n+1}: {e}")
@@ -561,10 +557,10 @@ config = {
     "model_path": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",  # Example model path
     "dataset_name": "mmlu",
     "hint_type": "sycophancy",
-    "n_questions": 301,
+    "n_questions": 1001,
     "output_dir": None, # Add back with None value
-    "demo_mode_limit": None,  # Set to None to process all questions
-    "num_generations": 10,
+    "demo_mode_limit": 4,  # Set to None to process all questions
+    "num_generations": 3,
     "temperature": 0.7,
     "max_new_tokens": 2000,
     "batch_size": 15
