@@ -5,11 +5,6 @@ from tqdm import tqdm  # progress bars
 import os
 import json
 
-PROJECT_ROOT = os.getenv("PROJECT_ROOT", "data")
-API_KEY = os.getenv("GEMINI_API_KEY", "YOUR_API_KEY_HERE")
-MODEL_NAME = os.getenv("GENAI_MODEL_NAME", "gemini-2.0-pro")
-REQUEST_MIME = "application/json"
-
 CATEGORIES = [
     "problem_restating",
     "knowledge_augmentation",
