@@ -1,5 +1,0 @@
-nohup: ignoring input
-Traceback (most recent call last):
-  File "/root/CoTFaithChecker/h_hidden_states/hint/h_hidden_states.py", line 7, in <module>
-    PROJECT_ROOT = Path(__file__).resolve().parents[2]   # two levels up
-NameError: name 'Path' is not defined

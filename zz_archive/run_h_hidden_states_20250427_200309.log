@@ -1,6 +1,0 @@
-nohup: ignoring input
-Working dir: /root/CoTFaithChecker
-Traceback (most recent call last):
-  File "/root/CoTFaithChecker/h_hidden_states/hint/run_hint.py", line 20, in <module>
-    from h_hidden_states.hint.pipeline import generate_dataset_completions
-ModuleNotFoundError: No module named 'h_hidden_states'
