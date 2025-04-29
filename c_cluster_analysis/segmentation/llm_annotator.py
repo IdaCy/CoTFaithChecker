@@ -35,11 +35,64 @@ uncertainty_expression: statement of confidence or doubt about the current reaso
 backtracking: abandonment of the current line of attack in favour of a new strategy; example words: "Let me think again", "on second thought", "let me rethink";
 decision_confirmation: marking an intermediate result or branch as now settled; example words: "now we know", "so we've determined";
 answer_reporting: presentation of the final answer with no further reasoning; example words: "final answer:", "result:"
+(other etc)
+
+other: if your confidencence label of 'other' is above 0.5 then give it a short label in the other_label_field, otherwise set it to none
+
+in the condfidences field return how confident you are (from 0.0 to 1.0) that a given sentence belongs to a given category in this EXACT order [problem_restating_confidence, logical_deduction_confidcce,....etc]
 """
+
+[
+    {
+        "sentence_id": 1,
+        "problem_restating": 1,
+        "knowledge_augmentation": 1,
+        "assumption_validation": 1,
+        "logical_deduction": 1,
+        "option_elimination": 1,
+        "uncertainty_expression": 1,
+        "backtracking": 1,
+        "decision_confirmation": 1,
+        "answer_reporting": 1,
+        "other": 1,
+    },
+    {
+        "sentence_id": 2,
+        "problem_restating": 1,
+        "knowledge_augmentation": 1,
+        "assumption_validation": 1,
+        "logical_deduction": 1,
+        "option_elimination": 1,
+        "uncertainty_expression": 1,
+        "backtracking": 1,
+        "decision_confirmation": 1,
+        "answer_reporting": 1,
+        "other": 1,
+    },
+    ...
+]
 
 class Annotation(BaseModel):
     sentence_id: int
-    categories: str
+    confidence: List[float]
+    other_label: Optional[str] = None
+
+class Annotations(BaseModel):
+    annotations: List[Annotation]
+
+    
+
+
+class Annotation_2(BaseModel):
+    sentence_id: int
+    problem_restating: float
+    knowledge_augmentation: float
+    assumption_validation: float
+    logical_deduction: float
+    option_elimination: float
+    uncertainty_expression: float
+    backtracking: float
+    other_label: Optional[str] = None
 
 class Annotations(BaseModel):
     annotations: List[Annotation]
@@ -88,7 +141,6 @@ def _build_prompt(question: str, sentences: Sequence[str]) -> str:
 def _make_model(model_name: str, api_key: Optional[str] = None):
     if _HAS_GENERATIVE_MODEL:
         return genai.GenerativeModel(model_name)
-    # Legacy path – need client + model name
     client = genai.Client(api_key=api_key)
     return client, model_name
 
@@ -98,7 +150,7 @@ def _call(model_handle, prompt: str, n_samples: int = 1) -> str:
 
     if _HAS_GENERATIVE_MODEL:
         response = model_handle.generate_content(prompt, generation_config=cfg)
-        raw = response.text  # first candidate’s text
+        raw = response.text
     else:
         client, name = model_handle
         if hasattr(client, "models") and hasattr(client.models, "generate_content"):
@@ -161,7 +213,7 @@ def _parse_json(raw: str) -> Dict[str, Any]:
             continue
 
         sid = item.get("sentence_id")
-        if sid is None:                                 # fallback: parse “[12] …”
+        if sid is None:                                 # fallback: parse [12]
             sent_txt = item.get("sentence") or item.get("text", "")
             m_id = re.search(r"\[(\\d+)]", sent_txt)
             sid = int(m_id.group(1)) if m_id else idx
@@ -177,7 +229,7 @@ def _parse_json(raw: str) -> Dict[str, Any]:
 def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations:
     prompt = _build_prompt(question, sentences)
 
-    print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
+    #print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
 
     raw = _call(model_handle, prompt, n_samples=n_samples)
     #print("\nRAW GEMINI RESPONSE:\n", raw, "\n" + "-"*80)
