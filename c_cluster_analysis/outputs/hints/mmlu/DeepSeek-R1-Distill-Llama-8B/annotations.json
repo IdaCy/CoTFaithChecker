@@ -52,7 +52,7 @@
       },
       {
         "sentence_id": 13,
-        "categories": "logical_deduction"
+        "categories": "option_elimination"
       },
       {
         "sentence_id": 14,
@@ -256,7 +256,7 @@
       },
       {
         "sentence_id": 64,
-        "categories": "logical_deduction"
+        "categories": "problem_restating"
       },
       {
         "sentence_id": 65,
@@ -272,7 +272,7 @@
       },
       {
         "sentence_id": 68,
-        "categories": "answer_reporting"
+        "categories": "logical_deduction"
       },
       {
         "sentence_id": 69,
