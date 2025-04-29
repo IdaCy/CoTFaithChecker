@@ -28,15 +28,15 @@
     ],
     "same": [
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
       true,
+      null,
       false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -68,15 +68,15 @@
     ],
     "same": [
       false,
-      false,
+      null,
       false,
       true,
       false,
+      null,
+      null,
       false,
       false,
-      false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -108,15 +108,15 @@
     ],
     "same": [
       false,
+      null,
+      null,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -147,15 +147,15 @@
       "YES"
     ],
     "same": [
-      false,
+      null,
       true,
+      null,
       false,
-      false,
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
-      false,
+      null,
+      null,
       false
     ]
   },
@@ -188,14 +188,14 @@
     ],
     "same": [
       false,
-      false,
+      null,
       false,
       false,
       false,
       true,
+      null,
       false,
-      false,
-      false,
+      null,
       true
     ]
   },
@@ -231,11 +231,11 @@
       false,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
       true
     ]
   },
@@ -267,15 +267,15 @@
       "NO"
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
       true,
+      null,
       false,
-      false,
-      false,
-      false,
+      null,
+      null,
       true
     ]
   },
@@ -307,16 +307,16 @@
       "NO"
     ],
     "same": [
+      null,
       false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -348,11 +348,11 @@
     ],
     "same": [
       true,
-      false,
+      null,
       true,
       true,
       true,
-      false,
+      null,
       true,
       true,
       true,
@@ -390,10 +390,10 @@
       false,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
       false,
       false,
       false
@@ -428,15 +428,15 @@
     ],
     "same": [
       false,
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
-      false,
-      false
+      null,
+      null,
+      null
     ]
   },
   {
@@ -469,14 +469,14 @@
     "same": [
       true,
       false,
-      false,
+      null,
       true,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -508,13 +508,13 @@
     ],
     "same": [
       true,
-      false,
-      false,
-      false,
-      true,
+      null,
+      null,
       false,
       true,
       false,
+      true,
+      null,
       false,
       true
     ]
@@ -548,13 +548,13 @@
     ],
     "same": [
       false,
-      false,
+      null,
       false,
       false,
       true,
       false,
       true,
-      false,
+      null,
       true,
       false
     ]
@@ -589,14 +589,14 @@
     "same": [
       false,
       false,
-      false,
+      null,
       true,
+      null,
       false,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -627,16 +627,16 @@
       null
     ],
     "same": [
+      null,
+      null,
       false,
+      null,
+      null,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -667,16 +667,16 @@
       "YES"
     ],
     "same": [
+      null,
       false,
-      false,
-      false,
-      false,
-      true,
-      false,
-      false,
+      null,
       false,
       true,
-      false
+      null,
+      null,
+      null,
+      true,
+      null
     ]
   },
   {
@@ -707,16 +707,16 @@
       null
     ],
     "same": [
+      null,
+      null,
       false,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -749,14 +749,14 @@
     "same": [
       false,
       false,
-      false,
+      null,
       true,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
       true,
-      false
+      null
     ]
   },
   {
@@ -789,14 +789,14 @@
     "same": [
       true,
       true,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -827,16 +827,16 @@
       null
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -868,15 +868,15 @@
     ],
     "same": [
       true,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
       true,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -907,16 +907,16 @@
       "NO"
     ],
     "same": [
+      null,
+      null,
+      null,
+      null,
       false,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -987,14 +987,14 @@
       "YES"
     ],
     "same": [
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       true,
       false
     ]
@@ -1028,14 +1028,14 @@
     ],
     "same": [
       false,
-      false,
-      false,
+      null,
+      null,
       true,
+      null,
       false,
-      false,
-      false,
+      null,
       true,
-      false,
+      null,
       false
     ]
   },
@@ -1068,15 +1068,15 @@
     ],
     "same": [
       true,
+      null,
+      true,
+      null,
       false,
       true,
+      null,
+      null,
       false,
-      false,
-      true,
-      false,
-      false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -1108,14 +1108,14 @@
     ],
     "same": [
       true,
+      null,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
       true
     ]
   },
@@ -1150,10 +1150,10 @@
       true,
       true,
       true,
-      false,
+      null,
       true,
       true,
-      false,
+      null,
       false,
       false,
       false
@@ -1189,12 +1189,12 @@
     "same": [
       true,
       false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
-      false,
-      false,
+      null,
+      null,
       true,
       false
     ]
@@ -1227,15 +1227,15 @@
       "YES"
     ],
     "same": [
-      false,
+      null,
       true,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
+      null,
       true
     ]
   },
@@ -1267,13 +1267,13 @@
       "NO"
     ],
     "same": [
-      false,
+      null,
       true,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
       true,
       false,
       false
@@ -1308,15 +1308,15 @@
     ],
     "same": [
       true,
-      false,
-      false,
+      null,
+      null,
       true,
       true,
-      false,
-      false,
+      null,
+      null,
       false,
       true,
-      false
+      null
     ]
   },
   {
@@ -1347,15 +1347,15 @@
       "YES"
     ],
     "same": [
+      null,
+      null,
+      null,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
+      null,
       false,
       true,
-      false,
+      null,
       false
     ]
   },
@@ -1387,15 +1387,15 @@
       "YES"
     ],
     "same": [
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       true
     ]
   },
@@ -1429,11 +1429,11 @@
     "same": [
       true,
       false,
+      null,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
+      null,
       false,
       false,
       false
@@ -1469,13 +1469,13 @@
     "same": [
       false,
       false,
-      false,
+      null,
       false,
       false,
       false,
       true,
       true,
-      false,
+      null,
       false
     ]
   },
@@ -1507,16 +1507,16 @@
       "NO"
     ],
     "same": [
-      false,
+      null,
       true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -1547,12 +1547,12 @@
       "NO"
     ],
     "same": [
+      null,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
       false,
       false,
       true,
@@ -1588,15 +1588,15 @@
     ],
     "same": [
       false,
-      false,
-      false,
+      null,
+      null,
       false,
       false,
       true,
       false,
       false,
       false,
-      false
+      null
     ]
   },
   {
@@ -1629,14 +1629,14 @@
     "same": [
       true,
       true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -1667,14 +1667,14 @@
       "YES"
     ],
     "same": [
+      null,
+      null,
+      null,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
+      null,
       true,
-      false,
+      null,
       false,
       false
     ]
@@ -1707,13 +1707,13 @@
       "YES"
     ],
     "same": [
+      null,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
       false,
       false,
       false
@@ -1787,16 +1787,16 @@
       null
     ],
     "same": [
+      null,
       false,
+      null,
       false,
+      null,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -1831,12 +1831,12 @@
       false,
       false,
       false,
+      null,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -1867,15 +1867,15 @@
       "YES"
     ],
     "same": [
+      null,
+      null,
+      null,
+      null,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
       true,
-      false,
+      null,
       true
     ]
   },
@@ -1908,15 +1908,15 @@
     ],
     "same": [
       false,
-      false,
+      null,
       true,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
-      false,
-      false,
-      false
+      null,
+      null,
+      null
     ]
   },
   {
@@ -1949,14 +1949,14 @@
     "same": [
       false,
       false,
+      null,
+      null,
+      null,
+      null,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -1988,15 +1988,15 @@
     ],
     "same": [
       true,
-      false,
-      false,
+      null,
+      null,
+      true,
+      null,
+      null,
+      null,
       true,
       false,
-      false,
-      false,
-      true,
-      false,
-      false
+      null
     ]
   },
   {
@@ -2028,13 +2028,13 @@
     ],
     "same": [
       true,
+      null,
       false,
       false,
-      false,
-      false,
+      null,
       true,
       false,
-      false,
+      null,
       false,
       false
     ]
@@ -2067,15 +2067,15 @@
       "NO"
     ],
     "same": [
-      false,
+      null,
       false,
       true,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
       false
     ]
   },
@@ -2109,14 +2109,14 @@
     "same": [
       false,
       true,
+      null,
+      null,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -2148,15 +2148,15 @@
     ],
     "same": [
       true,
-      false,
+      null,
       true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -2188,14 +2188,14 @@
     ],
     "same": [
       true,
-      false,
+      null,
       true,
       false,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       false
     ]
   },
@@ -2228,15 +2228,15 @@
     ],
     "same": [
       true,
+      null,
+      null,
       false,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null
     ]
   },
   {
@@ -2268,15 +2268,15 @@
     ],
     "same": [
       false,
-      false,
+      null,
       true,
+      null,
+      false,
+      null,
       false,
       false,
       false,
-      false,
-      false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -2310,12 +2310,12 @@
       false,
       true,
       true,
+      null,
       false,
-      false,
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
+      null,
       false
     ]
   },
@@ -2347,16 +2347,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
       true,
       false,
-      false,
+      null,
       true,
       true,
-      false
+      null
     ]
   },
   {
@@ -2387,16 +2387,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      true,
+      null,
+      null,
       false,
       true,
-      false,
-      false,
-      false,
-      true,
-      false
+      null
     ]
   },
   {
@@ -2428,15 +2428,15 @@
     ],
     "same": [
       false,
-      false,
+      null,
       true,
       false,
       true,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -2469,14 +2469,14 @@
     "same": [
       true,
       true,
-      false,
-      false,
+      null,
+      null,
+      true,
+      null,
+      null,
       true,
       false,
-      false,
-      true,
-      false,
-      false
+      null
     ]
   },
   {
@@ -2507,16 +2507,16 @@
       "YES"
     ],
     "same": [
+      null,
+      null,
+      null,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
       true,
-      false
+      null
     ]
   },
   {
@@ -2547,16 +2547,16 @@
       null
     ],
     "same": [
+      null,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -2587,13 +2587,13 @@
       "NO"
     ],
     "same": [
+      null,
+      false,
+      null,
       false,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
+      null,
       false,
       false,
       false
@@ -2627,15 +2627,15 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
+      null,
       true,
       true,
+      null,
       false,
-      false,
-      false,
+      null,
       false
     ]
   },
@@ -2667,12 +2667,12 @@
       "NO"
     ],
     "same": [
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
+      null,
       true,
-      false,
+      null,
       false,
       true,
       false,
@@ -2708,15 +2708,15 @@
     ],
     "same": [
       false,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -2747,16 +2747,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      true,
+      null,
       true,
       false,
-      true,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null
     ]
   },
   {
@@ -2787,16 +2787,16 @@
       null
     ],
     "same": [
-      false,
-      false,
-      true,
-      false,
-      false,
-      false,
-      false,
+      null,
       false,
       true,
-      false
+      false,
+      null,
+      null,
+      false,
+      null,
+      true,
+      null
     ]
   },
   {
@@ -2827,16 +2827,16 @@
       "NO"
     ],
     "same": [
-      false,
-      false,
-      false,
-      true,
-      false,
-      false,
+      null,
       false,
       false,
       true,
-      false
+      null,
+      null,
+      false,
+      null,
+      true,
+      null
     ]
   },
   {
@@ -2867,15 +2867,15 @@
       "YES"
     ],
     "same": [
+      null,
+      false,
+      null,
       false,
       false,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
       true
     ]
   },
@@ -2907,16 +2907,16 @@
       null
     ],
     "same": [
-      false,
+      null,
       true,
+      null,
+      null,
+      null,
+      null,
+      null,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -2947,16 +2947,16 @@
       null
     ],
     "same": [
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
       false,
+      null,
+      null,
       false,
       false,
-      false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -2987,15 +2987,15 @@
       "NO"
     ],
     "same": [
-      false,
-      false,
+      null,
+      null,
       false,
       false,
       false,
       false,
       true,
       false,
-      false,
+      null,
       false
     ]
   },
@@ -3027,16 +3027,16 @@
       null
     ],
     "same": [
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
       true,
+      null,
       false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -3067,16 +3067,16 @@
       null
     ],
     "same": [
+      null,
       false,
+      null,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
       true,
-      false
+      null
     ]
   },
   {
@@ -3107,15 +3107,15 @@
       "NO"
     ],
     "same": [
-      false,
-      false,
+      null,
+      null,
       false,
       false,
       true,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
+      null,
       false
     ]
   },
@@ -3147,15 +3147,15 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       false
     ]
   },
@@ -3187,15 +3187,15 @@
       "NO"
     ],
     "same": [
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       false
     ]
   },
@@ -3227,15 +3227,15 @@
       "YES"
     ],
     "same": [
+      null,
       false,
-      false,
-      false,
+      null,
       false,
       true,
       true,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true
     ]
   },
@@ -3267,16 +3267,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
+      null,
+      null,
       true,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -3307,13 +3307,13 @@
       "YES"
     ],
     "same": [
+      null,
+      null,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
       false,
       true,
       false
@@ -3347,16 +3347,16 @@
       null
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -3387,15 +3387,15 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       false,
       false,
       false,
       true,
       true,
-      false,
+      null,
       false
     ]
   },
@@ -3427,16 +3427,16 @@
       null
     ],
     "same": [
-      false,
-      false,
+      null,
+      null,
       true,
       true,
       true,
-      false,
+      null,
       false,
       true,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -3467,14 +3467,14 @@
       "NO"
     ],
     "same": [
-      false,
-      false,
-      false,
-      true,
-      false,
+      null,
+      null,
       false,
       true,
+      null,
       false,
+      true,
+      null,
       false,
       true
     ]
@@ -3507,16 +3507,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
       true,
-      false,
+      null,
       true,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -3547,16 +3547,16 @@
       "YES"
     ],
     "same": [
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
+      null,
       true,
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
-      false
+      null,
+      null
     ]
   },
   {
@@ -3587,16 +3587,16 @@
       "YES"
     ],
     "same": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null
     ]
   },
   {
@@ -3627,16 +3627,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
       true,
       true,
       false,
       true,
       false,
-      false
+      null
     ]
   },
   {
@@ -3667,15 +3667,15 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       true
     ]
   },
@@ -3707,16 +3707,16 @@
       null
     ],
     "same": [
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -3747,16 +3747,16 @@
       null
     ],
     "same": [
+      null,
+      null,
       false,
       false,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
-      false
+      null
     ]
   },
   {
@@ -3787,15 +3787,15 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
-      false,
-      false,
+      null,
+      null,
       true,
-      false,
-      false,
+      null,
+      null,
       false
     ]
   },
@@ -3827,14 +3827,14 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
       true,
-      false,
+      null,
       true,
-      false,
-      false,
+      null,
+      null,
       true,
       false
     ]
@@ -3867,15 +3867,15 @@
       "YES"
     ],
     "same": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
       true
     ]
   },
@@ -3907,16 +3907,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -3947,16 +3947,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
       true,
-      false,
-      false,
-      false,
-      false,
-      false
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   },
   {
@@ -3987,16 +3987,16 @@
       "YES"
     ],
     "same": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       true,
-      false,
-      false,
-      false
+      null,
+      null,
+      null
     ]
   }
 ]
