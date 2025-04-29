@@ -24,7 +24,7 @@ def construct_prompt(data_entry: Dict) -> str:
     
     # If not running for none hint type, add hint text to the prompt
     if hint_text:
-        prompt = f"{hint_text}\n\n{prompt}"
+        prompt = f"{prompt}\n\n{hint_text}"
 
     return prompt
 
