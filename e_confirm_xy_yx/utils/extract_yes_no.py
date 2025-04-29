@@ -1,6 +1,10 @@
 """
 Usage:
     python extract_yes_no.py path/to/input_dir path/to/output_dir
+
+python e_confirm_xy_yx/utils/extract_yes_no.py \
+    e_confirm_xy_yx/outputs/lt_NO \
+    e_confirm_xy_yx/outputs/answers_lt_NO
 """
 
 import argparse
