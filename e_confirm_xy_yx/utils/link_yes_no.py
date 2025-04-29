@@ -2,44 +2,55 @@
 """
 link_yes_no.py
 
-Cross-link every pair of files in two directories that were produced by
-`convert_questions.py` – one directory whose questions were answered 'NO',
-the other 'YES'.
+Cross‑link every pair of files in two *input* directories that were produced by
+`convert_questions.py` – one directory whose questions were answered 'NO', the
+other 'YES'.
 
-For each matching question whose x/y values are reversed between a NO file
-and the corresponding YES file, add:
+The script now writes the linked copies to two *output* directories instead of
+modifying the originals.  One output directory will receive the updated NO
+files, the other the updated YES files.
+
+For each matching question whose x/y values are reversed between a NO file and
+its corresponding YES file, add:
 
     • yes_question_id   (to the NO question object)
     • no_question_id    (to the YES question object)
 
 Usage
 -----
-    python link_yes_no.py gt_NO_1 gt_YES_1
-    python link_yes_no.py gt_NO_1 gt_YES_1 -s _linked   # save as *.linked.json
+    python link_yes_no.py IN_NO_DIR IN_YES_DIR OUT_NO_DIR OUT_YES_DIR
+    python link_yes_no.py IN_NO_DIR IN_YES_DIR OUT_NO_DIR OUT_YES_DIR -s _linked
+
+With the ``-s / --suffix`` option each output file name will be suffixed before
+its extension (e.g. ``foo.json`` → ``foo_linked.json``).
 """
 
 import argparse
 import json
+import shutil
 import sys
 from pathlib import Path
 from typing import Dict, Tuple
 
 
 def load_json(path: Path) -> Dict:
+    """Read *path* and return the decoded JSON dict."""
     with path.open(encoding="utf-8") as f:
         return json.load(f)
 
 
 def save_json(data: Dict, path: Path) -> None:
+    """Write *data* as pretty‑printed JSON to *path*."""
     with path.open("w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
 def cross_link(no_path: Path, yes_path: Path) -> None:
+    """Add reciprocal IDs between the questions contained in *no_path* and *yes_path*."""
     no_data = load_json(no_path)
     yes_data = load_json(yes_path)
 
-    # Build lookup: (x, y) ➜ question dict
+    # Build lookup: (x, y) ➜ YES‑question dict
     yes_lookup: Dict[Tuple[str, str], Dict] = {
         (q["x_value"], q["y_value"]): q for q in yes_data["questions"]
     }
@@ -58,26 +69,46 @@ def cross_link(no_path: Path, yes_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Cross-link matching NO/YES question files."
+        description=(
+            "Cross‑link matching NO/YES question files and write the results "
+            "to separate output directories."
+        )
     )
-    parser.add_argument("no_dir", help="Directory with *_NO_* JSON files")
-    parser.add_argument("yes_dir", help="Directory with *_YES_* JSON files")
+    parser.add_argument("in_no_dir", help="Input directory with *_NO_* JSON files")
+    parser.add_argument("in_yes_dir", help="Input directory with *_YES_* JSON files")
+    parser.add_argument("out_no_dir", help="Output directory for linked NO files")
+    parser.add_argument("out_yes_dir", help="Output directory for linked YES files")
     parser.add_argument(
         "-s",
         "--suffix",
-        help="Write output to new files with this suffix instead of overwriting "
-        "(e.g. '_linked' → foo.json → foo_linked.json)",
+        help=(
+            "Suffix to append to every output filename before the extension "
+            "(e.g. '_linked' → foo.json → foo_linked.json)."
+        ),
         default="",
     )
     args = parser.parse_args()
 
-    no_dir = Path(args.no_dir)
-    yes_dir = Path(args.yes_dir)
-    if not (no_dir.is_dir() and yes_dir.is_dir()):
-        parser.error("Both arguments must be directories that exist.")
+    # ---- Validate directories ------------------------------------------------
+    in_no_dir = Path(args.in_no_dir)
+    in_yes_dir = Path(args.in_yes_dir)
+    out_no_dir = Path(args.out_no_dir)
+    out_yes_dir = Path(args.out_yes_dir)
 
-    no_files = sorted(no_dir.glob("*.json"))
-    yes_files = sorted(yes_dir.glob("*.json"))
+    for d, label in [
+        (in_no_dir, "input NO"),
+        (in_yes_dir, "input YES"),
+    ]:
+        if not d.is_dir():
+            parser.error(f"{label.capitalize()} directory '{d}' does not exist or is not a directory.")
+
+    # Create output dirs up‑front so later Path operations succeed
+    out_no_dir.mkdir(parents=True, exist_ok=True)
+    out_yes_dir.mkdir(parents=True, exist_ok=True)
+
+    # ---- Gather files --------------------------------------------------------
+    no_files = sorted(in_no_dir.glob("*.json"))
+    yes_files = sorted(in_yes_dir.glob("*.json"))
 
     if len(no_files) != len(yes_files):
         print(
@@ -87,16 +118,21 @@ def main() -> None:
             file=sys.stderr,
         )
 
+    # ---- Process pairs -------------------------------------------------------
     for no_f, yes_f in zip(no_files, yes_files):
-        # Optionally write to copies instead of overwriting
-        no_target = no_f if not args.suffix else no_f.with_stem(no_f.stem + args.suffix)
-        yes_target = (
-            yes_f if not args.suffix else yes_f.with_stem(yes_f.stem + args.suffix)
+        # Build target paths inside the *output* directories
+        no_target = out_no_dir / (
+            (no_f.stem + args.suffix) + no_f.suffix
         )
-        # If saving as copies, duplicate originals first
-        if args.suffix:
-            no_target.write_bytes(no_f.read_bytes())
-            yes_target.write_bytes(yes_f.read_bytes())
+        yes_target = out_yes_dir / (
+            (yes_f.stem + args.suffix) + yes_f.suffix
+        )
+
+        # Copy originals to the output location (overwriting if they already exist)
+        shutil.copyfile(no_f, no_target)
+        shutil.copyfile(yes_f, yes_target)
+
+        # Cross‑link the freshly copied files in place
         cross_link(no_target, yes_target)
 
 

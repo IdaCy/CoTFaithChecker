@@ -1,0 +1,1012 @@
+{
+  "params": {
+    "answer": "NO",
+    "comparison": "gt",
+    "max_comparisons": 1,
+    "prop_id": "wm-person-age",
+    "uuid": "91b16500"
+  },
+  "questions": [
+    {
+      "question_id": 1,
+      "qid": "00019779e22881816817190e331a9f08a13943d63080f50ffaa174c0b4e220f5",
+      "q_str": "about historical figures:\n\nDid 손복가 live longer than Abbo of Fleury?",
+      "q_str_open_ended": "Who lived longer: 손복가 or Abbo of Fleury?",
+      "x_name": "손복가",
+      "x_value": 58.0,
+      "y_name": "Abbo of Fleury",
+      "y_value": 59.0
+    },
+    {
+      "question_id": 2,
+      "qid": "0028ff8a0784f6bfbb9c16738e83a91c8142251426ff9484ee7ab76dff1d2faf",
+      "q_str": "about historical figures:\n\nDid علی بن جعد live longer than Abraham of Worms?",
+      "q_str_open_ended": "Who lived longer: علی بن جعد or Abraham of Worms?",
+      "x_name": "علی بن جعد",
+      "x_value": 95.0,
+      "y_name": "Abraham of Worms",
+      "y_value": 96.0
+    },
+    {
+      "question_id": 3,
+      "qid": "01e112192f7b6273f656729b3b16752522aa8ce12e05774857d8b27aae2b3b09",
+      "q_str": "about historical figures:\n\nDid 蕭遙昌 live longer than Agatha van Normandië?",
+      "q_str_open_ended": "Who lived longer: 蕭遙昌 or Agatha van Normandië?",
+      "x_name": "蕭遙昌",
+      "x_value": 23.0,
+      "y_name": "Agatha van Normandië",
+      "y_value": 24.0
+    },
+    {
+      "question_id": 4,
+      "qid": "0410d15140df54e1d4f32a62cf5dab89986fc0441acb1d5b776c2f23c88b5afd",
+      "q_str": "about historical figures:\n\nDid 高妙儀 live longer than Abd ar-Rahman IV?",
+      "q_str_open_ended": "Who lived longer: 高妙儀 or Abd ar-Rahman IV?",
+      "x_name": "高妙儀",
+      "x_value": 17.0,
+      "y_name": "Abd ar-Rahman IV",
+      "y_value": 18.0
+    },
+    {
+      "question_id": 5,
+      "qid": "04afd2b088d8a87275520a7ee1f14de2f41eb8ebb1ee168af934deeae60c8f00",
+      "q_str": "about historical figures:\n\nDid Thomas Hélye live longer than Nikolaus von Újezd?",
+      "q_str_open_ended": "Who lived longer: Thomas Hélye or Nikolaus von Újezd?",
+      "x_name": "Thomas Hélye",
+      "x_value": 107.0,
+      "y_name": "Nikolaus von Újezd",
+      "y_value": 108.0
+    },
+    {
+      "question_id": 6,
+      "qid": "05edeefe9eb0e61848cd3a62cb6d8193eddc97e6568dbaf68530806f5becc4ec",
+      "q_str": "about historical figures:\n\nDid 노조상 live longer than Abraham Leihammer?",
+      "q_str_open_ended": "Who lived longer: 노조상 or Abraham Leihammer?",
+      "x_name": "노조상",
+      "x_value": 28.0,
+      "y_name": "Abraham Leihammer",
+      "y_value": 29.0
+    },
+    {
+      "question_id": 7,
+      "qid": "0622ed98e2b2e84d1f89f80dc8e3dc83bb96f000ff7dfd17fb42c9c86d4b5891",
+      "q_str": "about historical figures:\n\nDid 黄君汉 live longer than Abadai khan?",
+      "q_str_open_ended": "Who lived longer: 黄君汉 or Abadai khan?",
+      "x_name": "黄君汉",
+      "x_value": 51.0,
+      "y_name": "Abadai khan",
+      "y_value": 52.0
+    },
+    {
+      "question_id": 8,
+      "qid": "08ddeda55c66e790158fdd5ef3be7befc03f79513966bdaf18084f4144c41991",
+      "q_str": "about historical figures:\n\nDid 陳振孫 live longer than A. P. J. Abdul Kalam?",
+      "q_str_open_ended": "Who lived longer: 陳振孫 or A. P. J. Abdul Kalam?",
+      "x_name": "陳振孫",
+      "x_value": 83.0,
+      "y_name": "A. P. J. Abdul Kalam",
+      "y_value": 84.0
+    },
+    {
+      "question_id": 9,
+      "qid": "0a0a4311fa458b2f1c01ac019b40c5a44f6d152695c8c266ff14ef33abeec8f5",
+      "q_str": "about historical figures:\n\nDid Úlfr Uggason live longer than Abraham Kidunaia?",
+      "q_str_open_ended": "Who lived longer: Úlfr Uggason or Abraham Kidunaia?",
+      "x_name": "Úlfr Uggason",
+      "x_value": 98.0,
+      "y_name": "Abraham Kidunaia",
+      "y_value": 99.0
+    },
+    {
+      "question_id": 10,
+      "qid": "0a9391eb377663fc121056c796289084e22b87c1debf108968333ddde12c73e0",
+      "q_str": "about historical figures:\n\nDid 馬琪 live longer than Abdashtart I?",
+      "q_str_open_ended": "Who lived longer: 馬琪 or Abdashtart I?",
+      "x_name": "馬琪",
+      "x_value": 47.0,
+      "y_name": "Abdashtart I",
+      "y_value": 48.0
+    },
+    {
+      "question_id": 11,
+      "qid": "0c8acf10b37ddc49dc805e123452c78b62f941e4154307272bf4452d235ef6ab",
+      "q_str": "about historical figures:\n\nDid 日下部老 live longer than Abd al-Rahman al-Sufi?",
+      "q_str_open_ended": "Who lived longer: 日下部老 or Abd al-Rahman al-Sufi?",
+      "x_name": "日下部老",
+      "x_value": 82.0,
+      "y_name": "Abd al-Rahman al-Sufi",
+      "y_value": 83.0
+    },
+    {
+      "question_id": 12,
+      "qid": "0d507ddeb41ddd45ce16a5cb48e6336ad97fcb895fe271794a71da765cf16159",
+      "q_str": "about historical figures:\n\nDid Nicolas de Bec-Crespin live longer than Юрий Ярополчич?",
+      "q_str_open_ended": "Who lived longer: Nicolas de Bec-Crespin or Юрий Ярополчич?",
+      "x_name": "Nicolas de Bec-Crespin",
+      "x_value": 117.0,
+      "y_name": "Юрий Ярополчич",
+      "y_value": 118.0
+    },
+    {
+      "question_id": 13,
+      "qid": "0e3f599c4ef98538a494ba019d08e35fb0e7d7b6860d2bd955fec043abd60d94",
+      "q_str": "about historical figures:\n\nDid 车路头 live longer than Aaron Bernstein?",
+      "q_str_open_ended": "Who lived longer: 车路头 or Aaron Bernstein?",
+      "x_name": "车路头",
+      "x_value": 71.0,
+      "y_name": "Aaron Bernstein",
+      "y_value": 72.0
+    },
+    {
+      "question_id": 14,
+      "qid": "142554415fcc6af9b4b69aa788bd844bc86833c93508568e5796c281f02c8923",
+      "q_str": "about historical figures:\n\nDid 陸山才 live longer than Abbas I of Safavids?",
+      "q_str_open_ended": "Who lived longer: 陸山才 or Abbas I of Safavids?",
+      "x_name": "陸山才",
+      "x_value": 57.0,
+      "y_name": "Abbas I of Safavids",
+      "y_value": 58.0
+    },
+    {
+      "question_id": 15,
+      "qid": "1658d968e9ef871820650f8e7cdea8d9719ff0b749eea25a56a1c850eb77a6d8",
+      "q_str": "about historical figures:\n\nDid 유개명 live longer than 'Imad al-Dawla?",
+      "q_str_open_ended": "Who lived longer: 유개명 or 'Imad al-Dawla?",
+      "x_name": "유개명",
+      "x_value": 56.0,
+      "y_name": "'Imad al-Dawla",
+      "y_value": 57.0
+    },
+    {
+      "question_id": 16,
+      "qid": "16c68789e34b5ca5f066536c2f7cf126191fd4fd634a42aaa55a41302442980b",
+      "q_str": "about historical figures:\n\nDid 裴仁基 live longer than Abdul Muttalib?",
+      "q_str_open_ended": "Who lived longer: 裴仁基 or Abdul Muttalib?",
+      "x_name": "裴仁基",
+      "x_value": 80.0,
+      "y_name": "Abdul Muttalib",
+      "y_value": 81.0
+    },
+    {
+      "question_id": 17,
+      "qid": "172c3822404abcbed8eb78243cfdd129669af3d9bb2be280c23b777c1d522f41",
+      "q_str": "about historical figures:\n\nDid 陈襄 live longer than Abd ar-Rahman II?",
+      "q_str_open_ended": "Who lived longer: 陈襄 or Abd ar-Rahman II?",
+      "x_name": "陈襄",
+      "x_value": 63.0,
+      "y_name": "Abd ar-Rahman II",
+      "y_value": 64.0
+    },
+    {
+      "question_id": 18,
+      "qid": "1b8864f8659402b9754f8a37ae4d8f0c8f78133b52d8d00870adaf7c073dd528",
+      "q_str": "about historical figures:\n\nDid 蕭方等 live longer than Aaliyah?",
+      "q_str_open_ended": "Who lived longer: 蕭方等 or Aaliyah?",
+      "x_name": "蕭方等",
+      "x_value": 21.0,
+      "y_name": "Aaliyah",
+      "y_value": 22.0
+    },
+    {
+      "question_id": 19,
+      "qid": "1e89f73b32b22d6abd8aa87d7723a5c8ab9231e5f78486dd4cb341825bf5bf36",
+      "q_str": "about historical figures:\n\nDid Wilhelm von Saillon live longer than Bartolomeo Raimondi?",
+      "q_str_open_ended": "Who lived longer: Wilhelm von Saillon or Bartolomeo Raimondi?",
+      "x_name": "Wilhelm von Saillon",
+      "x_value": 5.0,
+      "y_name": "Bartolomeo Raimondi",
+      "y_value": 6.0
+    },
+    {
+      "question_id": 20,
+      "qid": "1f64149b3919847987056bb1ff27a83d11eff7cfb4df96dfa9cd9c142b536a02",
+      "q_str": "about historical figures:\n\nDid 細川直俊 live longer than Adam Brendel?",
+      "q_str_open_ended": "Who lived longer: 細川直俊 or Adam Brendel?",
+      "x_name": "細川直俊",
+      "x_value": 18.0,
+      "y_name": "Adam Brendel",
+      "y_value": 19.0
+    },
+    {
+      "question_id": 21,
+      "qid": "203cd0753b7ff1d1f12e2417968fed033c4cc9f8a8fe991e7a62a97491cd2af8",
+      "q_str": "about historical figures:\n\nDid Yury of Smolensk live longer than Elizabeth le Despenser?",
+      "q_str_open_ended": "Who lived longer: Yury of Smolensk or Elizabeth le Despenser?",
+      "x_name": "Yury of Smolensk",
+      "x_value": 106.0,
+      "y_name": "Elizabeth le Despenser",
+      "y_value": 107.0
+    },
+    {
+      "question_id": 22,
+      "qid": "2434aec3b9cc5796b713884aa68dac2799b63e7c8720f167593a9e013c4f29bd",
+      "q_str": "about historical figures:\n\nDid 銭格非 live longer than Abraham Cowley?",
+      "q_str_open_ended": "Who lived longer: 銭格非 or Abraham Cowley?",
+      "x_name": "銭格非",
+      "x_value": 48.0,
+      "y_name": "Abraham Cowley",
+      "y_value": 49.0
+    },
+    {
+      "question_id": 23,
+      "qid": "2614f5bea355dc9ba74839acedc324d3ffa25b3d90629d3ca4a94a3f4e87b59a",
+      "q_str": "about historical figures:\n\nDid 高永昌 live longer than Abd al-Malik I?",
+      "q_str_open_ended": "Who lived longer: 高永昌 or Abd al-Malik I?",
+      "x_name": "高永昌",
+      "x_value": 16.0,
+      "y_name": "Abd al-Malik I",
+      "y_value": 17.0
+    },
+    {
+      "question_id": 24,
+      "qid": "26c18a0b064eaa47d407864048690c483efebe17ecc78b1ebba63b7f63303fa5",
+      "q_str": "about historical figures:\n\nDid Rupen of Montfort live longer than Nicholas III of Saint Omer?",
+      "q_str_open_ended": "Who lived longer: Rupen of Montfort or Nicholas III of Saint Omer?",
+      "x_name": "Rupen of Montfort",
+      "x_value": 112.0,
+      "y_name": "Nicholas III of Saint Omer",
+      "y_value": 113.0
+    },
+    {
+      "question_id": 25,
+      "qid": "26f2d11259d40b775b0c830763ad7c10c906a7cd5aa6df519b69ec87321f3822",
+      "q_str": "about historical figures:\n\nDid 蕭瓛 live longer than Abra of Poitiers?",
+      "q_str_open_ended": "Who lived longer: 蕭瓛 or Abra of Poitiers?",
+      "x_name": "蕭瓛",
+      "x_value": 20.0,
+      "y_name": "Abra of Poitiers",
+      "y_value": 21.0
+    },
+    {
+      "question_id": 26,
+      "qid": "284331f9b901f782af658ff03487a2949ac8c5d9eee46ab29f56a014b28f7f35",
+      "q_str": "about historical figures:\n\nDid 등방 live longer than Aba of Kashkar?",
+      "q_str_open_ended": "Who lived longer: 등방 or Aba of Kashkar?",
+      "x_name": "등방",
+      "x_value": 72.0,
+      "y_name": "Aba of Kashkar",
+      "y_value": 73.0
+    },
+    {
+      "question_id": 27,
+      "qid": "2aab04939af895ac6fe9400e6f4f8e5c1ce0513449690552a01aff3e7f659a1c",
+      "q_str": "about historical figures:\n\nDid 진부 live longer than Abdul Qayyum Khan?",
+      "q_str_open_ended": "Who lived longer: 진부 or Abdul Qayyum Khan?",
+      "x_name": "진부",
+      "x_value": 73.0,
+      "y_name": "Abdul Qayyum Khan",
+      "y_value": 74.0
+    },
+    {
+      "question_id": 28,
+      "qid": "2b1fdbbe8004a868f94005de6799c8af54f8a8d8476ad480525029354f91050f",
+      "q_str": "about historical figures:\n\nDid 高済 live longer than Abdallah ibn Ahmad II?",
+      "q_str_open_ended": "Who lived longer: 高済 or Abdallah ibn Ahmad II?",
+      "x_name": "高済",
+      "x_value": 19.0,
+      "y_name": "Abdallah ibn Ahmad II",
+      "y_value": 20.0
+    },
+    {
+      "question_id": 29,
+      "qid": "2bcc15023d86e268d955f9e0ac9137896790b418e5e5231ff4235a8704a119e5",
+      "q_str": "about historical figures:\n\nDid 馬枢 live longer than Aarne Valkama?",
+      "q_str_open_ended": "Who lived longer: 馬枢 or Aarne Valkama?",
+      "x_name": "馬枢",
+      "x_value": 59.0,
+      "y_name": "Aarne Valkama",
+      "y_value": 60.0
+    },
+    {
+      "question_id": 30,
+      "qid": "3336314e60fc0e601c1bed02bf69e34f937289e0f9a9069775b2a26a119793e7",
+      "q_str": "about historical figures:\n\nDid 鲜于世荣 live longer than Aaron ben Zerah?",
+      "q_str_open_ended": "Who lived longer: 鲜于世荣 or Aaron ben Zerah?",
+      "x_name": "鲜于世荣",
+      "x_value": 27.0,
+      "y_name": "Aaron ben Zerah",
+      "y_value": 28.0,
+      "yes_question_id": 84
+    },
+    {
+      "question_id": 31,
+      "qid": "335fcccd7fa5de602472ae02d61a9c6658a88d8eb2ec76af97cb650eea40ea16",
+      "q_str": "about historical figures:\n\nDid Patriarch Michael II of Antioch live longer than Empress Zhang?",
+      "q_str_open_ended": "Who lived longer: Patriarch Michael II of Antioch or Empress Zhang?",
+      "x_name": "Patriarch Michael II of Antioch",
+      "x_value": 111.0,
+      "y_name": "Empress Zhang",
+      "y_value": 112.0
+    },
+    {
+      "question_id": 32,
+      "qid": "34e2061c0b9f4ca5fb52b6b9809037ff426b89d0e63c92d0c980ead465789704",
+      "q_str": "about historical figures:\n\nDid 陸子隆 live longer than Abdullah ibn al-Mu'tazz?",
+      "q_str_open_ended": "Who lived longer: 陸子隆 or Abdullah ibn al-Mu'tazz?",
+      "x_name": "陸子隆",
+      "x_value": 46.0,
+      "y_name": "Abdullah ibn al-Mu'tazz",
+      "y_value": 47.0
+    },
+    {
+      "question_id": 33,
+      "qid": "3819ad756d18fede0f4ad532841438a3aca4524b79320485e84d279c50d8276d",
+      "q_str": "about historical figures:\n\nDid 高紹徳 live longer than Aaron of Auxerre?",
+      "q_str_open_ended": "Who lived longer: 高紹徳 or Aaron of Auxerre?",
+      "x_name": "高紹徳",
+      "x_value": 12.0,
+      "y_name": "Aaron of Auxerre",
+      "y_value": 13.0
+    },
+    {
+      "question_id": 34,
+      "qid": "3b91c989e9d00205477ff2b82cc39c34a3affc487ae7ed07fb181a8e99a8a65a",
+      "q_str": "about historical figures:\n\nDid 손건 live longer than Abel Servien?",
+      "q_str_open_ended": "Who lived longer: 손건 or Abel Servien?",
+      "x_name": "손건",
+      "x_value": 65.0,
+      "y_name": "Abel Servien",
+      "y_value": 66.0
+    },
+    {
+      "question_id": 35,
+      "qid": "3d2625dd007b8db904f5e728afbdbdba3916241ee10ef5929fd2a65e0be3c283",
+      "q_str": "about historical figures:\n\nDid 杨侃 live longer than Abbas Mirza?",
+      "q_str_open_ended": "Who lived longer: 杨侃 or Abbas Mirza?",
+      "x_name": "杨侃",
+      "x_value": 43.0,
+      "y_name": "Abbas Mirza",
+      "y_value": 44.0
+    },
+    {
+      "question_id": 36,
+      "qid": "4179401df289cb8f7480b3c9b945428e6c3fd29ee3a07f470d328e6f4cb4d040",
+      "q_str": "about historical figures:\n\nDid 高湝 live longer than Abu Bakr al-Kalabadhi?",
+      "q_str_open_ended": "Who lived longer: 高湝 or Abu Bakr al-Kalabadhi?",
+      "x_name": "高湝",
+      "x_value": 39.0,
+      "y_name": "Abu Bakr al-Kalabadhi",
+      "y_value": 40.0
+    },
+    {
+      "question_id": 37,
+      "qid": "4423621c57cb426912cbfaa135e4b390def86dcf557ff883c4e4851732eea582",
+      "q_str": "about historical figures:\n\nDid William II, Count of Chalon live longer than Anastasia of Sirmium?",
+      "q_str_open_ended": "Who lived longer: William II, Count of Chalon or Anastasia of Sirmium?",
+      "x_name": "William II, Count of Chalon",
+      "x_value": 3.0,
+      "y_name": "Anastasia of Sirmium",
+      "y_value": 4.0
+    },
+    {
+      "question_id": 38,
+      "qid": "446d8e4c71420b27e9c83634222136e02f626d78556bcfc6e3af8d9e8c4f92fc",
+      "q_str": "about historical figures:\n\nDid 설세웅 live longer than Aaron of Lincoln?",
+      "q_str_open_ended": "Who lived longer: 설세웅 or Aaron of Lincoln?",
+      "x_name": "설세웅",
+      "x_value": 62.0,
+      "y_name": "Aaron of Lincoln",
+      "y_value": 63.0
+    },
+    {
+      "question_id": 39,
+      "qid": "452ef766fba53788d643effa84fb0e4c238017a164b58828226f02a30caad109",
+      "q_str": "about historical figures:\n\nDid John II, Count of Ziegenhain live longer than Dymitr Aba?",
+      "q_str_open_ended": "Who lived longer: John II, Count of Ziegenhain or Dymitr Aba?",
+      "x_name": "John II, Count of Ziegenhain",
+      "x_value": 100.0,
+      "y_name": "Dymitr Aba",
+      "y_value": 101.0
+    },
+    {
+      "question_id": 40,
+      "qid": "460f07f32aec1979fa1977f0807404c7180139d828efd89e8b5c9469e6d9cb61",
+      "q_str": "about historical figures:\n\nDid 钱元璙 live longer than Abba Mari?",
+      "q_str_open_ended": "Who lived longer: 钱元璙 or Abba Mari?",
+      "x_name": "钱元璙",
+      "x_value": 55.0,
+      "y_name": "Abba Mari",
+      "y_value": 56.0
+    },
+    {
+      "question_id": 41,
+      "qid": "47de90201b1e2a6271e543fc5eb0be6494b89708cf61e11d3c0145986cd502dc",
+      "q_str": "about historical figures:\n\nDid 馮子琮 live longer than Abe no Sadato?",
+      "q_str_open_ended": "Who lived longer: 馮子琮 or Abe no Sadato?",
+      "x_name": "馮子琮",
+      "x_value": 42.0,
+      "y_name": "Abe no Sadato",
+      "y_value": 43.0
+    },
+    {
+      "question_id": 42,
+      "qid": "48bf214e49861623c18fd91e63d294ec1d29876d7e40d487addd8cdb4082f2e6",
+      "q_str": "about historical figures:\n\nDid Gandolfo Sacchi live longer than Patriarch Michael II of Antioch?",
+      "q_str_open_ended": "Who lived longer: Gandolfo Sacchi or Patriarch Michael II of Antioch?",
+      "x_name": "Gandolfo Sacchi",
+      "x_value": 110.0,
+      "y_name": "Patriarch Michael II of Antioch",
+      "y_value": 111.0
+    },
+    {
+      "question_id": 43,
+      "qid": "4ad8136d8699ea8f54b9aaaee2d9d9a9b0801689b6cb77b361b0ccbcaa29b6a5",
+      "q_str": "about historical figures:\n\nDid 马全节 live longer than A. L. Abdul Majeed?",
+      "q_str_open_ended": "Who lived longer: 马全节 or A. L. Abdul Majeed?",
+      "x_name": "马全节",
+      "x_value": 54.0,
+      "y_name": "A. L. Abdul Majeed",
+      "y_value": 55.0
+    },
+    {
+      "question_id": 44,
+      "qid": "4d1c99b6bbe1ce14ee33d889c0fae959449d6819020bb67ba276d87705e6e2ff",
+      "q_str": "about historical figures:\n\nDid 野本基員 live longer than Abdullah ibn Salam?",
+      "q_str_open_ended": "Who lived longer: 野本基員 or Abdullah ibn Salam?",
+      "x_name": "野本基員",
+      "x_value": 92.0,
+      "y_name": "Abdullah ibn Salam",
+      "y_value": 93.0
+    },
+    {
+      "question_id": 45,
+      "qid": "4d36a4e2b877c7089f68acaa2c3cbd0f8374fd53bb0b6978df3d3cc085fe6fd6",
+      "q_str": "about historical figures:\n\nDid 郭丹 live longer than Abba Arika?",
+      "q_str_open_ended": "Who lived longer: 郭丹 or Abba Arika?",
+      "x_name": "郭丹",
+      "x_value": 86.0,
+      "y_name": "Abba Arika",
+      "y_value": 87.0
+    },
+    {
+      "question_id": 46,
+      "qid": "525d251cce79e97a4a1eb84ff0576bf92cc994163e7206d72ed3af8c3aaaa36a",
+      "q_str": "about historical figures:\n\nDid Nestor of Thessaloniki live longer than Louis I de Rohan-Guéméné?",
+      "q_str_open_ended": "Who lived longer: Nestor of Thessaloniki or Louis I de Rohan-Guéméné?",
+      "x_name": "Nestor of Thessaloniki",
+      "x_value": 6.0,
+      "y_name": "Louis I de Rohan-Guéméné",
+      "y_value": 7.0
+    },
+    {
+      "question_id": 47,
+      "qid": "55920d51759d7325d83465c74a6120594da82ae06457255f52907b570342ed34",
+      "q_str": "about historical figures:\n\nDid 周惠达 live longer than Abu Tahir Isfahani?",
+      "q_str_open_ended": "Who lived longer: 周惠达 or Abu Tahir Isfahani?",
+      "x_name": "周惠达",
+      "x_value": 94.0,
+      "y_name": "Abu Tahir Isfahani",
+      "y_value": 95.0
+    },
+    {
+      "question_id": 48,
+      "qid": "56cad46dc65ac8e5cc6670f314fd44f03642ea501297a22f4d2c5fe8551d537c",
+      "q_str": "about historical figures:\n\nDid 郑穆 live longer than Abraham Millauer?",
+      "q_str_open_ended": "Who lived longer: 郑穆 or Abraham Millauer?",
+      "x_name": "郑穆",
+      "x_value": 74.0,
+      "y_name": "Abraham Millauer",
+      "y_value": 75.0
+    },
+    {
+      "question_id": 49,
+      "qid": "5a6ed8c726e5ccd3c136edcd8dd76d97d35183f880b7722344493ec17f7766cf",
+      "q_str": "about historical figures:\n\nDid 酈瓊 live longer than Aaron ben Gershon abu al-Rabi?",
+      "q_str_open_ended": "Who lived longer: 酈瓊 or Aaron ben Gershon abu al-Rabi?",
+      "x_name": "酈瓊",
+      "x_value": 49.0,
+      "y_name": "Aaron ben Gershon abu al-Rabi",
+      "y_value": 50.0
+    },
+    {
+      "question_id": 50,
+      "qid": "61cbe2a14918fe1d5a44dbb4f4665e8eb437ce53fcae1f7c29f39ae743b3c56d",
+      "q_str": "about historical figures:\n\nDid 馮佐周 live longer than Abdullah Shah Ghazi?",
+      "q_str_open_ended": "Who lived longer: 馮佐周 or Abdullah Shah Ghazi?",
+      "x_name": "馮佐周",
+      "x_value": 50.0,
+      "y_name": "Abdullah Shah Ghazi",
+      "y_value": 51.0
+    },
+    {
+      "question_id": 51,
+      "qid": "64030577e5863a53593115edb18ae11d7bce30418808546681709da0ec550d98",
+      "q_str": "about historical figures:\n\nDid 蕭討古 live longer than Abbas II of Persia?",
+      "q_str_open_ended": "Who lived longer: 蕭討古 or Abbas II of Persia?",
+      "x_name": "蕭討古",
+      "x_value": 32.0,
+      "y_name": "Abbas II of Persia",
+      "y_value": 33.0
+    },
+    {
+      "question_id": 52,
+      "qid": "679ef2914c15ee118be6dce779101b798989c2ade33942b5312db4999f735425",
+      "q_str": "about historical figures:\n\nDid 황패 live longer than Abraham Miguel Cardoso?",
+      "q_str_open_ended": "Who lived longer: 황패 or Abraham Miguel Cardoso?",
+      "x_name": "황패",
+      "x_value": 79.0,
+      "y_name": "Abraham Miguel Cardoso",
+      "y_value": 80.0
+    },
+    {
+      "question_id": 53,
+      "qid": "6f8df4e18ed67e7b5e6eaf76f079e62c580e90b5e0e07e09fa06c1e6867e8516",
+      "q_str": "about historical figures:\n\nDid Otto III. von Rietberg live longer than Adalbero von Augsburg?",
+      "q_str_open_ended": "Who lived longer: Otto III. von Rietberg or Adalbero von Augsburg?",
+      "x_name": "Otto III. von Rietberg",
+      "x_value": 8.0,
+      "y_name": "Adalbero von Augsburg",
+      "y_value": 9.0
+    },
+    {
+      "question_id": 54,
+      "qid": "74d718e83083e9bd92da1b625a5326071474b8f5910a4ca5b91e1ef428fb6723",
+      "q_str": "about historical figures:\n\nDid 高賓 (北朝) live longer than Abdul Rahim Khan-I-Khana?",
+      "q_str_open_ended": "Who lived longer: 高賓 (北朝) or Abdul Rahim Khan-I-Khana?",
+      "x_name": "高賓 (北朝)",
+      "x_value": 69.0,
+      "y_name": "Abdul Rahim Khan-I-Khana",
+      "y_value": 70.0
+    },
+    {
+      "question_id": 55,
+      "qid": "76a1c805c2a74a6d06d2bd5226ed65bb151b7098b4ae66ecffe252781357bf38",
+      "q_str": "about historical figures:\n\nDid 高季式 live longer than Abraham Memmius?",
+      "q_str_open_ended": "Who lived longer: 高季式 or Abraham Memmius?",
+      "x_name": "高季式",
+      "x_value": 37.0,
+      "y_name": "Abraham Memmius",
+      "y_value": 38.0
+    },
+    {
+      "question_id": 56,
+      "qid": "79e2f03120af5d71d38a4643035a016e493db7f00194f961ac94eff31e804863",
+      "q_str": "about historical figures:\n\nDid Theodora Komnene Angelina live longer than Grimoald III of Benevento?",
+      "q_str_open_ended": "Who lived longer: Theodora Komnene Angelina or Grimoald III of Benevento?",
+      "x_name": "Theodora Komnene Angelina",
+      "x_value": 104.0,
+      "y_name": "Grimoald III of Benevento",
+      "y_value": 105.0
+    },
+    {
+      "question_id": 57,
+      "qid": "7e4737c78d90f66f0c2a443e5c90d9a721e2ca12e96b12dbc3da74f0b3dcab46",
+      "q_str": "about historical figures:\n\nDid 高琳 live longer than A. Tóth Sándor?",
+      "q_str_open_ended": "Who lived longer: 高琳 or A. Tóth Sándor?",
+      "x_name": "高琳",
+      "x_value": 75.0,
+      "y_name": "A. Tóth Sándor",
+      "y_value": 76.0
+    },
+    {
+      "question_id": 58,
+      "qid": "854efaf1d67d75d9b401b434aae65fb3e8343563e6ee15dc238488f6e4e38147",
+      "q_str": "about historical figures:\n\nDid 左雄 live longer than Abe no Hirafu?",
+      "q_str_open_ended": "Who lived longer: 左雄 or Abe no Hirafu?",
+      "x_name": "左雄",
+      "x_value": 88.0,
+      "y_name": "Abe no Hirafu",
+      "y_value": 89.0
+    },
+    {
+      "question_id": 59,
+      "qid": "85c4005dcf7458cbad413a58d5030b434aa737eb24eb8765f57ee6ded0084e02",
+      "q_str": "about historical figures:\n\nDid 石川垣守 live longer than Aaron the Tyrant?",
+      "q_str_open_ended": "Who lived longer: 石川垣守 or Aaron the Tyrant?",
+      "x_name": "石川垣守",
+      "x_value": 36.0,
+      "y_name": "Aaron the Tyrant",
+      "y_value": 37.0
+    },
+    {
+      "question_id": 60,
+      "qid": "85fdd0e01fab9982543db3bd7725485ee608f991a50d050a38cabcf4caba0e78",
+      "q_str": "about historical figures:\n\nDid 謝偃 live longer than Adolf Strauss?",
+      "q_str_open_ended": "Who lived longer: 謝偃 or Adolf Strauss?",
+      "x_name": "謝偃",
+      "x_value": 93.0,
+      "y_name": "Adolf Strauss",
+      "y_value": 94.0
+    },
+    {
+      "question_id": 61,
+      "qid": "872eecca2ccc18edd09087761023595ffde523717cc8a38211cddae602f6c093",
+      "q_str": "about historical figures:\n\nDid 小野野主 live longer than Abdul Qadir Gilani?",
+      "q_str_open_ended": "Who lived longer: 小野野主 or Abdul Qadir Gilani?",
+      "x_name": "小野野主",
+      "x_value": 87.0,
+      "y_name": "Abdul Qadir Gilani",
+      "y_value": 88.0
+    },
+    {
+      "question_id": 62,
+      "qid": "89538aab3f7305efd4300d7e6e3d8a84b9bdaf96125f95b5bf5f757059d5dadd",
+      "q_str": "about historical figures:\n\nDid William II de Cantilupe live longer than Friedrich Gren?",
+      "q_str_open_ended": "Who lived longer: William II de Cantilupe or Friedrich Gren?",
+      "x_name": "William II de Cantilupe",
+      "x_value": 101.0,
+      "y_name": "Friedrich Gren",
+      "y_value": 102.0
+    },
+    {
+      "question_id": 63,
+      "qid": "8a7ca2643794f40e5b36d6ca7a9bb47230e4132f5ae8134c03b8d7a8a88288ad",
+      "q_str": "about historical figures:\n\nDid Jean Flandrin live longer than Empress Zhou?",
+      "q_str_open_ended": "Who lived longer: Jean Flandrin or Empress Zhou?",
+      "x_name": "Jean Flandrin",
+      "x_value": 114.0,
+      "y_name": "Empress Zhou",
+      "y_value": 117.0
+    },
+    {
+      "question_id": 64,
+      "qid": "8b207c8d08c0e5cdb3f1f35fae89c88e8b546fc91eac52e7d8830209b075c7be",
+      "q_str": "about historical figures:\n\nDid 高保寧 live longer than Abdallah ibn Buluggin?",
+      "q_str_open_ended": "Who lived longer: 高保寧 or Abdallah ibn Buluggin?",
+      "x_name": "高保寧",
+      "x_value": 33.0,
+      "y_name": "Abdallah ibn Buluggin",
+      "y_value": 34.0
+    },
+    {
+      "question_id": 65,
+      "qid": "92a287f7d0e9d3276c62d107e9ad331d832073e674e4e9f11b3b2a7fe33349e8",
+      "q_str": "about historical figures:\n\nDid 柴諴 live longer than Geldemar Carpenel, Lord of Haifa?",
+      "q_str_open_ended": "Who lived longer: 柴諴 or Geldemar Carpenel, Lord of Haifa?",
+      "x_name": "柴諴",
+      "x_value": 0.0,
+      "y_name": "Geldemar Carpenel, Lord of Haifa",
+      "y_value": 1.0
+    },
+    {
+      "question_id": 66,
+      "qid": "9c1741f87ead26ffcd71375c551f3795d9601877cafda3ce191e9d8eea984a09",
+      "q_str": "about historical figures:\n\nDid Richard Turstin live longer than Jean Flandrin?",
+      "q_str_open_ended": "Who lived longer: Richard Turstin or Jean Flandrin?",
+      "x_name": "Richard Turstin",
+      "x_value": 113.0,
+      "y_name": "Jean Flandrin",
+      "y_value": 114.0
+    },
+    {
+      "question_id": 67,
+      "qid": "a086d0addd0c6c6e25e11d0c9a205267a2510fc09a56654a98711ca30b398c77",
+      "q_str": "about historical figures:\n\nDid 皮豹子 live longer than Abraham I of Aghbatank?",
+      "q_str_open_ended": "Who lived longer: 皮豹子 or Abraham I of Aghbatank?",
+      "x_name": "皮豹子",
+      "x_value": 14.0,
+      "y_name": "Abraham I of Aghbatank",
+      "y_value": 15.0
+    },
+    {
+      "question_id": 68,
+      "qid": "a4a3ec7570cfd448cbc8c2a69be2cbd9e8d53115e3b4ef63c92ffc97e517d318",
+      "q_str": "about historical figures:\n\nDid 宋娘 live longer than Adam of Łowicz?",
+      "q_str_open_ended": "Who lived longer: 宋娘 or Adam of Łowicz?",
+      "x_name": "宋娘",
+      "x_value": 13.0,
+      "y_name": "Adam of Łowicz",
+      "y_value": 14.0
+    },
+    {
+      "question_id": 69,
+      "qid": "a5a9da9669c46065b4d67a7462e152081dfbb1bfa2d647326e5bd7e188261cfe",
+      "q_str": "about historical figures:\n\nDid 윤사로 live longer than Aaron Burr, Sr.?",
+      "q_str_open_ended": "Who lived longer: 윤사로 or Aaron Burr, Sr.?",
+      "x_name": "윤사로",
+      "x_value": 40.0,
+      "y_name": "Aaron Burr, Sr.",
+      "y_value": 41.0
+    },
+    {
+      "question_id": 70,
+      "qid": "a71773d33ee64b3159c93470c64777cb61a9ff7e0e11558e2299fab7a1cb8b1c",
+      "q_str": "about historical figures:\n\nDid 昭聖皇后 (金顯宗) live longer than Abdullah ibn Abdul-Muttalib?",
+      "q_str_open_ended": "Who lived longer: 昭聖皇后 (金顯宗) or Abdullah ibn Abdul-Muttalib?",
+      "x_name": "昭聖皇后 (金顯宗)",
+      "x_value": 24.0,
+      "y_name": "Abdullah ibn Abdul-Muttalib",
+      "y_value": 25.0
+    },
+    {
+      "question_id": 71,
+      "qid": "b108a18f44b7f35d7388b9c66417a58b1b319f21f29850ba426795ebc1a7771c",
+      "q_str": "about historical figures:\n\nDid Werner Schaler live longer than Heinrich von Besmedin?",
+      "q_str_open_ended": "Who lived longer: Werner Schaler or Heinrich von Besmedin?",
+      "x_name": "Werner Schaler",
+      "x_value": 9.0,
+      "y_name": "Heinrich von Besmedin",
+      "y_value": 10.0
+    },
+    {
+      "question_id": 72,
+      "qid": "b11f52fec4e677107c7a56b8e724ab1f97143dee2b88aa0e33fbea09af196bee",
+      "q_str": "about historical figures:\n\nDid عبد الملک میمونی live longer than Al-Ismāʿīlī, Aḥmad ibn Ibrāhīm?",
+      "q_str_open_ended": "Who lived longer: عبد الملک میمونی or Al-Ismāʿīlī, Aḥmad ibn Ibrāhīm?",
+      "x_name": "عبد الملک میمونی",
+      "x_value": 90.0,
+      "y_name": "Al-Ismāʿīlī, Aḥmad ibn Ibrāhīm",
+      "y_value": 91.0
+    },
+    {
+      "question_id": 73,
+      "qid": "b94db52d830a07d206827d7ecdce5aefc69d4c6edbb94864b9c0172fb131e3fd",
+      "q_str": "about historical figures:\n\nDid 趙芬 live longer than Abraham Duquesne?",
+      "q_str_open_ended": "Who lived longer: 趙芬 or Abraham Duquesne?",
+      "x_name": "趙芬",
+      "x_value": 77.0,
+      "y_name": "Abraham Duquesne",
+      "y_value": 78.0
+    },
+    {
+      "question_id": 74,
+      "qid": "ba29e5d03684ef13db467a881d42d7ad0b3fc85bd74c2ccad2ddd28b1a8bca37",
+      "q_str": "about historical figures:\n\nDid Grimoald III of Benevento live longer than John IV, Count of Oldenburg?",
+      "q_str_open_ended": "Who lived longer: Grimoald III of Benevento or John IV, Count of Oldenburg?",
+      "x_name": "Grimoald III of Benevento",
+      "x_value": 105.0,
+      "y_name": "John IV, Count of Oldenburg",
+      "y_value": 106.0
+    },
+    {
+      "question_id": 75,
+      "qid": "ba4dae44fb793731b2a81c26960bf04939d6682799fb277d393b7e82026815d6",
+      "q_str": "about historical figures:\n\nDid Princess Yangguo live longer than Blanche de France?",
+      "q_str_open_ended": "Who lived longer: Princess Yangguo or Blanche de France?",
+      "x_name": "Princess Yangguo",
+      "x_value": 2.0,
+      "y_name": "Blanche de France",
+      "y_value": 3.0
+    },
+    {
+      "question_id": 76,
+      "qid": "bc16114de22ecf781dfe05dcf5f215fa3be2abda5b7f7fd282cc83d69f491913",
+      "q_str": "about historical figures:\n\nDid 郑俨 live longer than Aaron Halle-Wolfssohn?",
+      "q_str_open_ended": "Who lived longer: 郑俨 or Aaron Halle-Wolfssohn?",
+      "x_name": "郑俨",
+      "x_value": 78.0,
+      "y_name": "Aaron Halle-Wolfssohn",
+      "y_value": 79.0
+    },
+    {
+      "question_id": 77,
+      "qid": "bc62d32dd8d98c03705f5f94b07858f642233fc24457d7ab189e29d1328eb59e",
+      "q_str": "about historical figures:\n\nDid 裴粲 live longer than Abdullah Khan II?",
+      "q_str_open_ended": "Who lived longer: 裴粲 or Abdullah Khan II?",
+      "x_name": "裴粲",
+      "x_value": 64.0,
+      "y_name": "Abdullah Khan II",
+      "y_value": 65.0
+    },
+    {
+      "question_id": 78,
+      "qid": "bdd67335b7cd219f70aed1e69c884fe014cd503261bb1df92f20a73bae9bfaf8",
+      "q_str": "about historical figures:\n\nDid 구양흡 live longer than Adolf Holl?",
+      "q_str_open_ended": "Who lived longer: 구양흡 or Adolf Holl?",
+      "x_name": "구양흡",
+      "x_value": 89.0,
+      "y_name": "Adolf Holl",
+      "y_value": 90.0
+    },
+    {
+      "question_id": 79,
+      "qid": "bf31fb87abe127a5965c0d37bd1fda2f289cc8fc6d2ccd1a7c3c3b1c8b5f1b04",
+      "q_str": "about historical figures:\n\nDid Étienne d'Arrabagne live longer than Abdul Momin of Brunei?",
+      "q_str_open_ended": "Who lived longer: Étienne d'Arrabagne or Abdul Momin of Brunei?",
+      "x_name": "Étienne d'Arrabagne",
+      "x_value": 96.0,
+      "y_name": "Abdul Momin of Brunei",
+      "y_value": 97.0
+    },
+    {
+      "question_id": 80,
+      "qid": "c293750073718aeefb8084053e91dd3b67b1862ee031dcea0d799d542d43b6e2",
+      "q_str": "about historical figures:\n\nDid Zita of Bourbon-Parma live longer than Al-Tabarani?",
+      "q_str_open_ended": "Who lived longer: Zita of Bourbon-Parma or Al-Tabarani?",
+      "x_name": "Zita of Bourbon-Parma",
+      "x_value": 97.0,
+      "y_name": "Al-Tabarani",
+      "y_value": 98.0
+    },
+    {
+      "question_id": 81,
+      "qid": "c2fc047e2edb100ad326c4a72f1a6c330a030a98081b03189795f6eb9aae7411",
+      "q_str": "about historical figures:\n\nDid 劉敬宣 live longer than Aatto Pietikäinen?",
+      "q_str_open_ended": "Who lived longer: 劉敬宣 or Aatto Pietikäinen?",
+      "x_name": "劉敬宣",
+      "x_value": 44.0,
+      "y_name": "Aatto Pietikäinen",
+      "y_value": 45.0
+    },
+    {
+      "question_id": 82,
+      "qid": "c4555d57006b74e69d70c8c4c8cbc85b75fd864d142d7ebe167f5327b9a6b5e0",
+      "q_str": "about historical figures:\n\nDid 심흠 live longer than Aage Jonsen?",
+      "q_str_open_ended": "Who lived longer: 심흠 or Aage Jonsen?",
+      "x_name": "심흠",
+      "x_value": 66.0,
+      "y_name": "Aage Jonsen",
+      "y_value": 67.0
+    },
+    {
+      "question_id": 83,
+      "qid": "c62f613ecc12e6142e319a3b42ec6bcd0600344e245d3efa02b92b6ab5392dc3",
+      "q_str": "about historical figures:\n\nDid 謝瞻 live longer than Abraham of Clermont?",
+      "q_str_open_ended": "Who lived longer: 謝瞻 or Abraham of Clermont?",
+      "x_name": "謝瞻",
+      "x_value": 34.0,
+      "y_name": "Abraham of Clermont",
+      "y_value": 35.0
+    },
+    {
+      "question_id": 84,
+      "qid": "cc73b063bc90dba031ae6b3dcfe11bf10a88153e4eeaece90deb4e0747d85257",
+      "q_str": "about historical figures:\n\nDid 高潤 live longer than Abdullah ibn Ja'far?",
+      "q_str_open_ended": "Who lived longer: 高潤 or Abdullah ibn Ja'far?",
+      "x_name": "高潤",
+      "x_value": 29.0,
+      "y_name": "Abdullah ibn Ja'far",
+      "y_value": 30.0
+    },
+    {
+      "question_id": 85,
+      "qid": "cddb06cd2f805ec922d223c59dab5fa4043942086c29860ab266dbbc429ab893",
+      "q_str": "about historical figures:\n\nDid Xiao Daxin live longer than Abdullah ibn Hasan?",
+      "q_str_open_ended": "Who lived longer: Xiao Daxin or Abdullah ibn Hasan?",
+      "x_name": "Xiao Daxin",
+      "x_value": 10.0,
+      "y_name": "Abdullah ibn Hasan",
+      "y_value": 11.0
+    },
+    {
+      "question_id": 86,
+      "qid": "ce88ff7508768342b6e2c3d612c5a422a5e4bec41c308419ac7be806c19993b9",
+      "q_str": "about historical figures:\n\nDid 薛怀吉 live longer than Abdul Aziz ibn Harith ibn Asad Yemeni Tamimi?",
+      "q_str_open_ended": "Who lived longer: 薛怀吉 or Abdul Aziz ibn Harith ibn Asad Yemeni Tamimi?",
+      "x_name": "薛怀吉",
+      "x_value": 52.0,
+      "y_name": "Abdul Aziz ibn Harith ibn Asad Yemeni Tamimi",
+      "y_value": 53.0
+    },
+    {
+      "question_id": 87,
+      "qid": "d1aef06a26dd27689f0b54263ca5bd4233231a64b2298cc0c0d0f9dab45ac3bf",
+      "q_str": "about historical figures:\n\nDid 陳建 live longer than Abraomas Kulvietis?",
+      "q_str_open_ended": "Who lived longer: 陳建 or Abraomas Kulvietis?",
+      "x_name": "陳建",
+      "x_value": 35.0,
+      "y_name": "Abraomas Kulvietis",
+      "y_value": 36.0
+    },
+    {
+      "question_id": 88,
+      "qid": "d59568f8b1a1aec815ab3c9176daefad2ab7209d85b2cec59a3a496dcb616ee5",
+      "q_str": "about historical figures:\n\nDid William III de Cantilupe live longer than Antonio Arcioni?",
+      "q_str_open_ended": "Who lived longer: William III de Cantilupe or Antonio Arcioni?",
+      "x_name": "William III de Cantilupe",
+      "x_value": 4.0,
+      "y_name": "Antonio Arcioni",
+      "y_value": 5.0
+    },
+    {
+      "question_id": 89,
+      "qid": "d6abcc737a42ae5eb3dba5110c75175d4ff146127e348123c29c132ccd503d9c",
+      "q_str": "about historical figures:\n\nDid 蕭遙光 live longer than Adam Elsheimer?",
+      "q_str_open_ended": "Who lived longer: 蕭遙光 or Adam Elsheimer?",
+      "x_name": "蕭遙光",
+      "x_value": 31.0,
+      "y_name": "Adam Elsheimer",
+      "y_value": 32.0
+    },
+    {
+      "question_id": 90,
+      "qid": "d977563e2acad34fc0eff9739577ff6ee5fec00fa694875002451d6b0aafd1eb",
+      "q_str": "about historical figures:\n\nDid 完顏忒鄰 live longer than Egino of Verona?",
+      "q_str_open_ended": "Who lived longer: 完顏忒鄰 or Egino of Verona?",
+      "x_name": "完顏忒鄰",
+      "x_value": 1.0,
+      "y_name": "Egino of Verona",
+      "y_value": 2.0
+    },
+    {
+      "question_id": 91,
+      "qid": "db17bd08591993d9f3fdcc49aa2930ed11786b1c715e3fbcdaa743d7bd30bc1a",
+      "q_str": "about historical figures:\n\nDid 鄭灼 live longer than Abd Allah ibn al-Zubayr?",
+      "q_str_open_ended": "Who lived longer: 鄭灼 or Abd Allah ibn al-Zubayr?",
+      "x_name": "鄭灼",
+      "x_value": 67.0,
+      "y_name": "Abd Allah ibn al-Zubayr",
+      "y_value": 68.0
+    },
+    {
+      "question_id": 92,
+      "qid": "dfa5a58c62e79531a2d4a92d1259240897878356e7cdc5332a1200524ba0837d",
+      "q_str": "about historical figures:\n\nDid 完顏玠 live longer than Adalbert of Pomerania?",
+      "q_str_open_ended": "Who lived longer: 完顏玠 or Adalbert of Pomerania?",
+      "x_name": "完顏玠",
+      "x_value": 11.0,
+      "y_name": "Adalbert of Pomerania",
+      "y_value": 12.0
+    },
+    {
+      "question_id": 93,
+      "qid": "e573c30f6bfc29718dc42bcc7dcada2177c13e5fa324feeb31f876babaeeaf47",
+      "q_str": "about historical figures:\n\nDid 郭伋 live longer than Aaron Hart?",
+      "q_str_open_ended": "Who lived longer: 郭伋 or Aaron Hart?",
+      "x_name": "郭伋",
+      "x_value": 85.0,
+      "y_name": "Aaron Hart",
+      "y_value": 86.0
+    },
+    {
+      "question_id": 94,
+      "qid": "e5ff56a64de7a248e68a2b4b71021087b96766066eb81ae4548dce4ff24dc82b",
+      "q_str": "about historical figures:\n\nDid 陳少遊 live longer than Abdullah al-Mahdi Billah?",
+      "q_str_open_ended": "Who lived longer: 陳少遊 or Abdullah al-Mahdi Billah?",
+      "x_name": "陳少遊",
+      "x_value": 60.0,
+      "y_name": "Abdullah al-Mahdi Billah",
+      "y_value": 61.0
+    },
+    {
+      "question_id": 95,
+      "qid": "e75463fceddb1637e792f40fdcf208a7c5c84c1d28cf91d5f835c83525d57ec8",
+      "q_str": "about historical figures:\n\nDid 송금강 live longer than Abraham Ortelius?",
+      "q_str_open_ended": "Who lived longer: 송금강 or Abraham Ortelius?",
+      "x_name": "송금강",
+      "x_value": 70.0,
+      "y_name": "Abraham Ortelius",
+      "y_value": 71.0
+    },
+    {
+      "question_id": 96,
+      "qid": "efb88d648ae8b0e05930f98088244fe7a50097d2577548bac325ad85818503c3",
+      "q_str": "about historical figures:\n\nDid 耶律蒲古 live longer than Abd al-Qadir Maraghi?",
+      "q_str_open_ended": "Who lived longer: 耶律蒲古 or Abd al-Qadir Maraghi?",
+      "x_name": "耶律蒲古",
+      "x_value": 81.0,
+      "y_name": "Abd al-Qadir Maraghi",
+      "y_value": 82.0
+    },
+    {
+      "question_id": 97,
+      "qid": "f9885c640c6ac21b8074364df7a07e78fbdb5679f6179773050b42d79da4171b",
+      "q_str": "about historical figures:\n\nDid 彭乐 live longer than Abel, Lord of Langeland?",
+      "q_str_open_ended": "Who lived longer: 彭乐 or Abel, Lord of Langeland?",
+      "x_name": "彭乐",
+      "x_value": 26.0,
+      "y_name": "Abel, Lord of Langeland",
+      "y_value": 27.0
+    },
+    {
+      "question_id": 98,
+      "qid": "fc41ddf28c1702bbce7a8983afb2cb8b5efdea6f3dacb81f202e57541028fb8e",
+      "q_str": "about historical figures:\n\nDid 黄貴妃 live longer than Ada of Holland?",
+      "q_str_open_ended": "Who lived longer: 黄貴妃 or Ada of Holland?",
+      "x_name": "黄貴妃",
+      "x_value": 41.0,
+      "y_name": "Ada of Holland",
+      "y_value": 42.0
+    },
+    {
+      "question_id": 99,
+      "qid": "fdd2bcac7c4e9dd1d2a5836bfd37590cce8be9a7524d6832796df5aaeb02639c",
+      "q_str": "about historical figures:\n\nDid Friedrich Gren live longer than Theodora Komnene Angelina?",
+      "q_str_open_ended": "Who lived longer: Friedrich Gren or Theodora Komnene Angelina?",
+      "x_name": "Friedrich Gren",
+      "x_value": 102.0,
+      "y_name": "Theodora Komnene Angelina",
+      "y_value": 104.0
+    },
+    {
+      "question_id": 100,
+      "qid": "fde036821a6016d89f6113bed344969bbe548f0e2b43e9743b06724a70b3829b",
+      "q_str": "about historical figures:\n\nDid 高渙 live longer than Abbad ibn Bishr?",
+      "q_str_open_ended": "Who lived longer: 高渙 or Abbad ibn Bishr?",
+      "x_name": "高渙",
+      "x_value": 25.0,
+      "y_name": "Abbad ibn Bishr",
+      "y_value": 26.0
+    }
+  ]
+}
