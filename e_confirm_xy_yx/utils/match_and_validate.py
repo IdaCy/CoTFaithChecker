@@ -46,14 +46,22 @@ from typing import Dict, List
 import sys
 import traceback
 
+# ──────────────────────────────────────────────────────────────────────────────
+# debug helper
+# ──────────────────────────────────────────────────────────────────────────────
+def make_debug(enabled: bool):
+    def _dbg(*args, **kwargs):
+        if enabled:
+            print(*args, **kwargs)
+    return _dbg
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Helpers
 # ──────────────────────────────────────────────────────────────────────────────
-
-def load_answers_per_question(file_path: Path) -> Dict[int, Dict[int, str]]:
+def load_answers_per_question(file_path: Path, dbg) -> Dict[int, Dict[int, str]]:
     """Returns {question_id: {run: answer}}"""
-    print(f"  ↳ loading answers from {file_path}")
+    dbg(f"  ↳ loading answers from {file_path}")
     with file_path.open("r", encoding="utf-8") as fp:
         data = json.load(fp)
 
@@ -63,7 +71,7 @@ def load_answers_per_question(file_path: Path) -> Dict[int, Dict[int, str]]:
         run = entry["run"]
         ans = entry["answer"].upper()
         by_q.setdefault(qid, {})[run] = ans
-    print(f"    • loaded {len(by_q)} unique question_ids")
+    dbg(f"    • loaded {len(by_q)} unique question_ids")
     return by_q
 
 
@@ -72,68 +80,82 @@ def answers_vector(qruns: Dict[int, str], runs: int = 10) -> List[str]:
     return [qruns.get(r) for r in range(runs)]
 
 
-def bool_vector(a: List[str], b: List[str]) -> List[bool]:
-    """True where both answers are equal & valid; False otherwise."""
-    return [
-        (aa == bb and aa in ("YES", "NO"))
-        if aa is not None and bb is not None
-        else False
-        for aa, bb in zip(a, b)
-    ]
+def bool_vector(a: List[str], b: List[str]) -> List[bool | None]:
+    """
+    • True   → both answers are 'YES' or both 'NO'
+    • False  → one 'YES' and the other 'NO'
+    • None   → either answer is missing (None)
+    """
+    result: List[bool | None] = []
+    for aa, bb in zip(a, b):
+        if aa is None or bb is None:
+            result.append(None)              # propagate missing values
+        else:
+            result.append(aa == bb)          # True if identical, else False
+    return result
 
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Main per-file routine
 # ──────────────────────────────────────────────────────────────────────────────
-
 def process_pair(
     fileA: Path,
     fileB: Path,
     matcher_dir: Path,
     key: str,
     dest_dir: Path,
+    dbg,
 ):
-    print(f"\n=== Processing pair ===")
-    print(f"A: {fileA}")
-    print(f"B: {fileB}")
+    dbg(f"\n=== Processing pair ===\nA: {fileA}\nB: {fileB}")
     base = fileA.name
 
-    # part before "_{key}_"
+    # split filename at _{key}_
     if f"_{key}_" not in base:
         raise RuntimeError(f'Key "{key}" not in filename "{base}"')
     prefix = base.split(f"_{key}_", 1)[0]
-    print(f"  prefix determined from filename: '{prefix}'")
+    dbg(f"  prefix determined from filename: '{prefix}'")
 
-    # locate matcher file
+    # matcher file
     matcher_files = sorted(matcher_dir.glob(f"*{prefix}*.json"))
-    print(f"  matcher search pattern '*{prefix}*.json' "
-          f"found {len(matcher_files)} file(s)")
+    dbg(f"  matcher search '*{prefix}*.json' found {len(matcher_files)} file(s)")
     if not matcher_files:
         raise RuntimeError(f"No matcher file containing '{prefix}' in {matcher_dir}")
     matcher_path = matcher_files[0]
-    print(f"  matcher file chosen: {matcher_path}")
+    dbg(f"  matcher file chosen: {matcher_path}")
 
-    # load answer data
-    a_by_q = load_answers_per_question(fileA)
-    b_by_q = load_answers_per_question(fileB)
+    # load answers
+    a_by_q = load_answers_per_question(fileA, dbg)
+    b_by_q = load_answers_per_question(fileB, dbg)
 
-    # load matcher mapping
-    print(f"  ↳ loading matcher mapping …")
+    # load mapping
+    dbg("  ↳ loading matcher mapping …")
     with matcher_path.open("r", encoding="utf-8") as fp:
         matcher = json.load(fp)
     mapping = {q["question_id"]: q["yes_question_id"] for q in matcher["questions"]}
-    print(f"    • matcher contains {len(mapping)} mapped question_ids")
+    dbg(f"    • matcher contains {len(mapping)} mapped question_ids")
 
-    # build output records
+    # build output
     out = []
-    for idx, (qid, runs_dict) in enumerate(a_by_q.items(), 1):
+    for qid, runs_dict in a_by_q.items():
         if qid not in mapping:
-            print(f"    – skipping question_id {qid} (not in matcher)")
+            dbg(f"    – skipping question_id {qid} (not in matcher)")
             continue
 
         yes_qid = mapping[qid]
         a_vec = answers_vector(runs_dict)
         b_vec = answers_vector(b_by_q.get(yes_qid, {}))
+
+        # ── diagnostics for missing runs ────────────────────────────────────
+        missing_a = [idx for idx, val in enumerate(a_vec) if val is None]
+        missing_b = [idx for idx, val in enumerate(b_vec) if val is None]
+        if missing_a or missing_b:
+            print(
+                f"[MISSING] {base}  "
+                f"qid {qid} → {yes_qid}  "
+                f"A missing runs {missing_a or '—'}  "
+                f"B missing runs {missing_b or '—'}"
+            )
+
         same_vec = bool_vector(a_vec, b_vec)
 
         out.append(
@@ -146,23 +168,19 @@ def process_pair(
             }
         )
 
-        if idx % 100 == 0:
-            print(f"      processed {idx} questions so far …")
-
-    print(f"  total questions emitted: {len(out)}")
+    dbg(f"  total questions emitted: {len(out)}")
 
     # write result
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest_path = dest_dir / base
     with dest_path.open("w", encoding="utf-8") as fp:
         json.dump(out, fp, indent=2)
-    print(f"✔ wrote {dest_path}")
+    dbg(f"✔ wrote {dest_path}")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
 # CLI entrypoint
 # ──────────────────────────────────────────────────────────────────────────────
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dirA", required=True, type=Path)
@@ -170,38 +188,38 @@ def main():
     parser.add_argument("--matcher", required=True, type=Path)
     parser.add_argument("--key", required=True, help="key_string used in filenames")
     parser.add_argument("--out", required=True, type=Path, help="directoryNew")
+    parser.add_argument("--debug", action="store_true",
+                        help="show verbose progress logs")
     args = parser.parse_args()
 
-    print(f"dirA     : {args.dirA}")
-    print(f"dirB     : {args.dirB}")
-    print(f"matcher  : {args.matcher}")
-    print(f"key      : {args.key}")
-    print(f"dest dir : {args.out}")
+    dbg = make_debug(args.debug)
+
+    dbg(f"dirA: {args.dirA}\ndirB: {args.dirB}\nmatcher: {args.matcher}")
+    dbg(f"key: {args.key}\ndest dir: {args.out}")
 
     filesA = sorted(args.dirA.glob("*.json"))
     filesB = sorted(args.dirB.glob("*.json"))
 
-    print(f"\nFound {len(filesA)} *.json files in dirA "
-          f"and {len(filesB)} in dirB")
+    dbg(f"\nFound {len(filesA)} *.json files in dirA "
+        f"and {len(filesB)} in dirB")
 
     if len(filesA) != len(filesB):
         raise RuntimeError("dirA and dirB do not contain the same number of files")
 
     for i, (fa, fb) in enumerate(zip(filesA, filesB), 1):
-        print(f"\n──────────────────────────────────────────────────────────")
-        print(f"Pair {i}/{len(filesA)}")
+        dbg(f"\n──────────────────────────────────────────────────────────\nPair {i}/{len(filesA)}")
         try:
             process_pair(
-                fa,
-                fb,
+                fa, fb,
                 matcher_dir=args.matcher,
                 key=args.key,
                 dest_dir=args.out,
+                dbg=dbg,
             )
-        except Exception as exc:
+        except Exception:
             print("\nERROR during this pair – traceback follows")
             traceback.print_exc()
-            sys.exit(1)   # stop immediately so you know where it failed
+            sys.exit(1)
 
 
 if __name__ == "__main__":
