@@ -1,0 +1,1012 @@
+{
+  "params": {
+    "answer": "YES",
+    "comparison": "gt",
+    "max_comparisons": 1,
+    "prop_id": "wm-person-birth",
+    "uuid": "658fde65"
+  },
+  "questions": [
+    {
+      "question_id": 1,
+      "qid": "037ed4331a98aa0721cde40f52fa4f079937f93df20e6de8bca3fca7092bff2d",
+      "q_str": "about historical figures:\n\nWas Abraham von Humbert born later than Étienne La Font de Saint-Yenne?",
+      "q_str_open_ended": "Who was born later: Abraham von Humbert or Étienne La Font de Saint-Yenne?",
+      "x_name": "Abraham von Humbert",
+      "x_value": 1689.0,
+      "y_name": "Étienne La Font de Saint-Yenne",
+      "y_value": 1688.0
+    },
+    {
+      "question_id": 2,
+      "qid": "05467307054bd74a442b1256dcb81889c398298c75334ea7aaa135f4e00dd487",
+      "q_str": "about historical figures:\n\nWas Adeliza Basset born later than Tang Situi?",
+      "q_str_open_ended": "Who was born later: Adeliza Basset or Tang Situi?",
+      "x_name": "Adeliza Basset",
+      "x_value": 1118.0,
+      "y_name": "Tang Situi",
+      "y_value": 1117.0
+    },
+    {
+      "question_id": 3,
+      "qid": "05d946b450503cd7656276ae8473a0ed44991aad63682f2df7726cadc1c6ee3d",
+      "q_str": "about historical figures:\n\nWas Cao Zhi born later than Xin Xianying?",
+      "q_str_open_ended": "Who was born later: Cao Zhi or Xin Xianying?",
+      "x_name": "Cao Zhi",
+      "x_value": 192.0,
+      "y_name": "Xin Xianying",
+      "y_value": 191.0
+    },
+    {
+      "question_id": 4,
+      "qid": "0ec28bab3d3fb32aa2e44d0810ea057dd2054166a86537ae56af881862e2079c",
+      "q_str": "about historical figures:\n\nWas Arnulf, Duke of Bavaria born later than 小野好古?",
+      "q_str_open_ended": "Who was born later: Arnulf, Duke of Bavaria or 小野好古?",
+      "x_name": "Arnulf, Duke of Bavaria",
+      "x_value": 885.0,
+      "y_name": "小野好古",
+      "y_value": 884.0
+    },
+    {
+      "question_id": 5,
+      "qid": "1451f8a997e940a6a9bdc7c76ebf71cc45fd77a05b4e478b4129cb9217e83f8c",
+      "q_str": "about historical figures:\n\nWas Chu Liang born later than Wu Shihuo?",
+      "q_str_open_ended": "Who was born later: Chu Liang or Wu Shihuo?",
+      "x_name": "Chu Liang",
+      "x_value": 560.0,
+      "y_name": "Wu Shihuo",
+      "y_value": 559.0
+    },
+    {
+      "question_id": 6,
+      "qid": "146e06f4d46875f42567d58f1f2cadc5dd9f846b16bfd4f3123bedfdb463e565",
+      "q_str": "about historical figures:\n\nWas Empress Yuan Qigui born later than 劉义欣?",
+      "q_str_open_ended": "Who was born later: Empress Yuan Qigui or 劉义欣?",
+      "x_name": "Empress Yuan Qigui",
+      "x_value": 405.0,
+      "y_name": "劉义欣",
+      "y_value": 404.0
+    },
+    {
+      "question_id": 7,
+      "qid": "19a9d4439e1d997f48c4731daea3db99274f168412ef10cb2e139d8106666247",
+      "q_str": "about historical figures:\n\nWas Ciarán of Clonmacnoise born later than 郑伟?",
+      "q_str_open_ended": "Who was born later: Ciarán of Clonmacnoise or 郑伟?",
+      "x_name": "Ciarán of Clonmacnoise",
+      "x_value": 516.0,
+      "y_name": "郑伟",
+      "y_value": 515.0
+    },
+    {
+      "question_id": 8,
+      "qid": "1a0da56cd88a339be1091cbcf4e2050c31317a998b4d98fd5440be6a5eff7081",
+      "q_str": "about historical figures:\n\nWas Abbas ibn Ali born later than Sun Guoting?",
+      "q_str_open_ended": "Who was born later: Abbas ibn Ali or Sun Guoting?",
+      "x_name": "Abbas ibn Ali",
+      "x_value": 647.0,
+      "y_name": "Sun Guoting",
+      "y_value": 646.0
+    },
+    {
+      "question_id": 9,
+      "qid": "2371a45d7ef19476e6197333839834b9849a617fa7a3bbe64540b9a61ed98765",
+      "q_str": "about historical figures:\n\nWas Adam, Count of Schwarzenberg born later than William Juxon?",
+      "q_str_open_ended": "Who was born later: Adam, Count of Schwarzenberg or William Juxon?",
+      "x_name": "Adam, Count of Schwarzenberg",
+      "x_value": 1583.0,
+      "y_name": "William Juxon",
+      "y_value": 1582.0
+    },
+    {
+      "question_id": 10,
+      "qid": "269616c87f1b1424bbe4cee6b0302a75c6cc083355789e67dc0ecb1f2dfa01fe",
+      "q_str": "about historical figures:\n\nWas Arthur Ashe born later than Volker David Kirchner?",
+      "q_str_open_ended": "Who was born later: Arthur Ashe or Volker David Kirchner?",
+      "x_name": "Arthur Ashe",
+      "x_value": 1943.0,
+      "y_name": "Volker David Kirchner",
+      "y_value": 1942.0
+    },
+    {
+      "question_id": 11,
+      "qid": "2826d8288adc6e850aa939de963b1ee38e805feeb54b8625523f2b9e10ae7d4d",
+      "q_str": "about historical figures:\n\nWas Yan Shu born later than Zhang Xian?",
+      "q_str_open_ended": "Who was born later: Yan Shu or Zhang Xian?",
+      "x_name": "Yan Shu",
+      "x_value": 991.0,
+      "y_name": "Zhang Xian",
+      "y_value": 990.0
+    },
+    {
+      "question_id": 12,
+      "qid": "2934ab1c4ab7602b5d438e4ec55675df8e10e35513f540711d756cc107dd57b8",
+      "q_str": "about historical figures:\n\nWas Abraham Miguel Cardoso born later than Thomas Corneille?",
+      "q_str_open_ended": "Who was born later: Abraham Miguel Cardoso or Thomas Corneille?",
+      "x_name": "Abraham Miguel Cardoso",
+      "x_value": 1626.0,
+      "y_name": "Thomas Corneille",
+      "y_value": 1625.0
+    },
+    {
+      "question_id": 13,
+      "qid": "34310223dc90633253ae04f642593dda8bbcb9f259108e245e55a2472d5304b2",
+      "q_str": "about historical figures:\n\nWas Abraham Broderson born later than John Swynnerton?",
+      "q_str_open_ended": "Who was born later: Abraham Broderson or John Swynnerton?",
+      "x_name": "Abraham Broderson",
+      "x_value": 1350.0,
+      "y_name": "John Swynnerton",
+      "y_value": 1349.0
+    },
+    {
+      "question_id": 14,
+      "qid": "365ccab0737e6a1083e422dbbc87a48550f549fbac85f4ec0b5ac0793780a1bd",
+      "q_str": "about historical figures:\n\nWas Huiyuan born later than Sabinus of Piacenza?",
+      "q_str_open_ended": "Who was born later: Huiyuan or Sabinus of Piacenza?",
+      "x_name": "Huiyuan",
+      "x_value": 334.0,
+      "y_name": "Sabinus of Piacenza",
+      "y_value": 333.0
+    },
+    {
+      "question_id": 15,
+      "qid": "39bca4ade8e46ec2a592bb24f05f7f4d295014ccf7704104e885b3554f719eca",
+      "q_str": "about historical figures:\n\nWas Agnes d'Harcourt born later than Yitsḥaḳ ben Shelomoh Ibn-Abi-Suhula?",
+      "q_str_open_ended": "Who was born later: Agnes d'Harcourt or Yitsḥaḳ ben Shelomoh Ibn-Abi-Suhula?",
+      "x_name": "Agnes d'Harcourt",
+      "x_value": 1245.0,
+      "y_name": "Yitsḥaḳ ben Shelomoh Ibn-Abi-Suhula",
+      "y_value": 1244.0
+    },
+    {
+      "question_id": 16,
+      "qid": "3a723d1a2e5548d6a3abbbde382e4f97a72744f16db85daa1089871a25815c54",
+      "q_str": "about historical figures:\n\nWas Al-Darimi born later than Xiao Fang?",
+      "q_str_open_ended": "Who was born later: Al-Darimi or Xiao Fang?",
+      "x_name": "Al-Darimi",
+      "x_value": 797.0,
+      "y_name": "Xiao Fang",
+      "y_value": 796.0
+    },
+    {
+      "question_id": 17,
+      "qid": "3ac704d23d7f2f678004c9b524a106d9b77cc97e56d97580f3fb9eae5aa65ce5",
+      "q_str": "about historical figures:\n\nWas Achille Grassi born later than Władysław of Zator?",
+      "q_str_open_ended": "Who was born later: Achille Grassi or Władysław of Zator?",
+      "x_name": "Achille Grassi",
+      "x_value": 1456.0,
+      "y_name": "Władysław of Zator",
+      "y_value": 1455.0
+    },
+    {
+      "question_id": 18,
+      "qid": "3b6be60fb205bef51a322204225d2cb2d92212db616dc6bf12ecb74731bd20c0",
+      "q_str": "about historical figures:\n\nWas Beatrice Portinari born later than Тиба, Мунэтанэ?",
+      "q_str_open_ended": "Who was born later: Beatrice Portinari or Тиба, Мунэтанэ?",
+      "x_name": "Beatrice Portinari",
+      "x_value": 1266.0,
+      "y_name": "Тиба, Мунэтанэ",
+      "y_value": 1265.0
+    },
+    {
+      "question_id": 19,
+      "qid": "43c84e24655b0a7d432a881df78cbbcd5a4c313c6fcf20eebf0e58c240d7e102",
+      "q_str": "about historical figures:\n\nWas Duchess Zang Aiqin born later than 公孫表?",
+      "q_str_open_ended": "Who was born later: Duchess Zang Aiqin or 公孫表?",
+      "x_name": "Duchess Zang Aiqin",
+      "x_value": 361.0,
+      "y_name": "公孫表",
+      "y_value": 360.0
+    },
+    {
+      "question_id": 20,
+      "qid": "44d680cbc61c7acbbed6ebcacbe6ed13c8efcaf4174f999a17c0924be2d8f753",
+      "q_str": "about historical figures:\n\nWas Alice de Warenne, Countess of Arundel born later than William de Moravia, 3rd Earl of Sutherland?",
+      "q_str_open_ended": "Who was born later: Alice de Warenne, Countess of Arundel or William de Moravia, 3rd Earl of Sutherland?",
+      "x_name": "Alice de Warenne, Countess of Arundel",
+      "x_value": 1287.0,
+      "y_name": "William de Moravia, 3rd Earl of Sutherland",
+      "y_value": 1286.0
+    },
+    {
+      "question_id": 21,
+      "qid": "45612428ff0b3c01b891a1eed243499c958b1abafc65e696b2ecfcaa9106cf56",
+      "q_str": "about historical figures:\n\nWas Adam Opel born later than Wilhelm Ebstein?",
+      "q_str_open_ended": "Who was born later: Adam Opel or Wilhelm Ebstein?",
+      "x_name": "Adam Opel",
+      "x_value": 1837.0,
+      "y_name": "Wilhelm Ebstein",
+      "y_value": 1836.0
+    },
+    {
+      "question_id": 22,
+      "qid": "456faf0d9b5b3fddf304015b2e0dcd45b26672658ad4c024f93bbaf2976beb51",
+      "q_str": "about historical figures:\n\nWas Beatrice Lascaris di Tenda born later than Zheng He?",
+      "q_str_open_ended": "Who was born later: Beatrice Lascaris di Tenda or Zheng He?",
+      "x_name": "Beatrice Lascaris di Tenda",
+      "x_value": 1372.0,
+      "y_name": "Zheng He",
+      "y_value": 1371.0
+    },
+    {
+      "question_id": 23,
+      "qid": "47fd803b17f748f1ce44b208bd23addca5330bffe1dfb24007fe043b61269995",
+      "q_str": "about historical figures:\n\nWas Liu Qing born later than Chadae?",
+      "q_str_open_ended": "Who was born later: Liu Qing or Chadae?",
+      "x_name": "Liu Qing",
+      "x_value": 78.0,
+      "y_name": "Chadae",
+      "y_value": 71.0
+    },
+    {
+      "question_id": 24,
+      "qid": "4a28c24da4bac0165e5208ef87794fdea5f38bd77627a959e78f162f7df54823",
+      "q_str": "about historical figures:\n\nWas Abraham Bosse born later than Yerofey Khabarov?",
+      "q_str_open_ended": "Who was born later: Abraham Bosse or Yerofey Khabarov?",
+      "x_name": "Abraham Bosse",
+      "x_value": 1604.0,
+      "y_name": "Yerofey Khabarov",
+      "y_value": 1603.0
+    },
+    {
+      "question_id": 25,
+      "qid": "4eead7a700cb015271403a56067011c08088fd42f26a9ee5af05eb05f09af517",
+      "q_str": "about historical figures:\n\nWas Alfonso of Molina born later than Yao Shu?",
+      "q_str_open_ended": "Who was born later: Alfonso of Molina or Yao Shu?",
+      "x_name": "Alfonso of Molina",
+      "x_value": 1202.0,
+      "y_name": "Yao Shu",
+      "y_value": 1201.0
+    },
+    {
+      "question_id": 26,
+      "qid": "4fc0e46f7937e707311226a01960e0a179d71dda4a6e554d1d810371694aafa0",
+      "q_str": "about historical figures:\n\nWas Abu Yusuf Yaqub al-Mansur born later than 莫子纯?",
+      "q_str_open_ended": "Who was born later: Abu Yusuf Yaqub al-Mansur or 莫子纯?",
+      "x_name": "Abu Yusuf Yaqub al-Mansur",
+      "x_value": 1160.0,
+      "y_name": "莫子纯",
+      "y_value": 1159.0
+    },
+    {
+      "question_id": 27,
+      "qid": "53e1217dfe8b5ce4ef3e011783d04e9f3320a4f444cb4d99bcd5267153272802",
+      "q_str": "about historical figures:\n\nWas Anastasius I born later than Zu Chongzhi?",
+      "q_str_open_ended": "Who was born later: Anastasius I or Zu Chongzhi?",
+      "x_name": "Anastasius I",
+      "x_value": 430.0,
+      "y_name": "Zu Chongzhi",
+      "y_value": 429.0
+    },
+    {
+      "question_id": 28,
+      "qid": "58d4ccce9c6f27f6de6a7c2637d12d6948cbc8d50afbc71910f0e8cde624d93a",
+      "q_str": "about historical figures:\n\nWas Gao Qu born later than Abu Dawood?",
+      "q_str_open_ended": "Who was born later: Gao Qu or Abu Dawood?",
+      "x_name": "Gao Qu",
+      "x_value": 818.0,
+      "y_name": "Abu Dawood",
+      "y_value": 817.0
+    },
+    {
+      "question_id": 29,
+      "qid": "59459aff6bda9526451c229781927c52848774f5d2458fadbb8e21079f746781",
+      "q_str": "about historical figures:\n\nWas Abe Masakatsu born later than Won Gyun?",
+      "q_str_open_ended": "Who was born later: Abe Masakatsu or Won Gyun?",
+      "x_name": "Abe Masakatsu",
+      "x_value": 1541.0,
+      "y_name": "Won Gyun",
+      "y_value": 1540.0
+    },
+    {
+      "question_id": 30,
+      "qid": "5a97ab2d15c08376c22c6bba7a91a78956a4d2a3047584cfa45682522cfe0b7f",
+      "q_str": "about historical figures:\n\nWas Anne of Bavaria born later than Zbigniew ze Szczyrzyca?",
+      "q_str_open_ended": "Who was born later: Anne of Bavaria or Zbigniew ze Szczyrzyca?",
+      "x_name": "Anne of Bavaria",
+      "x_value": 1329.0,
+      "y_name": "Zbigniew ze Szczyrzyca",
+      "y_value": 1328.0
+    },
+    {
+      "question_id": 31,
+      "qid": "5b76f9474d43e7f0006daadeed71c4cebd250deffbdc6c09cb08a42179dac14c",
+      "q_str": "about historical figures:\n\nWas Alexander Fadeyev born later than Wolfgang Pauli?",
+      "q_str_open_ended": "Who was born later: Alexander Fadeyev or Wolfgang Pauli?",
+      "x_name": "Alexander Fadeyev",
+      "x_value": 1901.0,
+      "y_name": "Wolfgang Pauli",
+      "y_value": 1900.0
+    },
+    {
+      "question_id": 32,
+      "qid": "627a87150d006694c6245049809fba9d419acd29d12f4cfe3f1dc83ade7c9d7d",
+      "q_str": "about historical figures:\n\nWas Alain VII de Rohan born later than Rudolf II?",
+      "q_str_open_ended": "Who was born later: Alain VII de Rohan or Rudolf II?",
+      "x_name": "Alain VII de Rohan",
+      "x_value": 1308.0,
+      "y_name": "Rudolf II",
+      "y_value": 1307.0
+    },
+    {
+      "question_id": 33,
+      "qid": "6458a3b8a2ad3dc47b1325d4af418ae2515c69fad9fc16d6ce6f5f398af66bd5",
+      "q_str": "about historical figures:\n\nWas Agnes Howard, Duchess of Norfolk born later than Zhu Youyuan?",
+      "q_str_open_ended": "Who was born later: Agnes Howard, Duchess of Norfolk or Zhu Youyuan?",
+      "x_name": "Agnes Howard, Duchess of Norfolk",
+      "x_value": 1477.0,
+      "y_name": "Zhu Youyuan",
+      "y_value": 1476.0
+    },
+    {
+      "question_id": 34,
+      "qid": "64b7901973698c75e2dd026b3b8ee08f1a6f1037f044cd01cdda3d69de0e6c86",
+      "q_str": "about historical figures:\n\nWas Hilal al-Sabi' born later than Æthelred the Unready?",
+      "q_str_open_ended": "Who was born later: Hilal al-Sabi' or Æthelred the Unready?",
+      "x_name": "Hilal al-Sabi'",
+      "x_value": 969.0,
+      "y_name": "Æthelred the Unready",
+      "y_value": 968.0
+    },
+    {
+      "question_id": 35,
+      "qid": "659bcb0f23e769f4e263727532d9001621ee669fdd8d50cf4bf0d61034d96c5f",
+      "q_str": "about historical figures:\n\nWas Adrianus Petit Coclico born later than Wilhelm of Brandenburg-Ansbach?",
+      "q_str_open_ended": "Who was born later: Adrianus Petit Coclico or Wilhelm of Brandenburg-Ansbach?",
+      "x_name": "Adrianus Petit Coclico",
+      "x_value": 1499.0,
+      "y_name": "Wilhelm of Brandenburg-Ansbach",
+      "y_value": 1498.0
+    },
+    {
+      "question_id": 36,
+      "qid": "65e97b4c55c34f2bd7491b94a64dc4a53fcdbfd8f8169383b585d8ece817ff0f",
+      "q_str": "about historical figures:\n\nWas Anthon van Rappard born later than William Howard Taft?",
+      "q_str_open_ended": "Who was born later: Anthon van Rappard or William Howard Taft?",
+      "x_name": "Anthon van Rappard",
+      "x_value": 1858.0,
+      "y_name": "William Howard Taft",
+      "y_value": 1857.0
+    },
+    {
+      "question_id": 37,
+      "qid": "69d38a6b59453f006e081d78474efab7211d1edb10f42c448d0339674624b6ae",
+      "q_str": "about historical figures:\n\nWas Albrecht III Achilles, Elector of Brandenburg born later than Wenceslaus I, Duke of Cieszyn?",
+      "q_str_open_ended": "Who was born later: Albrecht III Achilles, Elector of Brandenburg or Wenceslaus I, Duke of Cieszyn?",
+      "x_name": "Albrecht III Achilles, Elector of Brandenburg",
+      "x_value": 1414.0,
+      "y_name": "Wenceslaus I, Duke of Cieszyn",
+      "y_value": 1413.0
+    },
+    {
+      "question_id": 38,
+      "qid": "6c953f342300154397abc279584ff93d909e35bfa067131c3b965f1a0fe08cb4",
+      "q_str": "about historical figures:\n\nWas Al-Muqtafi born later than Zi Hu?",
+      "q_str_open_ended": "Who was born later: Al-Muqtafi or Zi Hu?",
+      "x_name": "Al-Muqtafi",
+      "x_value": 1096.0,
+      "y_name": "Zi Hu",
+      "y_value": 1095.0
+    },
+    {
+      "question_id": 39,
+      "qid": "6db5e717c255665fe9033e75afaf1bcb633510afbc216ac1124d59c24e9e874b",
+      "q_str": "about historical figures:\n\nWas Cleopatra VI of Egypt born later than Theophanes of Mytilene?",
+      "q_str_open_ended": "Who was born later: Cleopatra VI of Egypt or Theophanes of Mytilene?",
+      "x_name": "Cleopatra VI of Egypt",
+      "x_value": -95.0,
+      "y_name": "Theophanes of Mytilene",
+      "y_value": -100.0
+    },
+    {
+      "question_id": 40,
+      "qid": "6de69e30280687dee8373ec2a56eb237e5267fdba21ae361a9a1dc6186310002",
+      "q_str": "about historical figures:\n\nWas Magnus Felix Ennodius born later than Xiao Zimao, Prince Jin'an?",
+      "q_str_open_ended": "Who was born later: Magnus Felix Ennodius or Xiao Zimao, Prince Jin'an?",
+      "x_name": "Magnus Felix Ennodius",
+      "x_value": 473.0,
+      "y_name": "Xiao Zimao, Prince Jin'an",
+      "y_value": 472.0
+    },
+    {
+      "question_id": 41,
+      "qid": "6eaa8230be90ad4688fe8cf77e05ff5d588c69ea9ff345935665965504831858",
+      "q_str": "about historical figures:\n\nWas Arminius born later than Julia the Younger?",
+      "q_str_open_ended": "Who was born later: Arminius or Julia the Younger?",
+      "x_name": "Arminius",
+      "x_value": -17.0,
+      "y_name": "Julia the Younger",
+      "y_value": -19.0
+    },
+    {
+      "question_id": 42,
+      "qid": "710271c6774b78f32c1d18d32545629771091593a484c02c1cea028bc8c07ae8",
+      "q_str": "about historical figures:\n\nWas Sima Chong born later than Liborius of Le Mans?",
+      "q_str_open_ended": "Who was born later: Sima Chong or Liborius of Le Mans?",
+      "x_name": "Sima Chong",
+      "x_value": 311.0,
+      "y_name": "Liborius of Le Mans",
+      "y_value": 310.0
+    },
+    {
+      "question_id": 43,
+      "qid": "7374246af773ff96c1d0912d1fa63c2ffb50faa65d83295450f96ea2d783fc75",
+      "q_str": "about historical figures:\n\nWas Yang Huiyu born later than Sun Lü?",
+      "q_str_open_ended": "Who was born later: Yang Huiyu or Sun Lü?",
+      "x_name": "Yang Huiyu",
+      "x_value": 214.0,
+      "y_name": "Sun Lü",
+      "y_value": 213.0
+    },
+    {
+      "question_id": 44,
+      "qid": "7411ab8d2d709daf6a8b788aca7b7089ec33c9f8771e900252d823b96cf75d25",
+      "q_str": "about historical figures:\n\nWas Adelaide del Vasto born later than 謝薖?",
+      "q_str_open_ended": "Who was born later: Adelaide del Vasto or 謝薖?",
+      "x_name": "Adelaide del Vasto",
+      "x_value": 1075.0,
+      "y_name": "謝薖",
+      "y_value": 1074.0
+    },
+    {
+      "question_id": 45,
+      "qid": "758a677fb8f83ddaca4f6e61e1d87d9308e9c945c1e8a18cd82ee8b6adc06de9",
+      "q_str": "about historical figures:\n\nWas Hugbert of Bavaria born later than Saint Othmar?",
+      "q_str_open_ended": "Who was born later: Hugbert of Bavaria or Saint Othmar?",
+      "x_name": "Hugbert of Bavaria",
+      "x_value": 690.0,
+      "y_name": "Saint Othmar",
+      "y_value": 689.0
+    },
+    {
+      "question_id": 46,
+      "qid": "7ae3de44a3a88ab4dc5c200ff31ca92ccf9e9ab855eb2e8dcd88dc85c1839593",
+      "q_str": "about historical figures:\n\nWas Alan Perlis born later than Zygmunt Kęstowicz?",
+      "q_str_open_ended": "Who was born later: Alan Perlis or Zygmunt Kęstowicz?",
+      "x_name": "Alan Perlis",
+      "x_value": 1922.0,
+      "y_name": "Zygmunt Kęstowicz",
+      "y_value": 1921.0
+    },
+    {
+      "question_id": 47,
+      "qid": "80d06027045ea8dcaf97d66132cda2ef3713ec06c448383207ae3c4ce7566f78",
+      "q_str": "about historical figures:\n\nWas Antonina born later than 任祥?",
+      "q_str_open_ended": "Who was born later: Antonina or 任祥?",
+      "x_name": "Antonina",
+      "x_value": 495.0,
+      "y_name": "任祥",
+      "y_value": 494.0
+    },
+    {
+      "question_id": 48,
+      "qid": "82775e26ba0e86d6e0c2b2ad8604a7d3902732468a6aafc3c71b7aec4bfdb7fc",
+      "q_str": "about historical figures:\n\nWas Emperor Xizong of Tang born later than Abu Bakr Shiblie?",
+      "q_str_open_ended": "Who was born later: Emperor Xizong of Tang or Abu Bakr Shiblie?",
+      "x_name": "Emperor Xizong of Tang",
+      "x_value": 862.0,
+      "y_name": "Abu Bakr Shiblie",
+      "y_value": 861.0
+    },
+    {
+      "question_id": 49,
+      "qid": "85ffea7409cbfb0ae13a9ade6e8b9ac5de660234d67611321a5fef247178840e",
+      "q_str": "about historical figures:\n\nWas Adam van Noort born later than Yi Eokgi?",
+      "q_str_open_ended": "Who was born later: Adam van Noort or Yi Eokgi?",
+      "x_name": "Adam van Noort",
+      "x_value": 1562.0,
+      "y_name": "Yi Eokgi",
+      "y_value": 1561.0
+    },
+    {
+      "question_id": 50,
+      "qid": "86c275a0f5f2a7e6570f7e50f30042c71a57aa2e0a231b1015f09aa90ffb9222",
+      "q_str": "about historical figures:\n\nWas Ptolemy XIV of Egypt born later than Dionysius of Halicarnassus?",
+      "q_str_open_ended": "Who was born later: Ptolemy XIV of Egypt or Dionysius of Halicarnassus?",
+      "x_name": "Ptolemy XIV of Egypt",
+      "x_value": -59.0,
+      "y_name": "Dionysius of Halicarnassus",
+      "y_value": -60.0
+    },
+    {
+      "question_id": 51,
+      "qid": "8719ab86d1b9d179714898e1379cf6c46a304c81ff7819911b905c6af3354fb1",
+      "q_str": "about historical figures:\n\nWas Emperor Ming of Southern Qi born later than 穆亮?",
+      "q_str_open_ended": "Who was born later: Emperor Ming of Southern Qi or 穆亮?",
+      "x_name": "Emperor Ming of Southern Qi",
+      "x_value": 452.0,
+      "y_name": "穆亮",
+      "y_value": 451.0
+    },
+    {
+      "question_id": 52,
+      "qid": "8c88b10956a1f083d8ac9ceb6a08215f775c6673c031fc8cf862a89c226da276",
+      "q_str": "about historical figures:\n\nWas Aleksander Zederbaum born later than Wilhelm Peters?",
+      "q_str_open_ended": "Who was born later: Aleksander Zederbaum or Wilhelm Peters?",
+      "x_name": "Aleksander Zederbaum",
+      "x_value": 1816.0,
+      "y_name": "Wilhelm Peters",
+      "y_value": 1815.0
+    },
+    {
+      "question_id": 53,
+      "qid": "9036d616df612e83a6337ac6d0b173b110b297fb229b1e67e52b92a9262dc53e",
+      "q_str": "about historical figures:\n\nWas Al-Walid I born later than 石川石足?",
+      "q_str_open_ended": "Who was born later: Al-Walid I or 石川石足?",
+      "x_name": "Al-Walid I",
+      "x_value": 668.0,
+      "y_name": "石川石足",
+      "y_value": 667.0
+    },
+    {
+      "question_id": 54,
+      "qid": "93c2e4c86fe048ce90a0fc8b0810f04602a30aa09025e68e0e6d3b8fd2eb6c55",
+      "q_str": "about historical figures:\n\nWas Lucian of Samosata born later than Marina of Aguas Santas?",
+      "q_str_open_ended": "Who was born later: Lucian of Samosata or Marina of Aguas Santas?",
+      "x_name": "Lucian of Samosata",
+      "x_value": 120.0,
+      "y_name": "Marina of Aguas Santas",
+      "y_value": 119.0
+    },
+    {
+      "question_id": 55,
+      "qid": "94d6248b9b83272e4c7776c5e536b8011b4c4fc40e39b5283762263bdf24a39d",
+      "q_str": "about historical figures:\n\nWas Ahmad ibn Muhammad born later than Торд Ревун?",
+      "q_str_open_ended": "Who was born later: Ahmad ibn Muhammad or Торд Ревун?",
+      "x_name": "Ahmad ibn Muhammad",
+      "x_value": 906.0,
+      "y_name": "Торд Ревун",
+      "y_value": 905.0
+    },
+    {
+      "question_id": 56,
+      "qid": "9708d0d8b5c3a393ec77a52fdb293847d86d1ab4577a99a61faf7064a0c5526c",
+      "q_str": "about historical figures:\n\nWas Ptolemy IV Philopator born later than Arsinoe III of Egypt?",
+      "q_str_open_ended": "Who was born later: Ptolemy IV Philopator or Arsinoe III of Egypt?",
+      "x_name": "Ptolemy IV Philopator",
+      "x_value": -244.0,
+      "y_name": "Arsinoe III of Egypt",
+      "y_value": -246.0
+    },
+    {
+      "question_id": 57,
+      "qid": "9b9005267b7f3be23f0f394f4574aaaa2c1428b32e73c879fec815d112154a7f",
+      "q_str": "about historical figures:\n\nWas Adrian Bernhard von Borcke born later than William Whiston?",
+      "q_str_open_ended": "Who was born later: Adrian Bernhard von Borcke or William Whiston?",
+      "x_name": "Adrian Bernhard von Borcke",
+      "x_value": 1668.0,
+      "y_name": "William Whiston",
+      "y_value": 1667.0
+    },
+    {
+      "question_id": 58,
+      "qid": "9e392e761a4af6dff590df8b819d1573cb242bd2a0c94a001becc5011768476b",
+      "q_str": "about historical figures:\n\nWas Alexander Kölpin born later than Étienne Bézout?",
+      "q_str_open_ended": "Who was born later: Alexander Kölpin or Étienne Bézout?",
+      "x_name": "Alexander Kölpin",
+      "x_value": 1731.0,
+      "y_name": "Étienne Bézout",
+      "y_value": 1730.0
+    },
+    {
+      "question_id": 59,
+      "qid": "a1f71a4ab9d65a7b22c0dd2128cfa3da3829cab7b53bedb5bdda0acecabc7c1b",
+      "q_str": "about historical figures:\n\nWas Abu al-Hariri born later than Yang Shi?",
+      "q_str_open_ended": "Who was born later: Abu al-Hariri or Yang Shi?",
+      "x_name": "Abu al-Hariri",
+      "x_value": 1054.0,
+      "y_name": "Yang Shi",
+      "y_value": 1053.0
+    },
+    {
+      "question_id": 60,
+      "qid": "a3c953dbe89bc14dc8b7ea24299a4465659e5a67d6dfddf3b796f0861c2bf63b",
+      "q_str": "about historical figures:\n\nWas Clement of Ohrid born later than Qarin I?",
+      "q_str_open_ended": "Who was born later: Clement of Ohrid or Qarin I?",
+      "x_name": "Clement of Ohrid",
+      "x_value": 840.0,
+      "y_name": "Qarin I",
+      "y_value": 839.0
+    },
+    {
+      "question_id": 61,
+      "qid": "a4d7987ca81af4ef465c2768e38a52ba3d73db761388dacb0ca6746cfb7b1b15",
+      "q_str": "about historical figures:\n\nWas Anselm of Canterbury born later than Lü Huiqing?",
+      "q_str_open_ended": "Who was born later: Anselm of Canterbury or Lü Huiqing?",
+      "x_name": "Anselm of Canterbury",
+      "x_value": 1033.0,
+      "y_name": "Lü Huiqing",
+      "y_value": 1032.0
+    },
+    {
+      "question_id": 62,
+      "qid": "a5eafd415167982830882532a3c5b92367b5f8a95f05ac36c7b894fad3b9e2f0",
+      "q_str": "about historical figures:\n\nWas Judah Maccabee born later than Zhang Qian?",
+      "q_str_open_ended": "Who was born later: Judah Maccabee or Zhang Qian?",
+      "x_name": "Judah Maccabee",
+      "x_value": -199.0,
+      "y_name": "Zhang Qian",
+      "y_value": -200.0
+    },
+    {
+      "question_id": 63,
+      "qid": "a89c20cb196c10d13360a91601db7d45dcbf89f5bd1f9714fdb51f568a738785",
+      "q_str": "about historical figures:\n\nWas Emperor Wu of Jin born later than Sun Xiu?",
+      "q_str_open_ended": "Who was born later: Emperor Wu of Jin or Sun Xiu?",
+      "x_name": "Emperor Wu of Jin",
+      "x_value": 236.0,
+      "y_name": "Sun Xiu",
+      "y_value": 235.0
+    },
+    {
+      "question_id": 64,
+      "qid": "a915cd2da96d8d4926dc76e7f83489e6a9c4ec1fd20f9a2797cb71d7418e78b7",
+      "q_str": "about historical figures:\n\nWas Abbad II al-Mu'tadid born later than Shao Yong?",
+      "q_str_open_ended": "Who was born later: Abbad II al-Mu'tadid or Shao Yong?",
+      "x_name": "Abbad II al-Mu'tadid",
+      "x_value": 1012.0,
+      "y_name": "Shao Yong",
+      "y_value": 1011.0
+    },
+    {
+      "question_id": 65,
+      "qid": "ace6d212e8c6089e382611784d18b538ef2dc2b1e652239cd7bffc4017fc7b97",
+      "q_str": "about historical figures:\n\nWas Anaxandridas II born later than Yan Ying?",
+      "q_str_open_ended": "Who was born later: Anaxandridas II or Yan Ying?",
+      "x_name": "Anaxandridas II",
+      "x_value": -565.0,
+      "y_name": "Yan Ying",
+      "y_value": -578.0
+    },
+    {
+      "question_id": 66,
+      "qid": "aceadd4d91bbca16872598a3079079ff48dd5f2ddb11580cd54f6d1563fe8ddd",
+      "q_str": "about historical figures:\n\nWas Abu Ubaidah ibn al-Jarrah born later than 黄君汉?",
+      "q_str_open_ended": "Who was born later: Abu Ubaidah ibn al-Jarrah or 黄君汉?",
+      "x_name": "Abu Ubaidah ibn al-Jarrah",
+      "x_value": 582.0,
+      "y_name": "黄君汉",
+      "y_value": 581.0
+    },
+    {
+      "question_id": 67,
+      "qid": "aef572f1d4476c0baf74d5e863b585e6ea4e0b9ab290cf235d4718ac5f75f7e9",
+      "q_str": "about historical figures:\n\nWas Melania the Younger born later than Sima Yuanxian?",
+      "q_str_open_ended": "Who was born later: Melania the Younger or Sima Yuanxian?",
+      "x_name": "Melania the Younger",
+      "x_value": 383.0,
+      "y_name": "Sima Yuanxian",
+      "y_value": 382.0
+    },
+    {
+      "question_id": 68,
+      "qid": "b0e25ad60fbe0804c1cdb82a3055fbfefe433d0e31c0780b6d3cec72590500f8",
+      "q_str": "about historical figures:\n\nWas Albert Gottfried Dietrich born later than Wilhelm Müller?",
+      "q_str_open_ended": "Who was born later: Albert Gottfried Dietrich or Wilhelm Müller?",
+      "x_name": "Albert Gottfried Dietrich",
+      "x_value": 1795.0,
+      "y_name": "Wilhelm Müller",
+      "y_value": 1794.0
+    },
+    {
+      "question_id": 69,
+      "qid": "b2d312da8064bc4f35142e0352eb08474dcdd920c8c00958f992e2a9042583be",
+      "q_str": "about historical figures:\n\nWas Albert Niemann born later than Werner Boy?",
+      "q_str_open_ended": "Who was born later: Albert Niemann or Werner Boy?",
+      "x_name": "Albert Niemann",
+      "x_value": 1880.0,
+      "y_name": "Werner Boy",
+      "y_value": 1879.0
+    },
+    {
+      "question_id": 70,
+      "qid": "b5574bd299791ec0433e0a7b01395b56a3e517d7f46a837310a9a46572ff337d",
+      "q_str": "about historical figures:\n\nWas Abraham Trembley born later than Étienne de Silhouette?",
+      "q_str_open_ended": "Who was born later: Abraham Trembley or Étienne de Silhouette?",
+      "x_name": "Abraham Trembley",
+      "x_value": 1710.0,
+      "y_name": "Étienne de Silhouette",
+      "y_value": 1709.0
+    },
+    {
+      "question_id": 71,
+      "qid": "b8bf0e9d092767027876872e31ae41419f3a31e55cd3793e4ebc51563d315528",
+      "q_str": "about historical figures:\n\nWas Sima Lang born later than Zhu Ling?",
+      "q_str_open_ended": "Who was born later: Sima Lang or Zhu Ling?",
+      "x_name": "Sima Lang",
+      "x_value": 171.0,
+      "y_name": "Zhu Ling",
+      "y_value": 170.0
+    },
+    {
+      "question_id": 72,
+      "qid": "bb7a970ccb3ee812747f3ae825a6664863daffab2b5ffde7c1f74a476c47d039",
+      "q_str": "about historical figures:\n\nWas Bernd Baumgartl born later than Whitney Houston?",
+      "q_str_open_ended": "Who was born later: Bernd Baumgartl or Whitney Houston?",
+      "x_name": "Bernd Baumgartl",
+      "x_value": 1964.0,
+      "y_name": "Whitney Houston",
+      "y_value": 1963.0
+    },
+    {
+      "question_id": 73,
+      "qid": "bcd394fe922f0d23988839d3b056afeb582d21e05ec0cb4ae9ca81c634bc43b8",
+      "q_str": "about historical figures:\n\nWas Widukind born later than 石川河主?",
+      "q_str_open_ended": "Who was born later: Widukind or 石川河主?",
+      "x_name": "Widukind",
+      "x_value": 755.0,
+      "y_name": "石川河主",
+      "y_value": 754.0
+    },
+    {
+      "question_id": 74,
+      "qid": "bd5bd7d8f8358f8a27d4420d9cfe4708ec91e4b83e5e284f21a19cf36794d942",
+      "q_str": "about historical figures:\n\nWas Abu Bakr ibn Abi Shaybah born later than Yahya ibn Ma'in?",
+      "q_str_open_ended": "Who was born later: Abu Bakr ibn Abi Shaybah or Yahya ibn Ma'in?",
+      "x_name": "Abu Bakr ibn Abi Shaybah",
+      "x_value": 776.0,
+      "y_name": "Yahya ibn Ma'in",
+      "y_value": 775.0
+    },
+    {
+      "question_id": 75,
+      "qid": "c0e51e3845c31045ba6527b04de93a246b33c2ea3598eb714f202ea08afbee50",
+      "q_str": "about historical figures:\n\nWas Duke Cheng of Qi born later than King Hiram I?",
+      "q_str_open_ended": "Who was born later: Duke Cheng of Qi or King Hiram I?",
+      "x_name": "Duke Cheng of Qi",
+      "x_value": -850.0,
+      "y_name": "King Hiram I",
+      "y_value": -1000.0
+    },
+    {
+      "question_id": 76,
+      "qid": "c29d69d5029e835f9a4b953775f7e47ae9ace8c1d4adf0f9b5578760d6fed8de",
+      "q_str": "about historical figures:\n\nWas Balgi born later than Zhu Jun?",
+      "q_str_open_ended": "Who was born later: Balgi or Zhu Jun?",
+      "x_name": "Balgi",
+      "x_value": 150.0,
+      "y_name": "Zhu Jun",
+      "y_value": 149.0
+    },
+    {
+      "question_id": 77,
+      "qid": "c3019cd26fe7e2ad40cb5825ff4087242afd9c4ed7efd717759c8d6944e5c275",
+      "q_str": "about historical figures:\n\nWas Alois von Beckh Widmanstätten born later than Thomas Chatterton?",
+      "q_str_open_ended": "Who was born later: Alois von Beckh Widmanstätten or Thomas Chatterton?",
+      "x_name": "Alois von Beckh Widmanstätten",
+      "x_value": 1753.0,
+      "y_name": "Thomas Chatterton",
+      "y_value": 1752.0
+    },
+    {
+      "question_id": 78,
+      "qid": "c347e00f2d7173e634599e6baaf377565fb8e916ffbf474a37e3c97b4c127912",
+      "q_str": "about historical figures:\n\nWas Adam Bohorič born later than Thomas Gresham?",
+      "q_str_open_ended": "Who was born later: Adam Bohorič or Thomas Gresham?",
+      "x_name": "Adam Bohorič",
+      "x_value": 1520.0,
+      "y_name": "Thomas Gresham",
+      "y_value": 1519.0
+    },
+    {
+      "question_id": 79,
+      "qid": "c699440f5cb7c2093be0b9b31f694847d66fc529cdb3aeb9fc8482ef0e1ee92b",
+      "q_str": "about historical figures:\n\nWas Abdashtart I born later than Diogenes of Sinope?",
+      "q_str_open_ended": "Who was born later: Abdashtart I or Diogenes of Sinope?",
+      "x_name": "Abdashtart I",
+      "x_value": -400.0,
+      "y_name": "Diogenes of Sinope",
+      "y_value": -404.0
+    },
+    {
+      "question_id": 80,
+      "qid": "c6b358285356edb91a5282a663bb030e75454f2971ca8fb624c721384d953bd0",
+      "q_str": "about historical figures:\n\nWas Boleslaus II, Duke of Bohemia born later than Song Wo?",
+      "q_str_open_ended": "Who was born later: Boleslaus II, Duke of Bohemia or Song Wo?",
+      "x_name": "Boleslaus II, Duke of Bohemia",
+      "x_value": 927.0,
+      "y_name": "Song Wo",
+      "y_value": 926.0
+    },
+    {
+      "question_id": 81,
+      "qid": "c6ea1d26ec4bdbef707a0a78bd876b6880ce77d9229ed966e0d5abc43a8509c5",
+      "q_str": "about historical figures:\n\nWas Adolf Müllner born later than Zacharias Oppenheimer?",
+      "q_str_open_ended": "Who was born later: Adolf Müllner or Zacharias Oppenheimer?",
+      "x_name": "Adolf Müllner",
+      "x_value": 1774.0,
+      "y_name": "Zacharias Oppenheimer",
+      "y_value": 1773.0
+    },
+    {
+      "question_id": 82,
+      "qid": "ca43cf04db44b11fb5f595db7b917a67eff504170f48f424990e15b76092e5fc",
+      "q_str": "about historical figures:\n\nWas Abd Allah ibn Hanzala born later than Wu Zetian?",
+      "q_str_open_ended": "Who was born later: Abd Allah ibn Hanzala or Wu Zetian?",
+      "x_name": "Abd Allah ibn Hanzala",
+      "x_value": 625.0,
+      "y_name": "Wu Zetian",
+      "y_value": 624.0
+    },
+    {
+      "question_id": 83,
+      "qid": "cb01309728e1bc7bcae1047a8d97766b02a139e4c7031fa3ed6b01a1e21ba757",
+      "q_str": "about historical figures:\n\nWas Dai Shulun born later than Ōtomo no Otomaro?",
+      "q_str_open_ended": "Who was born later: Dai Shulun or Ōtomo no Otomaro?",
+      "x_name": "Dai Shulun",
+      "x_value": 732.0,
+      "y_name": "Ōtomo no Otomaro",
+      "y_value": 731.0
+    },
+    {
+      "question_id": 84,
+      "qid": "cbbfee2fb3ab629d214b4b0389f0280762a7c975838d35b750c0e4e9bb9d451c",
+      "q_str": "about historical figures:\n\nWas Berenice born later than Wang Chong?",
+      "q_str_open_ended": "Who was born later: Berenice or Wang Chong?",
+      "x_name": "Berenice",
+      "x_value": 28.0,
+      "y_name": "Wang Chong",
+      "y_value": 27.0,
+      "no_question_id": 30
+    },
+    {
+      "question_id": 85,
+      "qid": "cf573f8e67efc680bf8191e2d0116f2034ad31da1b3c3a5b56a077e87e090aaf",
+      "q_str": "about historical figures:\n\nWas Antiochus XII Dionysus born later than Empress Wei Zifu?",
+      "q_str_open_ended": "Who was born later: Antiochus XII Dionysus or Empress Wei Zifu?",
+      "x_name": "Antiochus XII Dionysus",
+      "x_value": -150.0,
+      "y_name": "Empress Wei Zifu",
+      "y_value": -155.0
+    },
+    {
+      "question_id": 86,
+      "qid": "d07ee0e9ff52048dd2f7b2a3b5fc2aa40c40a1e79fa7e477432ccf9e439366bc",
+      "q_str": "about historical figures:\n\nWas Emperor Suzong of Tang born later than Saint Walpurga?",
+      "q_str_open_ended": "Who was born later: Emperor Suzong of Tang or Saint Walpurga?",
+      "x_name": "Emperor Suzong of Tang",
+      "x_value": 711.0,
+      "y_name": "Saint Walpurga",
+      "y_value": 710.0
+    },
+    {
+      "question_id": 87,
+      "qid": "d2ae0b597e3e17d227011f37a73ef3935edbbee4fae21f08930c39127c8ccf06",
+      "q_str": "about historical figures:\n\nWas Aimar V of Limoges born later than Yang Cishan?",
+      "q_str_open_ended": "Who was born later: Aimar V of Limoges or Yang Cishan?",
+      "x_name": "Aimar V of Limoges",
+      "x_value": 1139.0,
+      "y_name": "Yang Cishan",
+      "y_value": 1138.0
+    },
+    {
+      "question_id": 88,
+      "qid": "d71177bac0c708207144cddbdca4c2129bbb39e5d7c2e7e1f90320bf6398ddcc",
+      "q_str": "about historical figures:\n\nWas Eleanor of Provence born later than Thomas Wykes?",
+      "q_str_open_ended": "Who was born later: Eleanor of Provence or Thomas Wykes?",
+      "x_name": "Eleanor of Provence",
+      "x_value": 1223.0,
+      "y_name": "Thomas Wykes",
+      "y_value": 1222.0
+    },
+    {
+      "question_id": 89,
+      "qid": "d950332c0130784f72b8cc48b84db8dff09327573403d6d68dc60b347d8a3ea0",
+      "q_str": "about historical figures:\n\nWas Joseph of Tiberias born later than Zhuge Hui?",
+      "q_str_open_ended": "Who was born later: Joseph of Tiberias or Zhuge Hui?",
+      "x_name": "Joseph of Tiberias",
+      "x_value": 285.0,
+      "y_name": "Zhuge Hui",
+      "y_value": 284.0
+    },
+    {
+      "question_id": 90,
+      "qid": "d97d3ecb4fe6b03f6e004ad9f006a99670643588d975fd7710cde91818d52299",
+      "q_str": "about historical figures:\n\nWas Alice of Chatillon born later than Хайнрих I фон Щолберг?",
+      "q_str_open_ended": "Who was born later: Alice of Chatillon or Хайнрих I фон Щолберг?",
+      "x_name": "Alice of Chatillon",
+      "x_value": 1181.0,
+      "y_name": "Хайнрих I фон Щолберг",
+      "y_value": 1180.0
+    },
+    {
+      "question_id": 91,
+      "qid": "da5ca369fa7933a993414540f5b7a109ff44f914413e5c311849096f6472825b",
+      "q_str": "about historical figures:\n\nWas Agis III born later than Alexander the Great?",
+      "q_str_open_ended": "Who was born later: Agis III or Alexander the Great?",
+      "x_name": "Agis III",
+      "x_value": -350.0,
+      "y_name": "Alexander the Great",
+      "y_value": -356.0
+    },
+    {
+      "question_id": 92,
+      "qid": "df1e5f890656d5fdeaeff9a29e8f29123ed72152b1f6c7a76c9c639a19f3ab87",
+      "q_str": "about historical figures:\n\nWas Li Daozong born later than Xuanzang?",
+      "q_str_open_ended": "Who was born later: Li Daozong or Xuanzang?",
+      "x_name": "Li Daozong",
+      "x_value": 603.0,
+      "y_name": "Xuanzang",
+      "y_value": 602.0
+    },
+    {
+      "question_id": 93,
+      "qid": "dfc8b75d483f423b5c317388442cb7a2df10bd5eaf0cbf1a8f95354b2245b92d",
+      "q_str": "about historical figures:\n\nWas Protagoras born later than Zeno of Elea?",
+      "q_str_open_ended": "Who was born later: Protagoras or Zeno of Elea?",
+      "x_name": "Protagoras",
+      "x_value": -486.0,
+      "y_name": "Zeno of Elea",
+      "y_value": -490.0
+    },
+    {
+      "question_id": 94,
+      "qid": "e438a0256e82c28bcea45e94fbf1390c745079a861aaa4e5517f588f66432ae0",
+      "q_str": "about historical figures:\n\nWas Andrea Vendramin born later than William the Victorious, Duke of Brunswick-Lüneburg?",
+      "q_str_open_ended": "Who was born later: Andrea Vendramin or William the Victorious, Duke of Brunswick-Lüneburg?",
+      "x_name": "Andrea Vendramin",
+      "x_value": 1393.0,
+      "y_name": "William the Victorious, Duke of Brunswick-Lüneburg",
+      "y_value": 1392.0
+    },
+    {
+      "question_id": 95,
+      "qid": "e63b19f5bbbed84365d57cbaed178d5f7090a763573bb2802a94628e7a8c8d27",
+      "q_str": "about historical figures:\n\nWas Song Yu born later than Ziying?",
+      "q_str_open_ended": "Who was born later: Song Yu or Ziying?",
+      "x_name": "Song Yu",
+      "x_value": -298.0,
+      "y_name": "Ziying",
+      "y_value": -300.0
+    },
+    {
+      "question_id": 96,
+      "qid": "ea79b33204272c2a8944c7b8b21253a2bd41cf9a46fe5ba66dc72ec97c0176a1",
+      "q_str": "about historical figures:\n\nWas Emma of Blois born later than Zhao Tingmei?",
+      "q_str_open_ended": "Who was born later: Emma of Blois or Zhao Tingmei?",
+      "x_name": "Emma of Blois",
+      "x_value": 948.0,
+      "y_name": "Zhao Tingmei",
+      "y_value": 947.0
+    },
+    {
+      "question_id": 97,
+      "qid": "eb2dd577080e472e9171be89e3a1d3019099576c6f9a35fb021076747779a538",
+      "q_str": "about historical figures:\n\nWas Chilperic I born later than 高淯?",
+      "q_str_open_ended": "Who was born later: Chilperic I or 高淯?",
+      "x_name": "Chilperic I",
+      "x_value": 537.0,
+      "y_name": "高淯",
+      "y_value": 536.0
+    },
+    {
+      "question_id": 98,
+      "qid": "eba98f281cf367d39b88d0a438a11365d1bd5065487aac0186a72dfedeb1e247",
+      "q_str": "about historical figures:\n\nWas Lu Yun born later than Lu Ye?",
+      "q_str_open_ended": "Who was born later: Lu Yun or Lu Ye?",
+      "x_name": "Lu Yun",
+      "x_value": 262.0,
+      "y_name": "Lu Ye",
+      "y_value": 261.0
+    },
+    {
+      "question_id": 99,
+      "qid": "f49fec85e0d69cb734aa9a336a6bfc49cbdb331cfed884d6d8ed8757508394b7",
+      "q_str": "about historical figures:\n\nWas Amalia von Degenfeld born later than Élisabeth Marguerite d'Orléans?",
+      "q_str_open_ended": "Who was born later: Amalia von Degenfeld or Élisabeth Marguerite d'Orléans?",
+      "x_name": "Amalia von Degenfeld",
+      "x_value": 1647.0,
+      "y_name": "Élisabeth Marguerite d'Orléans",
+      "y_value": 1646.0
+    },
+    {
+      "question_id": 100,
+      "qid": "fffb659345df3f5e8e2f6dc025e3665df3c016d7fc7d86d43ea7c8792fa2872f",
+      "q_str": "about historical figures:\n\nWas Adolf Rusch born later than Yolande of Valois?",
+      "q_str_open_ended": "Who was born later: Adolf Rusch or Yolande of Valois?",
+      "x_name": "Adolf Rusch",
+      "x_value": 1435.0,
+      "y_name": "Yolande of Valois",
+      "y_value": 1434.0
+    }
+  ]
+}
