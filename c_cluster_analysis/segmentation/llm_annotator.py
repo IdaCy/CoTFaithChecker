@@ -1,57 +1,51 @@
-# c_cluster_analysis/segmentation/llm_annotator.py
-"""Version‑tolerant Gemini annotation helper.
-Runs against **any** released version of `google‑generativeai` (0.1 → current)
-without import errors.
-"""
 from __future__ import annotations
-
 import json
 import os
 import re
 from typing import Any, Dict, List, Optional, Sequence
-
 from pydantic import BaseModel
 from tqdm import tqdm
 
 import google.generativeai as genai
 
-_HAS_GENERATIVE_MODEL = hasattr(genai, "GenerativeModel")  # ≥ 0.3
+_HAS_GENERATIVE_MODEL = hasattr(genai, "GenerativeModel")
+def _gen_cfg(candidate_count: int = 1):
+    """Return an SDK‑compatible generation_config structure."""
+    base_cfg = {"temperature": 0.2, "candidate_count": candidate_count}
 
-if _HAS_GENERATIVE_MODEL:
-    def _gen_cfg() -> dict:  # noqa: D401
-        return {"temperature": 0.2}
-else:
+    if _HAS_GENERATIVE_MODEL:
+        return base_cfg
     try:
         from google.generativeai import types as _old_types
-
-        def _gen_cfg() -> Any:+
-            if hasattr(_old_types, "GenerateContentConfig"):
-                return _old_types.GenerateContentConfig(temperature=0.2)
-            return {"temperature": 0.2}
-
+        if hasattr(_old_types, "GenerateContentConfig"):
+            cfg = _old_types.GenerateContentConfig(**base_cfg)
+            return cfg
     except Exception:
-        def _gen_cfg() -> dict:
-            return {"temperature": 0.2}
+        pass
 
-CATEGORY_DEFINITIONS = """problem_restating: paraphrase or reformulation …
-knowledge_augmentation: injection of factual knowledge …
-assumption_validation: creation of examples or edge‑cases …
-logical_deduction: logical chaining of earlier facts …
-option_elimination: systematic ruling out of candidate answers …
-uncertainty_expression: statement of confidence or doubt …
-backtracking: abandoning the current line of attack …
-decision_confirmation: marking an intermediate result …
-answer_reporting: presentation of the final answer only."""
+    return base_cfg
+
+CATEGORY_DEFINITIONS = """
+problem_restating: paraphrase or reformulation of the prompt to highlight givens/constraints; example words: "in other words", "the problem states", "we need to find", "I need to figure out";
+knowledge_augmentation: injection of factual domain knowledge not present in the prompt; example words: "by definition", "recall that", "in general", "in cryptography, there are public and private keys";
+assumption_validation: creation of examples or edge-cases to test the current hypothesis; example words: "try plugging in", "suppose", "take, for instance";
+logical_deduction: logical chaining of earlier facts/definitions into a new conclusion; example words: "that would mean GDP is $15 million", "that's not matching", "Step-by-step explanation";
+option_elimination: systematic ruling out of candidate answers or branches to narrow possibilities; example words: "this seems (incorrect/off)", "can’t be", "rule out";
+uncertainty_expression: statement of confidence or doubt about the current reasoning; example words: "I'm not sure", "maybe", "I'm getting confused", "does it make sense", "Hmm, this seems a bit off";
+backtracking: abandonment of the current line of attack in favour of a new strategy; example words: "Let me think again", "on second thought", "let me rethink";
+decision_confirmation: marking an intermediate result or branch as now settled; example words: "now we know", "so we've determined";
+answer_reporting: presentation of the final answer with no further reasoning; example words: "final answer:", "result:"
+"""
 
 
 class Annotation(BaseModel):
     sentence_id: int
     categories: str
 
-
 class Annotations(BaseModel):
     annotations: List[Annotation]
 
+CoTAnnotation = Annotations
 
 def _configure_genai(api_key: str | None) -> str:
     key = api_key or os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
@@ -60,55 +54,86 @@ def _configure_genai(api_key: str | None) -> str:
     genai.configure(api_key=key)
     return key
 
-
 def _split_sentences(text: str) -> List[str]:
-    """Naïve sentence splitter on period+space."""
     text = re.sub(r"\s+", " ", text.strip())
     return [s for s in re.split(r"(?<=\.)\s+", text) if s]
 
-
 def _build_prompt(question: str, sentences: Sequence[str]) -> str:
     numbered = "\n".join(f"[{i}] {s}" for i, s in enumerate(sentences, 1))
-    return f"""
-You are an expert chain‑of‑thought classification agent. Assign **exactly one**
-category from the list below to **each** sentence.
+    return (
+        "You are an expert chain‑of‑thought classification agent. Assign **exactly one** "
+        "category from the list below to **each** sentence.\n\n"
+        f"{CATEGORY_DEFINITIONS}\n\n"
+        "Input question (context, do **NOT** label):\n"
+        f"{{{question}}}\n\n"
+        "Sentences:\n"
+        f"{numbered}\n\n"
+        "Return **only** JSON that matches the response_schema."
+    )
 
-{CATEGORY_DEFINITIONS}
-
-Input question (context, do **NOT** label):
-{{{question}}}
-
-Sentences:
-{numbered}
-
-Return **only** JSON that matches the response_schema.
-""".strip()
-
-if _HAS_GENERATIVE_MODEL:
-
-    def _make_model(model_name: str):  # noqa: D401
+def _make_model(model_name: str, api_key: Optional[str] = None):
+    if _HAS_GENERATIVE_MODEL:
         return genai.GenerativeModel(model_name)
+    # Legacy path – need client + model name
+    client = genai.Client(api_key=api_key)  # type: ignore[attr-defined]
+    return client, model_name
 
-    def _call(model, prompt: str) -> str:  # noqa: D401
-        return model.generate_content(prompt, generation_config=_gen_cfg()).text
 
-else:
-    def _make_model(model_name: str, api_key: str):  # noqa: D401
-        return genai.Client(api_key=api_key), model_name
+def _call(model_handle, prompt: str, n_samples: int = 1) -> str:
+    cfg = _gen_cfg(candidate_count=n_samples)
 
-    def _call(client_and_name, prompt: str) -> str:  # noqa: D401
-        client, name = client_and_name
-        cfg = _gen_cfg()
-        # Older sdk had both client.models.generate_content and client.generate_content.
+    if _HAS_GENERATIVE_MODEL:
+        response = model_handle.generate_content(prompt, generation_config=cfg)
+        raw = response.text  # first candidate’s text
+    else:
+        client, name = model_handle
         if hasattr(client, "models") and hasattr(client.models, "generate_content"):
-            rsp = client.models.generate_content(model=name, contents=prompt, config=cfg)
+            rsp = client.models.generate_content(model=name, contents=prompt, config=cfg)  # type: ignore[attr-defined]
         else:
-            rsp = client.generate_content(model=name, contents=prompt, config=cfg)  # type: ignore
-        return rsp.candidates[0].text  # type: ignore
+            rsp = client.generate_content(model=name, contents=prompt, config=cfg)  # type: ignore[attr-defined]
+        raw = rsp.candidates[0].text  # type: ignore[attr-defined]
 
-def _annotate(model_handle, question: str, sentences: List[str]) -> Annotations:
-    raw = _call(model_handle, _build_prompt(question, sentences))
-    return Annotations(**json.loads(raw))
+    return raw or ""  # never return None
+
+def _parse_json(raw: str) -> Dict[str, Any]:
+    """Return a mapping that fits the `Annotations` schema.
+
+    Gemini might send either
+      • a mapping   -> {"annotations": [...]}
+      • a bare list -> [ {...}, {...} ]
+    If we get the bare list form, we wrap it so Pydantic always receives a dict.
+    """
+    raw = raw.strip()
+    raw = re.sub(r"^```(?:json)?|```$", "", raw,
+                 flags=re.IGNORECASE | re.MULTILINE | re.DOTALL).strip()
+
+    def _loads(s: str):
+        try:
+            return json.loads(s)
+        except Exception:
+            return None
+
+    obj = _loads(raw)
+    if obj is None:
+        m = re.search(r"\\{.*\\}|\\[.*\\]", raw, flags=re.DOTALL)
+        if m:
+            obj = _loads(m.group(0))
+    if obj is None:
+        raise json.JSONDecodeError("Could not parse JSON", raw, 0)
+
+    if isinstance(obj, list):
+        obj = {"annotations": obj}
+    return obj
+
+def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations:
+    prompt = _build_prompt(question, sentences)
+
+    # 🔍  Show the exact prompt (as requested by user)
+    print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
+
+    raw = _call(model_handle, prompt, n_samples=n_samples)
+    data = _parse_json(raw)
+    return Annotations(**data)
 
 def run_annotation_pipeline(
     completions_file: str,
@@ -116,9 +141,11 @@ def run_annotation_pipeline(
     output_file: str,
     api_key: Optional[str] = None,
     model_name: str = "gemini-pro",
+    *,
+    n_samples: int = 1,
 ):
     key = _configure_genai(api_key)
-    model_handle = _make_model(model_name) if _HAS_GENERATIVE_MODEL else _make_model(model_name, key)
+    model_handle = _make_model(model_name, key) if not _HAS_GENERATIVE_MODEL else _make_model(model_name)
 
     with open(completions_file, encoding="utf-8") as f:
         completions = json.load(f)
@@ -135,7 +162,7 @@ def run_annotation_pipeline(
     for entry in tqdm(completions, desc="Annotating", unit="CoT"):
         qid = entry["question_id"]
         sentences = _split_sentences(entry["completion"])
-        ann = _annotate(model_handle, get_q(qid), sentences)
+        ann = _annotate(model_handle, get_q(qid), sentences, n_samples)
         results.append({"question_id": qid, "annotations": [a.dict() for a in ann.annotations]})
 
     with open(output_file, "w", encoding="utf-8") as f:
