@@ -21,6 +21,12 @@ Usage
     python link_yes_no.py IN_NO_DIR IN_YES_DIR OUT_NO_DIR OUT_YES_DIR
     python link_yes_no.py IN_NO_DIR IN_YES_DIR OUT_NO_DIR OUT_YES_DIR -s _linked
 
+python e_confirm_xy_yx/utils/link_yes_no.py \
+    data/chainscope/questions_json/unlinked/gt_NO_12 \
+    data/chainscope/questions_json/unlinked/gt_YES_12 \
+    data/chainscope/questions_json/linked/gt_NO_1 \
+    data/chainscope/questions_json/linked/gt_YES_1
+
 With the ``-s / --suffix`` option each output file name will be suffixed before
 its extension (e.g. ``foo.json`` → ``foo_linked.json``).
 """
@@ -133,7 +139,13 @@ def main() -> None:
         shutil.copyfile(yes_f, yes_target)
 
         # Cross‑link the freshly copied files in place
-        cross_link(no_target, yes_target)
+        try:
+            cross_link(no_target, yes_target)
+        except Exception as e:
+            print(
+                f"✗ failed linking {no_f.name} ↔ {yes_f.name}: {e}",
+                file=sys.stderr,
+            )
 
 
 if __name__ == "__main__":

@@ -15,7 +15,8 @@
       "x_name": "Haldia Energy Power Station",
       "x_value": 88.1769,
       "y_name": "Raichak on Ganges",
-      "y_value": 88.13
+      "y_value": 88.13,
+      "no_question_id": 21
     },
     {
       "question_id": 2,
@@ -25,7 +26,8 @@
       "x_name": "Lake Ray Roberts",
       "x_value": -97.0514,
       "y_name": "Grapevine Lake",
-      "y_value": -97.0567
+      "y_value": -97.0567,
+      "no_question_id": 42
     },
     {
       "question_id": 3,
@@ -35,7 +37,8 @@
       "x_name": "Český Šternberk Castle",
       "x_value": 14.9267,
       "y_name": "Vadstena Castle",
-      "y_value": 14.8836
+      "y_value": 14.8836,
+      "no_question_id": 11
     },
     {
       "question_id": 4,
@@ -45,7 +48,8 @@
       "x_name": "Rostov State Musical Theater",
       "x_value": 39.7325,
       "y_name": "Garissa Solar Power Station",
-      "y_value": 39.6008
+      "y_value": 39.6008,
+      "no_question_id": 53
     },
     {
       "question_id": 5,
@@ -55,7 +59,8 @@
       "x_name": "Crossway Baptist Church",
       "x_value": 145.167,
       "y_name": "Yan Yean Reservoir",
-      "y_value": 145.133
+      "y_value": 145.133,
+      "no_question_id": 98
     },
     {
       "question_id": 6,
@@ -65,7 +70,8 @@
       "x_name": "AFI Silver",
       "x_value": -77.0276,
       "y_name": "White House (plantation)",
-      "y_value": -77.0287
+      "y_value": -77.0287,
+      "no_question_id": 14
     },
     {
       "question_id": 7,
@@ -75,7 +81,8 @@
       "x_name": "Hill Place",
       "x_value": -1.16532,
       "y_name": "Manydown",
-      "y_value": -1.16864
+      "y_value": -1.16864,
+      "no_question_id": 49
     },
     {
       "question_id": 8,
@@ -85,7 +92,8 @@
       "x_name": "St John's Church, Bath",
       "x_value": -2.35556,
       "y_name": "Bath Abbey",
-      "y_value": -2.35889
+      "y_value": -2.35889,
+      "no_question_id": 25
     },
     {
       "question_id": 9,
@@ -95,7 +103,8 @@
       "x_name": "Portumna Castle",
       "x_value": -8.2189,
       "y_name": "Palace of the Dukes of Braganza",
-      "y_value": -8.29101
+      "y_value": -8.29101,
+      "no_question_id": 65
     },
     {
       "question_id": 10,
@@ -105,7 +114,8 @@
       "x_name": "Salle Wagram",
       "x_value": 2.2969,
       "y_name": "Théâtre national de Chaillot",
-      "y_value": 2.28198
+      "y_value": 2.28198,
+      "no_question_id": 20
     },
     {
       "question_id": 11,
@@ -115,7 +125,8 @@
       "x_name": "Electoral Palace, Mainz",
       "x_value": 8.27056,
       "y_name": "Unionskirche, Idstein",
-      "y_value": 8.26972
+      "y_value": 8.26972,
+      "no_question_id": 75
     },
     {
       "question_id": 12,
@@ -125,7 +136,8 @@
       "x_name": "Shellmouth Reservoir",
       "x_value": -101.505,
       "y_name": "Cathedral of León, Guanajuato",
-      "y_value": -101.682
+      "y_value": -101.682,
+      "no_question_id": 46
     },
     {
       "question_id": 13,
@@ -135,7 +147,8 @@
       "x_name": "Notting Hill Gate tube station",
       "x_value": -0.197,
       "y_name": "St Mary of the Angels, Bayswater",
-      "y_value": -0.1974
+      "y_value": -0.1974,
+      "no_question_id": 51
     },
     {
       "question_id": 14,
@@ -145,7 +158,8 @@
       "x_name": "Southgate tube station",
       "x_value": -0.12805,
       "y_name": "Leicester Square tube station",
-      "y_value": -0.128056
+      "y_value": -0.128056,
+      "no_question_id": 19
     },
     {
       "question_id": 15,
@@ -155,7 +169,8 @@
       "x_name": "Phát Diệm Cathedral",
       "x_value": 106.079,
       "y_name": "Don Sahong Dam",
-      "y_value": 105.956
+      "y_value": 105.956,
+      "no_question_id": 15
     },
     {
       "question_id": 16,
@@ -165,7 +180,8 @@
       "x_name": "REK Bitola",
       "x_value": 21.4833,
       "y_name": "Kozienice Power Station",
-      "y_value": 21.4667
+      "y_value": 21.4667,
+      "no_question_id": 33
     },
     {
       "question_id": 17,
@@ -175,7 +191,8 @@
       "x_name": "Brockley Hill tube station",
       "x_value": -0.287,
       "y_name": "Kew Bridge railway station",
-      "y_value": -0.2878
+      "y_value": -0.2878,
+      "no_question_id": 45
     },
     {
       "question_id": 18,
@@ -185,7 +202,8 @@
       "x_name": "Glide Memorial Church",
       "x_value": -122.411,
       "y_name": "Shasta Dam",
-      "y_value": -122.419
+      "y_value": -122.419,
+      "no_question_id": 17
     },
     {
       "question_id": 19,
@@ -195,7 +213,8 @@
       "x_name": "Milton Keynes Theatre",
       "x_value": -0.7488,
       "y_name": "Wycombe Swan",
-      "y_value": -0.7504
+      "y_value": -0.7504,
+      "no_question_id": 16
     },
     {
       "question_id": 20,
@@ -205,7 +224,8 @@
       "x_name": "Dhekelia Power Station",
       "x_value": 33.7458,
       "y_name": "Larnaca Castle",
-      "y_value": 33.6377
+      "y_value": 33.6377,
+      "no_question_id": 34
     },
     {
       "question_id": 21,
@@ -215,7 +235,8 @@
       "x_name": "Harrow-on-the-Hill station",
       "x_value": -0.337,
       "y_name": "Thames Ditton railway station",
-      "y_value": -0.3383
+      "y_value": -0.3383,
+      "no_question_id": 8
     },
     {
       "question_id": 22,
@@ -225,7 +246,8 @@
       "x_name": "Seventeenth Church of Christ, Scientist",
       "x_value": -87.6259,
       "y_name": "St. James Cathedral (Chicago)",
-      "y_value": -87.6264
+      "y_value": -87.6264,
+      "no_question_id": 37
     },
     {
       "question_id": 23,
@@ -235,7 +257,8 @@
       "x_name": "Sacro Cuore di Gesù a Castro Pretorio",
       "x_value": 12.5026,
       "y_name": "San Giovanni a Porta Latina",
-      "y_value": 12.5019
+      "y_value": 12.5019,
+      "no_question_id": 93
     },
     {
       "question_id": 24,
@@ -245,7 +268,8 @@
       "x_name": "Bala Hissar, Peshawar",
       "x_value": 71.5698,
       "y_name": "Chashma Nuclear Power Plant",
-      "y_value": 71.4625
+      "y_value": 71.4625,
+      "no_question_id": 56
     },
     {
       "question_id": 25,
@@ -255,7 +279,8 @@
       "x_name": "New Barnet railway station",
       "x_value": -0.1733,
       "y_name": "South Kensington tube station",
-      "y_value": -0.1738
+      "y_value": -0.1738,
+      "no_question_id": 88
     },
     {
       "question_id": 26,
@@ -265,7 +290,8 @@
       "x_name": "Clapham South tube station",
       "x_value": -0.147,
       "y_name": "Down Street tube station",
-      "y_value": -0.1475
+      "y_value": -0.1475,
+      "no_question_id": 97
     },
     {
       "question_id": 27,
@@ -275,7 +301,8 @@
       "x_name": "El Gigante de Alberdi",
       "x_value": -64.2063,
       "y_name": "Estadio Mario Alberto Kempes",
-      "y_value": -64.2462
+      "y_value": -64.2462,
+      "no_question_id": 29
     },
     {
       "question_id": 28,
@@ -285,7 +312,8 @@
       "x_name": "Kikagati Hydroelectric Power Station",
       "x_value": 30.6592,
       "y_name": "Kyiv Pechersk Lavra",
-      "y_value": 30.5592
+      "y_value": 30.5592,
+      "no_question_id": 76
     },
     {
       "question_id": 29,
@@ -295,7 +323,8 @@
       "x_name": "Gråsten Palace",
       "x_value": 9.59528,
       "y_name": "Ahlden House",
-      "y_value": 9.558
+      "y_value": 9.558,
+      "no_question_id": 41
     },
     {
       "question_id": 30,
@@ -305,7 +334,8 @@
       "x_name": "St Mirin's Cathedral",
       "x_value": -4.417,
       "y_name": "Málaga Cathedral",
-      "y_value": -4.42012
+      "y_value": -4.42012,
+      "no_question_id": 92
     },
     {
       "question_id": 31,
@@ -315,7 +345,8 @@
       "x_name": "Chislehurst railway station",
       "x_value": 0.0573,
       "y_name": "Kings Arms, Woolwich",
-      "y_value": 0.0561
+      "y_value": 0.0561,
+      "no_question_id": 44
     },
     {
       "question_id": 32,
@@ -325,7 +356,8 @@
       "x_name": "St. John's Orphanage",
       "x_value": 149.71,
       "y_name": "Ben Chifley Dam",
-      "y_value": 149.637
+      "y_value": 149.637,
+      "no_question_id": 3
     },
     {
       "question_id": 33,
@@ -335,7 +367,8 @@
       "x_name": "Mustafa Castle",
       "x_value": 77.6959,
       "y_name": "Asan Barrage",
-      "y_value": 77.6656
+      "y_value": 77.6656,
+      "no_question_id": 13
     },
     {
       "question_id": 34,
@@ -345,7 +378,8 @@
       "x_name": "Sri Lankan Parliament Building",
       "x_value": 79.9187,
       "y_name": "Altitude (building)",
-      "y_value": 79.9022
+      "y_value": 79.9022,
+      "no_question_id": 61
     },
     {
       "question_id": 35,
@@ -355,7 +389,8 @@
       "x_name": "St Mary's Star of the Sea Cathedral, Darwin",
       "x_value": 130.838,
       "y_name": "Inunaki Dam",
-      "y_value": 130.559
+      "y_value": 130.559,
+      "no_question_id": 77
     },
     {
       "question_id": 36,
@@ -365,7 +400,8 @@
       "x_name": "YUL Condos",
       "x_value": -73.5732,
       "y_name": "Maison Alcan",
-      "y_value": -73.5772
+      "y_value": -73.5772,
+      "no_question_id": 70
     },
     {
       "question_id": 37,
@@ -375,7 +411,8 @@
       "x_name": "Sarang Community Church of Southern California",
       "x_value": -117.961,
       "y_name": "Little Goose Dam",
-      "y_value": -118.028
+      "y_value": -118.028,
+      "no_question_id": 62
     },
     {
       "question_id": 38,
@@ -385,7 +422,8 @@
       "x_name": "Great Wall of China",
       "x_value": 117.23,
       "y_name": "Tianjin Modern City Office Tower",
-      "y_value": 117.192
+      "y_value": 117.192,
+      "no_question_id": 57
     },
     {
       "question_id": 39,
@@ -395,7 +433,8 @@
       "x_name": "Gothenburg Cathedral",
       "x_value": 11.9653,
       "y_name": "Ledreborg",
-      "y_value": 11.9503
+      "y_value": 11.9503,
+      "no_question_id": 1
     },
     {
       "question_id": 40,
@@ -405,7 +444,8 @@
       "x_name": "Ginza Six",
       "x_value": 139.764,
       "y_name": "Nittele Tower",
-      "y_value": 139.76
+      "y_value": 139.76,
+      "no_question_id": 66
     },
     {
       "question_id": 41,
@@ -415,7 +455,8 @@
       "x_name": "Athlone Power Station",
       "x_value": 18.5136,
       "y_name": "Genadendal Residence",
-      "y_value": 18.4652
+      "y_value": 18.4652,
+      "no_question_id": 89
     },
     {
       "question_id": 42,
@@ -425,7 +466,8 @@
       "x_name": "Uppsala Castle",
       "x_value": 17.6353,
       "y_name": "Uppsala Cathedral",
-      "y_value": 17.6333
+      "y_value": 17.6333,
+      "no_question_id": 78
     },
     {
       "question_id": 43,
@@ -435,7 +477,8 @@
       "x_name": "Lake Wallenpaupack",
       "x_value": -75.2403,
       "y_name": "Cathedral Basilica of Our Lady of Rosary, Manizales",
-      "y_value": -75.5174
+      "y_value": -75.5174,
+      "no_question_id": 80
     },
     {
       "question_id": 44,
@@ -445,7 +488,8 @@
       "x_name": "Twitchell Reservoir",
       "x_value": -120.333,
       "y_name": "Don Pedro Reservoir",
-      "y_value": -120.373
+      "y_value": -120.373,
+      "no_question_id": 10
     },
     {
       "question_id": 45,
@@ -455,7 +499,8 @@
       "x_name": "Lambton Castle",
       "x_value": -1.536,
       "y_name": "Leeds Kirkgate Market",
-      "y_value": -1.5397
+      "y_value": -1.5397,
+      "no_question_id": 38
     },
     {
       "question_id": 46,
@@ -465,7 +510,8 @@
       "x_name": "St Michael and All Angels' Church, East Coker",
       "x_value": -2.65731,
       "y_name": "Brechin Cathedral",
-      "y_value": -2.6615
+      "y_value": -2.6615,
+      "no_question_id": 100
     },
     {
       "question_id": 47,
@@ -475,7 +521,8 @@
       "x_name": "Barakah nuclear power plant",
       "x_value": 52.2317,
       "y_name": "Church of Our Lady of the Rosary (Doha)",
-      "y_value": 51.5219
+      "y_value": 51.5219,
+      "no_question_id": 26
     },
     {
       "question_id": 48,
@@ -485,7 +532,8 @@
       "x_name": "One Yonge Street",
       "x_value": -79.3744,
       "y_name": "Merchandise Building",
-      "y_value": -79.3766
+      "y_value": -79.3766,
+      "no_question_id": 69
     },
     {
       "question_id": 49,
@@ -495,7 +543,8 @@
       "x_name": "North Carolina Blumenthal Performing Arts Center",
       "x_value": -80.8415,
       "y_name": "Cathedral of Saint Patrick (Charlotte, North Carolina)",
-      "y_value": -80.8456
+      "y_value": -80.8456,
+      "no_question_id": 94
     },
     {
       "question_id": 50,
@@ -505,7 +554,8 @@
       "x_name": "Palmers Green railway station",
       "x_value": -0.1102,
       "y_name": "St Dunstan-in-the-West",
-      "y_value": -0.110222
+      "y_value": -0.110222,
+      "no_question_id": 32
     },
     {
       "question_id": 51,
@@ -515,7 +565,8 @@
       "x_name": "Basilica of Our Lady of Walsingham",
       "x_value": 0.85331,
       "y_name": "Race Bank wind farm",
-      "y_value": 0.841
+      "y_value": 0.841,
+      "no_question_id": 43
     },
     {
       "question_id": 52,
@@ -525,7 +576,8 @@
       "x_name": "Mantua Cathedral",
       "x_value": 10.7975,
       "y_name": "Phaeno Science Center",
-      "y_value": 10.79
+      "y_value": 10.79,
+      "no_question_id": 63
     },
     {
       "question_id": 53,
@@ -535,7 +587,8 @@
       "x_name": "Strand Hotel",
       "x_value": 96.1626,
       "y_name": "54 University Avenue",
-      "y_value": 96.1505
+      "y_value": 96.1505,
+      "no_question_id": 36
     },
     {
       "question_id": 54,
@@ -545,7 +598,8 @@
       "x_name": "St James' Church, Louth",
       "x_value": -0.008,
       "y_name": "Stratford International station",
-      "y_value": -0.0086
+      "y_value": -0.0086,
+      "no_question_id": 74
     },
     {
       "question_id": 55,
@@ -555,7 +609,8 @@
       "x_name": "Wright Patman Lake",
       "x_value": -94.16,
       "y_name": "Lake Winnibigoshish",
-      "y_value": -94.18
+      "y_value": -94.18,
+      "no_question_id": 59
     },
     {
       "question_id": 56,
@@ -565,7 +620,8 @@
       "x_name": "Holy Name Church (West Roxbury, Massachusetts)",
       "x_value": -71.1467,
       "y_name": "Notre-Dame-des-Victoires Church",
-      "y_value": -71.2027
+      "y_value": -71.2027,
+      "no_question_id": 81
     },
     {
       "question_id": 57,
@@ -575,7 +631,8 @@
       "x_name": "Tower of London tube station",
       "x_value": -0.0766667,
       "y_name": "All Hallows' Church, Tottenham",
-      "y_value": -0.0767
+      "y_value": -0.0767,
+      "no_question_id": 18
     },
     {
       "question_id": 58,
@@ -585,7 +642,8 @@
       "x_name": "195 Broadway",
       "x_value": -74.0093,
       "y_name": "70 Vestry",
-      "y_value": -74.0114
+      "y_value": -74.0114,
+      "no_question_id": 83
     },
     {
       "question_id": 59,
@@ -595,7 +653,8 @@
       "x_name": "Belém Palace",
       "x_value": -9.20069,
       "y_name": "Padrão dos Descobrimentos",
-      "y_value": -9.20572
+      "y_value": -9.20572,
+      "no_question_id": 54
     },
     {
       "question_id": 60,
@@ -605,7 +664,8 @@
       "x_name": "Idukki Dam",
       "x_value": 76.9761,
       "y_name": "Aliyar Reservoir",
-      "y_value": 76.9728
+      "y_value": 76.9728,
+      "no_question_id": 23
     },
     {
       "question_id": 61,
@@ -615,7 +675,8 @@
       "x_name": "Immaculate Conception Cathedral, Apia",
       "x_value": -171.767,
       "y_name": "Haʻamonga ʻa Maui",
-      "y_value": -175.048
+      "y_value": -175.048,
+      "no_question_id": 84
     },
     {
       "question_id": 62,
@@ -625,7 +686,8 @@
       "x_name": "St Anne's Cathedral, Belfast",
       "x_value": -5.92833,
       "y_name": "Tribeca Belfast",
-      "y_value": -5.929
+      "y_value": -5.929,
+      "no_question_id": 7
     },
     {
       "question_id": 63,
@@ -635,7 +697,8 @@
       "x_name": "Dunblane Cathedral",
       "x_value": -3.96525,
       "y_name": "Ffestiniog Power Station",
-      "y_value": -3.96889
+      "y_value": -3.96889,
+      "no_question_id": 86
     },
     {
       "question_id": 64,
@@ -645,7 +708,8 @@
       "x_name": "Stepney Green tube station",
       "x_value": -0.046389,
       "y_name": "Surrey Quays railway station",
-      "y_value": -0.04717
+      "y_value": -0.04717,
+      "no_question_id": 91
     },
     {
       "question_id": 65,
@@ -655,7 +719,8 @@
       "x_name": "Old Åsane Church",
       "x_value": 5.47479,
       "y_name": "Hôtel de Caumont",
-      "y_value": 5.4488
+      "y_value": 5.4488,
+      "no_question_id": 35
     },
     {
       "question_id": 66,
@@ -665,7 +730,8 @@
       "x_name": "Hunter Expressway",
       "x_value": 151.6,
       "y_name": "Munmorah Power Station",
-      "y_value": 151.542
+      "y_value": 151.542,
+      "no_question_id": 28
     },
     {
       "question_id": 67,
@@ -675,7 +741,8 @@
       "x_name": "Rivne Nuclear Power Plant",
       "x_value": 25.8917,
       "y_name": "Victoria Falls Hotel",
-      "y_value": 25.8426
+      "y_value": 25.8426,
+      "no_question_id": 9
     },
     {
       "question_id": 68,
@@ -685,7 +752,8 @@
       "x_name": "Holy Trinity Church (Manhattan)",
       "x_value": -73.9774,
       "y_name": "75 Rockefeller Plaza",
-      "y_value": -73.9778
+      "y_value": -73.9778,
+      "no_question_id": 58
     },
     {
       "question_id": 69,
@@ -695,7 +763,8 @@
       "x_name": "The Brazen Head",
       "x_value": -6.27631,
       "y_name": "John's Lane Church",
-      "y_value": -6.2775
+      "y_value": -6.2775,
+      "no_question_id": 64
     },
     {
       "question_id": 70,
@@ -705,7 +774,8 @@
       "x_name": "Zhengzhou Ferris Wheel",
       "x_value": 113.719,
       "y_name": "Wiebbe Hayes Stone Fort",
-      "y_value": 113.704
+      "y_value": 113.704,
+      "no_question_id": 2
     },
     {
       "question_id": 71,
@@ -715,7 +785,8 @@
       "x_name": "Barnehurst railway station",
       "x_value": 0.1595,
       "y_name": "Belvedere railway station",
-      "y_value": 0.1524
+      "y_value": 0.1524,
+      "no_question_id": 12
     },
     {
       "question_id": 72,
@@ -725,7 +796,8 @@
       "x_name": "Sant'Andrea della Valle",
       "x_value": 12.4744,
       "y_name": "Sant'Agostino, Rome",
-      "y_value": 12.4742
+      "y_value": 12.4742,
+      "no_question_id": 99
     },
     {
       "question_id": 73,
@@ -735,7 +807,8 @@
       "x_name": "Canonbury railway station",
       "x_value": -0.0925,
       "y_name": "St Peter's Church, Walworth",
-      "y_value": -0.0926306
+      "y_value": -0.0926306,
+      "no_question_id": 4
     },
     {
       "question_id": 74,
@@ -745,7 +818,8 @@
       "x_name": "Saint Spyridon Church, Trieste",
       "x_value": 13.7733,
       "y_name": "Festspielhaus Hellerau",
-      "y_value": 13.7531
+      "y_value": 13.7531,
+      "no_question_id": 39
     },
     {
       "question_id": 75,
@@ -755,7 +829,8 @@
       "x_name": "Xayaburi Dam",
       "x_value": 101.818,
       "y_name": "Tuanku Jaafar Power Station",
-      "y_value": 101.791
+      "y_value": 101.791,
+      "no_question_id": 73
     },
     {
       "question_id": 76,
@@ -765,7 +840,8 @@
       "x_name": "Under (restaurant)",
       "x_value": 7.1546,
       "y_name": "Langer Eugen",
-      "y_value": 7.1276
+      "y_value": 7.1276,
+      "no_question_id": 71
     },
     {
       "question_id": 77,
@@ -775,7 +851,8 @@
       "x_name": "Ibaan Church",
       "x_value": 121.133,
       "y_name": "Saint Joseph the Patriarch Church (Batangas)",
-      "y_value": 121.104
+      "y_value": 121.104,
+      "no_question_id": 5
     },
     {
       "question_id": 78,
@@ -785,7 +862,8 @@
       "x_name": "Cassiobury House",
       "x_value": -0.418889,
       "y_name": "Ruislip tube station",
-      "y_value": -0.421111
+      "y_value": -0.421111,
+      "no_question_id": 50
     },
     {
       "question_id": 79,
@@ -795,7 +873,8 @@
       "x_name": "St Mary's Church, Ottery St Mary",
       "x_value": -3.2789,
       "y_name": "Upper Boat Studios",
-      "y_value": -3.3
+      "y_value": -3.3,
+      "no_question_id": 55
     },
     {
       "question_id": 80,
@@ -805,7 +884,8 @@
       "x_name": "Tancredo Neves Pantheon of the Fatherland and Freedom",
       "x_value": -47.8603,
       "y_name": "Palácio do Planalto",
-      "y_value": -47.8608
+      "y_value": -47.8608,
+      "no_question_id": 22
     },
     {
       "question_id": 81,
@@ -815,7 +895,8 @@
       "x_name": "Princess Ljubica's Residence",
       "x_value": 20.4522,
       "y_name": "Building of the Patriarchate, Belgrade",
-      "y_value": 20.4516
+      "y_value": 20.4516,
+      "no_question_id": 95
     },
     {
       "question_id": 82,
@@ -825,7 +906,8 @@
       "x_name": "Jimenez Church",
       "x_value": 123.839,
       "y_name": "Loon Church",
-      "y_value": 123.793
+      "y_value": 123.793,
+      "no_question_id": 6
     },
     {
       "question_id": 83,
@@ -835,7 +917,8 @@
       "x_name": "Church of Our Lady of Laeken",
       "x_value": 4.3557,
       "y_name": "La Monnaie",
-      "y_value": 4.35389
+      "y_value": 4.35389,
+      "no_question_id": 24
     },
     {
       "question_id": 84,
@@ -845,7 +928,8 @@
       "x_name": "Sutton Coldfield Town Hall",
       "x_value": -1.82511,
       "y_name": "Rockbourne Roman Villa",
-      "y_value": -1.8304
+      "y_value": -1.8304,
+      "no_question_id": 30
     },
     {
       "question_id": 85,
@@ -855,7 +939,8 @@
       "x_name": "St. Mary's Episcopal Cathedral (Memphis, Tennessee)",
       "x_value": -90.0368,
       "y_name": "Marigny Opera House",
-      "y_value": -90.0491
+      "y_value": -90.0491,
+      "no_question_id": 72
     },
     {
       "question_id": 86,
@@ -865,7 +950,8 @@
       "x_name": "House of the Livonian Noble Corporation",
       "x_value": 24.1044,
       "y_name": "Riga Castle",
-      "y_value": 24.1006
+      "y_value": 24.1006,
+      "no_question_id": 79
     },
     {
       "question_id": 87,
@@ -875,7 +961,8 @@
       "x_name": "Outspan Hotel",
       "x_value": 36.9418,
       "y_name": "Beles Hydroelectric Power Plant",
-      "y_value": 36.9189
+      "y_value": 36.9189,
+      "no_question_id": 85
     },
     {
       "question_id": 88,
@@ -885,7 +972,8 @@
       "x_name": "Santiago Apostol Church (Plaridel)",
       "x_value": 120.86,
       "y_name": "Saint Gregory the Great Parish Church (Indang)",
-      "y_value": 120.84
+      "y_value": 120.84,
+      "no_question_id": 27
     },
     {
       "question_id": 89,
@@ -895,7 +983,8 @@
       "x_name": "Tadworth railway station",
       "x_value": -0.236,
       "y_name": "Dollis Hill House",
-      "y_value": -0.237078
+      "y_value": -0.237078,
+      "no_question_id": 48
     },
     {
       "question_id": 90,
@@ -905,7 +994,8 @@
       "x_name": "Banasura Hill Resort",
       "x_value": 75.9231,
       "y_name": "Farook College",
-      "y_value": 75.857
+      "y_value": 75.857,
+      "no_question_id": 47
     },
     {
       "question_id": 91,
@@ -915,7 +1005,8 @@
       "x_name": "Ukai Dam",
       "x_value": 73.5894,
       "y_name": "Azad Pattan Hydropower Project",
-      "y_value": 73.5715
+      "y_value": 73.5715,
+      "no_question_id": 68
     },
     {
       "question_id": 92,
@@ -925,7 +1016,8 @@
       "x_name": "First Presbyterian Church (Chattanooga, Tennessee)",
       "x_value": -85.3022,
       "y_name": "Green River Lake",
-      "y_value": -85.3308
+      "y_value": -85.3308,
+      "no_question_id": 67
     },
     {
       "question_id": 93,
@@ -935,7 +1027,8 @@
       "x_name": "Kirk of St Nicholas",
       "x_value": -2.0992,
       "y_name": "St Machar's Cathedral",
-      "y_value": -2.1021
+      "y_value": -2.1021,
+      "no_question_id": 31
     },
     {
       "question_id": 94,
@@ -945,7 +1038,8 @@
       "x_name": "Sahuarita Lake",
       "x_value": -110.968,
       "y_name": "Cathedral of Saint Augustine (Tucson, Arizona)",
-      "y_value": -110.971
+      "y_value": -110.971,
+      "no_question_id": 52
     },
     {
       "question_id": 95,
@@ -955,7 +1049,8 @@
       "x_name": "Folly Tower, Pontypool",
       "x_value": -3.0219,
       "y_name": "Inmos microprocessor factory",
-      "y_value": -3.0225
+      "y_value": -3.0225,
+      "no_question_id": 96
     },
     {
       "question_id": 96,
@@ -965,7 +1060,8 @@
       "x_name": "Guardian Angel Cathedral",
       "x_value": -115.164,
       "y_name": "The Grandview at Las Vegas",
-      "y_value": -115.172
+      "y_value": -115.172,
+      "no_question_id": 87
     },
     {
       "question_id": 97,
@@ -975,7 +1071,8 @@
       "x_name": "Saluda Lake",
       "x_value": -82.4886,
       "y_name": "Kanuga Conference Center",
-      "y_value": -82.5211
+      "y_value": -82.5211,
+      "no_question_id": 40
     },
     {
       "question_id": 98,
@@ -985,7 +1082,8 @@
       "x_name": "General Walker Hotel",
       "x_value": 13.0413,
       "y_name": "Orangery Palace",
-      "y_value": 13.029
+      "y_value": 13.029,
+      "no_question_id": 82
     },
     {
       "question_id": 99,
@@ -995,7 +1093,8 @@
       "x_name": "Vidhan Bhavan, Lucknow",
       "x_value": 80.9653,
       "y_name": "Dilkusha Kothi",
-      "y_value": 80.954
+      "y_value": 80.954,
+      "no_question_id": 60
     },
     {
       "question_id": 100,
@@ -1005,7 +1104,8 @@
       "x_name": "Moldova National Opera Ballet",
       "x_value": 28.83,
       "y_name": "Mthatha Dam",
-      "y_value": 28.74
+      "y_value": 28.74,
+      "no_question_id": 90
     }
   ]
 }
