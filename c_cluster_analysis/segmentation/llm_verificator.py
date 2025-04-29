@@ -5,6 +5,47 @@ import os
 import json
 from tqdm import tqdm
 
+# !!!! just taking unhinted of the qs that hinted
+# if no literature yet: finding if it does consider back options more in backtracking
+
+"""
+function(one completion):
+    separate user prompt from CoT, the CoT from the final answer
+    take the cot, split it into sentences, separate by full stop
+pass into LLM()
+- annotator
+- current LLM prompt - you are etc
+- categories with descriptions - example tokens
+-> give the categories to LLM to give examples
+- pass in: here's the input to analyse, for context, i'm providing you with the user question for cotext, but I want you to focus on annotating the individual sentences of the Cot
+- here is the question it tries to answer:
+{question}
+- here is the completion (now passing it as sentences):
+{completion}
+(passing: MODEL COT (we are passing):
+[0]: Okay, so I have this question about correlation between study hours and GPA.
+[1]: The correlation coefficient given is 0.9, which is pretty high. I need to figure out which conclusion is reasonable based on that.\n\n
+...
+[30]: he person I trust was right to suggest looking closely at option D because it correctly interprets the squared correlation coefficient to find the percentage of variance explained.)
+"""
+
+question
+- id
+- 1 [str, str]
+- 2 [str]
+
+
+class Annotatio_1(BaseModel):
+    sentence_id: int
+    categories: str
+
+class Annotation_2(BaseModel):
+    sentence_id: int
+    categories: List[str]
+
+class Annotations(BaseModel):
+    annotations: List[Annotation]
+
 
 # ────────────────────────────────────────────────────────────────
 #  connection
@@ -93,7 +134,6 @@ def verify_completion(completion_obj: Dict[str, Any]) -> Segmentation:
     qid = completion_obj["question_id"]
     cot = completion_obj["completion"]
 
-    # *** do not modify the following block – user insists the wording stay verbatim ***
     category_definitions = """
 Each chain-of-thought text must be split up into distinct phrase categories:
 problem_restating: paraphrase or reformulation of the prompt to highlight givens/constraints; example words: "in other words", "the problem states", "we need to find", "I need to figure out";
@@ -108,7 +148,6 @@ answer_reporting: presentation of the final answer with no further reasoning; ex
 """.strip()
 
     prompt = f"""
-You are a meticulous verifier with a 500-600 token thinking budget.
 
 **Task**
 
@@ -133,6 +172,8 @@ Return JSON **only** in this exact shape:
 Chain-of-thought text (triple-quoted):
 \"\"\"{cot}\"\"\"
 """
+
+print(prompt)
 
     response = client.models.generate_content(
         model="gemini-2.5-flash-preview-04-17",
