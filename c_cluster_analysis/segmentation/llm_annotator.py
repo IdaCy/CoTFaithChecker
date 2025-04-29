@@ -37,7 +37,6 @@ decision_confirmation: marking an intermediate result or branch as now settled; 
 answer_reporting: presentation of the final answer with no further reasoning; example words: "final answer:", "result:"
 """
 
-
 class Annotation(BaseModel):
     sentence_id: int
     categories: str
@@ -54,9 +53,24 @@ def _configure_genai(api_key: str | None) -> str:
     genai.configure(api_key=key)
     return key
 
+"""def _split_sentences(text: str) -> List[str]:
+    text = re.sub(r"\s+", " ", text.strip())
+    return [s for s in re.split(r"(?<=\.)\s+", text) if s]"""
+
 def _split_sentences(text: str) -> List[str]:
     text = re.sub(r"\s+", " ", text.strip())
-    return [s for s in re.split(r"(?<=\.)\s+", text) if s]
+    parts = [p.strip() for p in re.split(r"(?<=\.)\s+", text) if p.strip()]
+
+    merged: List[str] = []
+    i = 0
+    while i < len(parts):
+        if re.fullmatch(r"\d+\.", parts[i]) and i + 1 < len(parts):
+            merged.append(f"{parts[i]} {parts[i + 1]}")
+            i += 2
+        else:
+            merged.append(parts[i])
+            i += 1
+    return merged
 
 def _build_prompt(question: str, sentences: Sequence[str]) -> str:
     numbered = "\n".join(f"[{i}] {s}" for i, s in enumerate(sentences, 1))
@@ -75,7 +89,7 @@ def _make_model(model_name: str, api_key: Optional[str] = None):
     if _HAS_GENERATIVE_MODEL:
         return genai.GenerativeModel(model_name)
     # Legacy path – need client + model name
-    client = genai.Client(api_key=api_key)  # type: ignore[attr-defined]
+    client = genai.Client(api_key=api_key)
     return client, model_name
 
 
@@ -88,21 +102,14 @@ def _call(model_handle, prompt: str, n_samples: int = 1) -> str:
     else:
         client, name = model_handle
         if hasattr(client, "models") and hasattr(client.models, "generate_content"):
-            rsp = client.models.generate_content(model=name, contents=prompt, config=cfg)  # type: ignore[attr-defined]
+            rsp = client.models.generate_content(model=name, contents=prompt, config=cfg)
         else:
-            rsp = client.generate_content(model=name, contents=prompt, config=cfg)  # type: ignore[attr-defined]
-        raw = rsp.candidates[0].text  # type: ignore[attr-defined]
+            rsp = client.generate_content(model=name, contents=prompt, config=cfg)
+        raw = rsp.candidates[0].text
 
-    return raw or ""  # never return None
+    return raw or ""
 
 def _parse_json(raw: str) -> Dict[str, Any]:
-    """Return a mapping that fits the `Annotations` schema.
-
-    Gemini might send either
-      • a mapping   -> {"annotations": [...]}
-      • a bare list -> [ {...}, {...} ]
-    If we get the bare list form, we wrap it so Pydantic always receives a dict.
-    """
     raw = raw.strip()
     raw = re.sub(r"^```(?:json)?|```$", "", raw,
                  flags=re.IGNORECASE | re.MULTILINE | re.DOTALL).strip()
@@ -115,23 +122,65 @@ def _parse_json(raw: str) -> Dict[str, Any]:
 
     obj = _loads(raw)
     if obj is None:
-        m = re.search(r"\\{.*\\}|\\[.*\\]", raw, flags=re.DOTALL)
+        #m = re.search(r"\\{.*\\}|\\[.*\\]", raw, flags=re.DOTALL)
+        m = re.search(r"\{.*\}|\[.*\]", raw, flags=re.DOTALL)
         if m:
             obj = _loads(m.group(0))
     if obj is None:
         raise json.JSONDecodeError("Could not parse JSON", raw, 0)
 
-    if isinstance(obj, list):
-        obj = {"annotations": obj}
-    return obj
+    if isinstance(obj, dict) \
+       and all(re.fullmatch(r"\d+", k) for k in obj.keys()) \
+       and all(isinstance(v, str) for v in obj.values()):
+        return {
+            "annotations": [
+                {"sentence_id": int(k), "categories": v}
+                for k, v in obj.items()
+            ]
+        }
+
+    def _find_list(o):
+        if isinstance(o, list) and all(isinstance(x, dict) for x in o):
+            return o
+        if isinstance(o, dict):
+            if o and all(isinstance(v, dict) for v in o.values()):
+                return list(o.values())
+            for v in o.values():
+                hit = _find_list(v)
+                if hit is not None:
+                    return hit
+        return None
+
+    annotations = _find_list(obj)
+    if annotations is None:
+        raise ValueError("Could not locate a list of sentence annotations in Gemini response")
+
+    norm: List[Dict[str, Any]] = []
+    for idx, item in enumerate(annotations, 1):
+        if not isinstance(item, dict):
+            continue
+
+        sid = item.get("sentence_id")
+        if sid is None:                                 # fallback: parse “[12] …”
+            sent_txt = item.get("sentence") or item.get("text", "")
+            m_id = re.search(r"\[(\\d+)]", sent_txt)
+            sid = int(m_id.group(1)) if m_id else idx
+        cat = (item.get("categories") or item.get("category")
+               or item.get("label") or item.get("annotation"))
+        if cat is None:
+            continue
+
+        norm.append({"sentence_id": sid, "categories": cat})
+
+    return {"annotations": norm}
 
 def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations:
     prompt = _build_prompt(question, sentences)
 
-    # 🔍  Show the exact prompt (as requested by user)
     print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
 
     raw = _call(model_handle, prompt, n_samples=n_samples)
+    #print("\nRAW GEMINI RESPONSE:\n", raw, "\n" + "-"*80)
     data = _parse_json(raw)
     return Annotations(**data)
 
@@ -143,12 +192,15 @@ def run_annotation_pipeline(
     model_name: str = "gemini-pro",
     *,
     n_samples: int = 1,
+    max_items: Optional[int] = None,
 ):
     key = _configure_genai(api_key)
     model_handle = _make_model(model_name, key) if not _HAS_GENERATIVE_MODEL else _make_model(model_name)
 
     with open(completions_file, encoding="utf-8") as f:
         completions = json.load(f)
+        if max_items is not None:
+            completions = completions[:max_items]
     with open(questions_file, encoding="utf-8") as f:
         q_raw = json.load(f)
 
