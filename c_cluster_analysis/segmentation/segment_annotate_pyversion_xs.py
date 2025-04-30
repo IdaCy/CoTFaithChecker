@@ -31,7 +31,7 @@ print("Working directory set to:", os.getcwd())
 """
 nohup python -u c_cluster_analysis/segmentation/segment_annotate_pyversion.py > logs/segm_annotate_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 
-nohup python -u -m c_cluster_analysis.segmentation.segment_annotate_pyversion \
+nohup python -u -m c_cluster_analysis.segmentation.segment_annotate_pyversion_xs \
       > logs/segm_annotate_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 """
 
@@ -47,7 +47,7 @@ from c_cluster_analysis.segmentation.llm_annotator_confidence import run_annotat
 q_file = "data/mmlu/input_mcq_data.json"
 api_key = "AIzaSyAA7FRVBJwtSrpMZQZVkzzIVaCqHrabrKo"
 model_name = "gemini-2.5-flash-preview-04-17"
-max_items = None
+max_items = 20
 
 # from
 from_base = "data/mmlu/DeepSeek-R1-Distill-Llama-8B/"
@@ -87,7 +87,7 @@ run_annotation_pipeline(
     max_items=max_items,
 )
 
-### URGENCY
+"""### URGENCY
 from_file = "/completions_with_1000.json"
 htype = "induced_urgency"
 print(
@@ -121,4 +121,4 @@ run_annotation_pipeline(
 print(
     f"\finishing {htype} "
     f"{datetime.now(timezone.utc).astimezone().isoformat(timespec='seconds')}"
-)
+)"""
