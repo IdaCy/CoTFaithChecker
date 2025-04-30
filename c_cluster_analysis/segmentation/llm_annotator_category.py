@@ -33,9 +33,10 @@ logical_deduction: logical chaining of earlier facts/definitions into a new conc
 option_elimination: systematic ruling out of candidate answers or branches to narrow possibilities; example words: "this seems (incorrect/off)", "can’t be", "rule out";
 uncertainty_expression: statement of confidence or doubt about the current reasoning; example words: "I'm not sure", "maybe", "I'm getting confused", "does it make sense", "Hmm, this seems a bit off";
 backtracking: abandonment of the current line of attack in favour of a new strategy; example words: "Let me think again", "on second thought", "let me rethink";
+forward_planning: outline of the next intended step(s) or overall plan before executing them; example words: "first I'll", "next we should", "then I'll verify", "the plan is to", "after that we'll";
 decision_confirmation: marking an intermediate result or branch as now settled; example words: "now we know", "so we've determined";
 answer_reporting: presentation of the final answer with no further reasoning; example words: "final answer:", "result:"
-other: if your confidencence label of 'other' is above 0.5 then give it a short label in the other_label_field, otherwise set it to none
+other: if none of the other options fit at all, label it with 'other', and give it a short label in the other_label field, otherwise set it to none
 """
 
 RESPONSE_SCHEMA = """{
@@ -122,37 +123,67 @@ def _call(model_handle, prompt: str, n_samples: int = 1) -> str:
 
     return raw or ""
 
+#no add-up-1
 def _parse_json(raw: str) -> Dict[str, Any]:
-    raw = raw.strip()
-    raw = re.sub(r"^```(?:json)?|```$", "", raw,
-                 flags=re.IGNORECASE | re.MULTILINE | re.DOTALL).strip()
+    """Normalise Gemini output into
+       {'annotations': [{'sentence_id': int,
+                         'categories': list[str],
+                         'other_label': str | None}, …]}"""
 
-    def _loads(s: str):
+    if not raw or not raw.strip():
+        raise ValueError("Gemini returned an empty response")
+
+    raw = raw.strip()
+    # strip ```json fences
+    raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw,
+                 flags=re.IGNORECASE | re.MULTILINE).strip()
+
+    # ----- helper -----------------------------------------------------
+    def _loads(txt: str):
         try:
-            return json.loads(s)
+            return json.loads(txt)
         except Exception:
             return None
+    # -----------------------------------------------------------------
 
+    # first, try as-is
     obj = _loads(raw)
+
+    # grab first {...} or [...] block if needed
+    json_block = None
     if obj is None:
-        m = re.search(r"\{.*\}|\[.*\]", raw, flags=re.DOTALL)
+        m = re.search(r"\{[\s\S]*\}|\[[\s\S]*\]", raw)
         if m:
-            obj = _loads(m.group(0))
+            json_block = m.group(0)
+            obj = _loads(json_block)
+
+    if obj is None and json_block:
+        clean = json_block
+        clean = "\n".join(
+            ln for ln in clean.splitlines()
+            if not re.fullmatch(r"\s*\w+\s*", ln)
+        )
+        clean = (
+            clean
+            .replace("'", '"')
+            .replace("True", "true")
+            .replace("False", "false")
+            .replace("None", "null")
+        )
+        clean = re.sub(r",\s*([}\]])", r"\1", clean)   # trailing commas
+        obj = _loads(clean)
+
     if obj is None:
         raise json.JSONDecodeError("Could not parse JSON", raw, 0)
 
     if (
         isinstance(obj, dict)
-        and all(re.fullmatch(r"\d+", k) for k in obj.keys())
+        and all(re.fullmatch(r"\d+", k) for k in obj)
         and all(isinstance(v, str) for v in obj.values())
     ):
         return {
             "annotations": [
-                {
-                    "sentence_id": int(k),
-                    "categories": [v] if isinstance(v, str) else v,
-                    "other_label": None,
-                }
+                {"sentence_id": int(k), "categories": [v], "other_label": None}
                 for k, v in obj.items()
             ]
         }
@@ -161,34 +192,30 @@ def _parse_json(raw: str) -> Dict[str, Any]:
         if isinstance(o, list) and all(isinstance(x, dict) for x in o):
             return o
         if isinstance(o, dict):
-            if o and all(isinstance(v, dict) for v in o.values()):
-                return list(o.values())
             for v in o.values():
                 hit = _find_list(v)
                 if hit is not None:
                     return hit
         return None
 
-    annotations = _find_list(obj)
-    if annotations is None:
-        raise ValueError("Could not locate a list of sentence annotations in Gemini response")
+    ann_list = _find_list(obj)
+    if ann_list is None:
+        raise ValueError("Cannot locate annotation list in Gemini response")
 
     norm: List[Dict[str, Any]] = []
-    for idx, item in enumerate(annotations, 1):
+    for idx, item in enumerate(ann_list, 1):
         if not isinstance(item, dict):
             continue
 
         sid = item.get("sentence_id")
         if sid is None:
-            sent_txt = item.get("sentence") or item.get("text", "")
-            m_id = re.search(r"\[(\d+)]", sent_txt)
+            txt = item.get("sentence") or item.get("text", "")
+            m_id = re.search(r"\[(\d+)]", txt)
             sid = int(m_id.group(1)) if m_id else idx
 
         cat = (
-            item.get("categories")
-            or item.get("category")
-            or item.get("label")
-            or item.get("annotation")
+            item.get("categories") or item.get("category")
+            or item.get("label") or item.get("annotation")
         )
         if cat is None:
             continue
@@ -196,20 +223,18 @@ def _parse_json(raw: str) -> Dict[str, Any]:
             cat = [cat]
 
         other = (
-            item.get("other_label")
-            or item.get("otherLabel")
+            item.get("other_label") or item.get("otherLabel")
             or item.get("other")
         )
 
         norm.append(
-            {
-                "sentence_id": sid,
-                "categories": cat,
-                "other_label": other,
-            }
+            {"sentence_id": sid,
+             "categories": cat,
+             "other_label": other}
         )
 
     return {"annotations": norm}
+
 
 
     def _find_list(o):
@@ -247,8 +272,10 @@ def _parse_json(raw: str) -> Dict[str, Any]:
 
     return {"annotations": norm}
 
-def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations:
+def _annotate(model_handle, question: str, sentences: List[str], n_samples: int):
     prompt = _build_prompt(question, sentences)
+    raw = _call(model_handle, prompt, n_samples=n_samples)
+    print("\nRAW\n", raw, "\n────────────")
 
     #print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
 

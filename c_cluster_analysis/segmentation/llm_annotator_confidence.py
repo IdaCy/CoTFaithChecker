@@ -5,6 +5,7 @@ import re
 from typing import Any, Dict, List, Optional, Sequence
 from pydantic import BaseModel
 from tqdm import tqdm
+import ast
 
 import google.generativeai as genai
 
@@ -33,13 +34,31 @@ logical_deduction: logical chaining of earlier facts/definitions into a new conc
 option_elimination: systematic ruling out of candidate answers or branches to narrow possibilities; example words: "this seems (incorrect/off)", "can’t be", "rule out";
 uncertainty_expression: statement of confidence or doubt about the current reasoning; example words: "I'm not sure", "maybe", "I'm getting confused", "does it make sense", "Hmm, this seems a bit off";
 backtracking: abandonment of the current line of attack in favour of a new strategy; example words: "Let me think again", "on second thought", "let me rethink";
+forward_planning: outline of the next intended step(s) or overall plan before executing them; example words: "first I'll", "next we should", "then I'll verify", "the plan is to", "after that we'll";
 decision_confirmation: marking an intermediate result or branch as now settled; example words: "now we know", "so we've determined";
 answer_reporting: presentation of the final answer with no further reasoning; example words: "final answer:", "result:"
-(other etc)
-
 other: if your confidencence label of 'other' is above 0.5 then give it a short label in the other_label_field, otherwise set it to none
+"""
 
-in the condfidences field return how confident you are (from 0.0 to 1.0) that a given sentence belongs to a given category in this EXACT order [problem_restating_confidence, logical_deduction_confidcce,....etc]
+RESPONSE_SCHEMA = """{
+  "annotations": [
+    {
+      "sentence_id": int, 
+      "problem_restating": float,
+      "knowledge_augmentation": float,
+      "assumption_validation": float,
+      "logical_deduction": float,
+      "option_elimination": float,
+      "uncertainty_expression": float,
+      "backtracking": float,
+      "forward_planning": float,
+      "decision_confirmation": float,
+      "answer_reporting": float,
+      "other": float,
+      "other_label": str | null
+    }
+  ]
+}
 """
 
 CATEGORY_NAMES: List[str] = [
@@ -50,13 +69,21 @@ CATEGORY_NAMES: List[str] = [
     "option_elimination",
     "uncertainty_expression",
     "backtracking",
+    "forward_planning",
     "decision_confirmation",
     "answer_reporting",
     "other",
 ]
 
+class Annotation_1(BaseModel):
+    sentence_id: int
+    categories: List[float]
+    other_label: Optional[str] = None
 
-class Annotation(BaseModel):
+class Annotations_1(BaseModel):
+    annotations: List[Annotation_1]
+
+class Annotation_2(BaseModel):
     sentence_id: int
     problem_restating: float
     knowledge_augmentation: float
@@ -65,15 +92,49 @@ class Annotation(BaseModel):
     option_elimination: float
     uncertainty_expression: float
     backtracking: float
+    forward_planning: float
     decision_confirmation: float
     answer_reporting: float
     other: float
     other_label: Optional[str] = None
 
+class Annotations_2(BaseModel):
+    sentence_id: int
+    annotations: List[Annotation_2]
 
-class Annotations(BaseModel):
-    annotations: List[Annotation]
-CoTAnnotation = Annotations
+CoTAnnotation = Annotations_1
+
+def annotations_to_annotations_2(annotations: Annotations) -> Annotations_2:
+    # Define the order of fields in Annotation_2 that correspond to categories
+    annotation_2_fields = [
+        "problem_restating",
+        "knowledge_augmentation",
+        "assumption_validation",
+        "logical_deduction",
+        "option_elimination",
+        "uncertainty_expression",
+        "backtracking",
+        "forward_planning",
+        "decision_confirmation",
+        "answer_reporting",
+        "other"
+    ]
+    
+    annotation_2_list = []
+    for ann1 in annotations.annotations:
+        # Map each float in categories to the corresponding field
+        ann2_kwargs = {
+            "sentence_id": ann1.sentence_id,
+            "other_label": ann1.other_label
+        }
+        for idx, field in enumerate(annotation_2_fields):
+            ann2_kwargs[field] = ann1.categories[idx] if idx < len(ann1.categories) else 0.0  # or None, as appropriate
+        
+        annotation_2_list.append(Annotation_2(**ann2_kwargs))
+    
+    # If you want to group by sentence_id, you can do so here.
+    # For now, let's assume you want a flat list:
+    return Annotations_2(sentence_id=None, annotations=annotation_2_list)
 
 def _configure_genai(api_key: str | None) -> str:
     key = api_key or os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
@@ -116,7 +177,8 @@ def _build_prompt(question: str, sentences: Sequence[str]) -> str:
         f"{{{question}}}\n\n"
         "Sentences:\n"
         f"{numbered}\n\n"
-        "Return **only** JSON that matches the response_schema."
+        "Return **only** JSON that matches the response_schema"
+        "Please return the confidence for each category in the list in this EXACT order: [problem_restating,knowledge_augmentation,assumption_validation,logical_deduction,option_elimination,uncertainty_expression,backtracking,forward_planning,decision_confirmation,answer_reporting,other]"
     )
 
 def _make_model(model_name: str, api_key: Optional[str] = None):
@@ -153,17 +215,49 @@ def _kill_trailing_commas(txt: str) -> str:
     return re.sub(r",\s*(\}|])", r"\1", txt)
 
 
-def _parse_json(raw: str) -> Dict[str, Any]:
-    txt = _kill_trailing_commas(_strip_fences_and_comments(raw))
+_json_kw = {"null": "None", "true": "True", "false": "False"}
 
+def _fallback_literal_eval(txt: str):
+    txt = re.sub(r'(?m)^\s*([A-Za-z_][\w]*)\s*:', r'"\1":', txt)
+    txt = re.sub(r"'", r'"', txt)
+    for j, p in _json_kw.items():
+        txt = re.sub(rf"\b{j}\b", p, txt)
+    txt = re.sub(r'([}\]0-9"]) *\n *(")', r'\1,\n\2', txt)
+    return ast.literal_eval(txt)
+
+_BAD_ESCAPE_RE = re.compile(
+    r"""
+    \\ 
+    (?!
+       ["\\/bfnrtu]
+    )
+    """,
+    re.VERBOSE,
+)
+
+def _escape_bad_backslashes(txt: str) -> str:
+    return _BAD_ESCAPE_RE.sub(r"\\\\", txt)
+
+def _parse_json(raw: str) -> Dict[str, Any]:
+    txt = _escape_bad_backslashes(
+              _kill_trailing_commas(
+                  _strip_fences_and_comments(raw)
+              )
+          )
     try:
         data = json.loads(txt)
     except json.JSONDecodeError:
         m = re.search(r"\{[\s\S]*?\}|\[[\s\S]*?]", txt)
-        if not m:
+        if m:
+            chunk = _escape_bad_backslashes(
+                        _kill_trailing_commas(m.group(0))
+                    )
+            try:
+                data = json.loads(chunk)
+            except json.JSONDecodeError:
+                data = _fallback_literal_eval(chunk)
+        else:
             raise
-        block = _kill_trailing_commas(m.group(0))
-        data = json.loads(block)
 
     if isinstance(data, list):
         data = {"annotations": data}
@@ -200,7 +294,10 @@ def _parse_json(raw: str) -> Dict[str, Any]:
 
         for cat in CATEGORY_NAMES:
             rec[cat] = float(scores.get(cat, 0.0))
-
+        """total = sum(rec[c] for c in CATEGORY_NAMES)
+        if total > 0:
+            for c in CATEGORY_NAMES:
+                rec[c] = rec[c] / total"""
         rec["other_label"] = item.get("other_label")
         cleaned.append(rec)
 
@@ -242,7 +339,7 @@ def _parse_json(raw: str) -> Dict[str, Any]:
 
     return {"annotations": norm}
 
-def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations:
+def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations_1:
     prompt = _build_prompt(question, sentences)
 
     #print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
@@ -250,7 +347,13 @@ def _annotate(model_handle, question: str, sentences: List[str], n_samples: int)
     raw = _call(model_handle, prompt, n_samples=n_samples)
     #print("\nRAW GEMINI RESPONSE:\n", raw, "\n" + "-"*80)
     data = _parse_json(raw)
-    return Annotations(**data)
+    #eturn Annotations(**data)
+    #annotations_2 = annotations_to_annotations_2(annotations)
+    
+    preliminary_annotation = Annotations_1(**data)
+    final_annotations = annotations_to_annotations_2(preliminary_annotation)
+
+    return final_annotations
 
 def run_annotation_pipeline(
     completions_file: str,
