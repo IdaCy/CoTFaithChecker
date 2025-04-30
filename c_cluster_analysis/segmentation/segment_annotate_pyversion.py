@@ -12,6 +12,14 @@ print(
     f"on host {socket.gethostname()} (PID {os.getpid()}) ===",
     flush=True,
 )
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+ts_london  = datetime.now(ZoneInfo("Europe/London"))
+ts_florida = datetime.now(ZoneInfo("America/New_York"))
+print(ts_london.isoformat(timespec="seconds"))
+print(ts_florida.isoformat(timespec="seconds"))
+
 
 import os
 from pathlib import Path
@@ -38,6 +46,18 @@ nohup python -u -m c_cluster_analysis.segmentation.segment_annotate_pyversion \
 
 # In[3]:
 
+######## filter
+
+from c_cluster_analysis.segmentation.filter_ids import filter_ids
+
+keep_ids_path = filter_ids(
+    "data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_with_1001.json",
+    "data/mmlu/DeepSeek-R1-Distill-Llama-8B/sycophancy/hint_verification_with_1001.json",
+    "c_cluster_analysis/outputs/hints/mmlu/DeepSeek-R1-Distill-Llama-8B/filtered_sycophancy.json"
+)
+print("keep_ids_path: " + keep_ids_path)
+
+########### run annotator
 
 import google.generativeai as genai
 from google.generativeai import types
@@ -54,7 +74,7 @@ from_base = "data/mmlu/DeepSeek-R1-Distill-Llama-8B/"
 from_file = "/completions_with_1001.json"
 
 # to
-to_base = "c_cluster_analysis/outputs/hints/mmlu/DeepSeek-R1-Distill-Llama-8B/annotations_confidence_"
+to_base = "c_cluster_analysis/outputs/hints/mmlu/DeepSeek-R1-Distill-Llama-8B/filtered_unverbalized_annotations_confidence_"
 to_file = ".json"
 
 ### NONE
@@ -70,6 +90,7 @@ run_annotation_pipeline(
     api_key=api_key,
     model_name = model_name,
     max_items=max_items,
+    keep_ids_file = keep_ids_path,
 )
 
 ### Sycophancy
@@ -85,9 +106,10 @@ run_annotation_pipeline(
     api_key=api_key,
     model_name = model_name,
     max_items=max_items,
+    keep_ids_file = keep_ids_path,
 )
 
-### URGENCY
+"""### URGENCY
 from_file = "/completions_with_1000.json"
 htype = "induced_urgency"
 print(
@@ -101,6 +123,7 @@ run_annotation_pipeline(
     api_key=api_key,
     model_name = model_name,
     max_items=max_items,
+    keep_ids_file = keep_ids_path,
 )
 
 ### UNETH
@@ -117,8 +140,9 @@ run_annotation_pipeline(
     api_key=api_key,
     model_name = model_name,
     max_items=max_items,
+    keep_ids_file = keep_ids_path,
 )
 print(
     f"\finishing {htype} "
     f"{datetime.now(timezone.utc).astimezone().isoformat(timespec='seconds')}"
-)
+)"""

@@ -81,6 +81,8 @@ CATEGORY_NAMES: List[str] = [
     "other",
 ]
 
+#CategoryVec = conlist(float, min_items=12, max_items=12)
+
 class Annotation_1(BaseModel):
     sentence_id: int
     categories: List[float]
@@ -206,8 +208,9 @@ def _build_prompt(question: str, sentences: Sequence[str]) -> str:
         f"{{{question}}}\n\n"
         "Sentences:\n"
         f"{numbered}\n\n"
-        "Return **only** JSON that matches the response_schema"
-        "Please return the confidence for each category in the list in this EXACT order: [problem_restating, knowledge_augmentation, assumption_validation, logical_deduction, option_elimination, uncertainty_or_certainty_expression, backtracking, forward_planning, decision_confirmation, answer_reporting, option_restating, other]"
+        "Return **only** JSON that matches the response_schema."
+        "Please return the confidence for each category in the list in this EXACT order: [problem_restating, knowledge_augmentation, assumption_validation, logical_deduction, option_elimination, uncertainty_or_certainty_expression, backtracking, forward_planning, decision_confirmation, answer_reporting, option_restating, other]."
+        "The list **must exactly contain 12 numbers** in the order above."
     )
 
 def _make_model(model_name: str, api_key: Optional[str] = None):
@@ -382,7 +385,6 @@ def call_gemini(model_name, api_key, prompt: str):
         response_schema=Annotations_1,
     )
 
-
     response = client.models.generate_content(
         model=model_name,
         contents= prompt,
@@ -432,14 +434,42 @@ def run_annotation_pipeline(
     *,
     n_samples: int = 1,
     max_items: Optional[int] = None,
+    keep_ids_file: str | None = None,
 ):
+    # ID whitelist
+    keep_ids: set[int] | None = None
+    if keep_ids_file:
+        with open(keep_ids_file, encoding="utf-8") as f:
+            keep_ids = set(json.load(f))
+            print("keep_ids")
+            print(keep_ids)
+
+    """# whitelist filter
+    with open(completions_file, encoding="utf-8") as f:
+        completions = json.load(f)
+        if keep_ids is not None:
+            completions = [c for c in completions if c["question_id"] in keep_ids]
+        if max_items is not None:
+            completions = completions[:max_items]
+
     # key = _configure_genai(api_key)
     # model_handle = _make_model(model_name, key) if not _HAS_GENERATIVE_MODEL else _make_model(model_name)
 
     with open(completions_file, encoding="utf-8") as f:
         completions = json.load(f)
         if max_items is not None:
-            completions = completions[:max_items]
+            completions = completions[:max_items]"""
+
+    with open(completions_file, encoding="utf-8") as f:
+        completions = json.load(f)
+
+    if keep_ids is not None:
+        completions = [c for c in completions if c["question_id"] in keep_ids]
+
+    if max_items is not None:
+        completions = completions[:max_items]
+
+
     with open(questions_file, encoding="utf-8") as f:
         q_raw = json.load(f)
 

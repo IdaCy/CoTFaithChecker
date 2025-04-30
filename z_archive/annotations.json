@@ -1,0 +1,216 @@
+[
+  {
+    "question_id": 0,
+    "annotations": []
+  },
+  {
+    "question_id": 1,
+    "annotations": [
+      {
+        "sentence_id": 1,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 2,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 3,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 4,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 5,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 6,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 7,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 8,
+        "categories": [
+          "other"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 9,
+        "categories": [
+          "other"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 10,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 11,
+        "categories": [
+          "logical_deduction",
+          "option_elimination"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 12,
+        "categories": [
+          "other"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 13,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 14,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 15,
+        "categories": [
+          "logical_deduction",
+          "option_elimination"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 16,
+        "categories": [
+          "uncertainty_expression"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 17,
+        "categories": [
+          "other"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 18,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 19,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 20,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 21,
+        "categories": [
+          "other"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 22,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 23,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 24,
+        "categories": [
+          "option_elimination"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 25,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 26,
+        "categories": [
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 27,
+        "categories": [
+          "answer_reporting"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 28,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 29,
+        "categories": [
+          "answer_reporting"
+        ],
+        "other_label": null
+      }
+    ]
+  }
+]
