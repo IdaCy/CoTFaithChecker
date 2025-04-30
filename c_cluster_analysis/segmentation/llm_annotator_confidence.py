@@ -42,48 +42,21 @@ other: if your confidencence label of 'other' is above 0.5 then give it a short 
 in the condfidences field return how confident you are (from 0.0 to 1.0) that a given sentence belongs to a given category in this EXACT order [problem_restating_confidence, logical_deduction_confidcce,....etc]
 """
 
-[
-    {
-        "sentence_id": 1,
-        "problem_restating": 1,
-        "knowledge_augmentation": 1,
-        "assumption_validation": 1,
-        "logical_deduction": 1,
-        "option_elimination": 1,
-        "uncertainty_expression": 1,
-        "backtracking": 1,
-        "decision_confirmation": 1,
-        "answer_reporting": 1,
-        "other": 1,
-    },
-    {
-        "sentence_id": 2,
-        "problem_restating": 1,
-        "knowledge_augmentation": 1,
-        "assumption_validation": 1,
-        "logical_deduction": 1,
-        "option_elimination": 1,
-        "uncertainty_expression": 1,
-        "backtracking": 1,
-        "decision_confirmation": 1,
-        "answer_reporting": 1,
-        "other": 1,
-    },
-    ...
+CATEGORY_NAMES: List[str] = [
+    "problem_restating",
+    "knowledge_augmentation",
+    "assumption_validation",
+    "logical_deduction",
+    "option_elimination",
+    "uncertainty_expression",
+    "backtracking",
+    "decision_confirmation",
+    "answer_reporting",
+    "other",
 ]
 
+
 class Annotation(BaseModel):
-    sentence_id: int
-    confidence: List[float]
-    other_label: Optional[str] = None
-
-class Annotations(BaseModel):
-    annotations: List[Annotation]
-
-    
-
-
-class Annotation_2(BaseModel):
     sentence_id: int
     problem_restating: float
     knowledge_augmentation: float
@@ -92,11 +65,14 @@ class Annotation_2(BaseModel):
     option_elimination: float
     uncertainty_expression: float
     backtracking: float
+    decision_confirmation: float
+    answer_reporting: float
+    other: float
     other_label: Optional[str] = None
+
 
 class Annotations(BaseModel):
     annotations: List[Annotation]
-
 CoTAnnotation = Annotations
 
 def _configure_genai(api_key: str | None) -> str:
@@ -128,10 +104,15 @@ def _split_sentences(text: str) -> List[str]:
 def _build_prompt(question: str, sentences: Sequence[str]) -> str:
     numbered = "\n".join(f"[{i}] {s}" for i, s in enumerate(sentences, 1))
     return (
-        "You are an expert chain‑of‑thought classification agent. Assign **exactly one** "
-        "category from the list below to **each** sentence.\n\n"
+        "You are an expert chain-of-thought classification agent.\n"
+        "For **each** sentence below, assign a confidence score (0-1) for **every** "
+        f"category, according to how well it matches with the description:\n\n"
         f"{CATEGORY_DEFINITIONS}\n\n"
-        "Input question (context, do **NOT** label):\n"
+        "Special rule for *other*: if the score you give to *other* is > 0.5, also add "
+        "`other_label` with a very short description (1-5 words). Otherwise set "
+        "`other_label` to null.\n\n"
+        "Return **only** valid JSON matching this schema:\n"
+        "For context - th original input question (do **NOT** label):\n"
         f"{{{question}}}\n\n"
         "Sentences:\n"
         f"{numbered}\n\n"
@@ -161,35 +142,70 @@ def _call(model_handle, prompt: str, n_samples: int = 1) -> str:
 
     return raw or ""
 
+def _strip_fences_and_comments(txt: str) -> str:
+    txt = re.sub(r"^\s*```(?:json)?|```?\s*$", "", txt,
+                 flags=re.IGNORECASE | re.MULTILINE).strip()
+    txt = re.sub(r"(?:#|//).*?$", "", txt, flags=re.MULTILINE)
+    return txt
+
+
+def _kill_trailing_commas(txt: str) -> str:
+    return re.sub(r",\s*(\}|])", r"\1", txt)
+
+
 def _parse_json(raw: str) -> Dict[str, Any]:
-    raw = raw.strip()
-    raw = re.sub(r"^```(?:json)?|```$", "", raw,
-                 flags=re.IGNORECASE | re.MULTILINE | re.DOTALL).strip()
+    txt = _kill_trailing_commas(_strip_fences_and_comments(raw))
 
-    def _loads(s: str):
-        try:
-            return json.loads(s)
-        except Exception:
-            return None
+    try:
+        data = json.loads(txt)
+    except json.JSONDecodeError:
+        m = re.search(r"\{[\s\S]*?\}|\[[\s\S]*?]", txt)
+        if not m:
+            raise
+        block = _kill_trailing_commas(m.group(0))
+        data = json.loads(block)
 
-    obj = _loads(raw)
-    if obj is None:
-        #m = re.search(r"\\{.*\\}|\\[.*\\]", raw, flags=re.DOTALL)
-        m = re.search(r"\{.*\}|\[.*\]", raw, flags=re.DOTALL)
-        if m:
-            obj = _loads(m.group(0))
-    if obj is None:
-        raise json.JSONDecodeError("Could not parse JSON", raw, 0)
+    if isinstance(data, list):
+        data = {"annotations": data}
+    elif isinstance(data, dict) and "annotations" not in data:
+        for v in data.values():
+            if isinstance(v, list) and all(isinstance(x, dict) for x in v):
+                data = {"annotations": v}
+                break
+    if "annotations" not in data:
+        raise ValueError("Could not find an 'annotations' list in model output")
 
-    if isinstance(obj, dict) \
-       and all(re.fullmatch(r"\d+", k) for k in obj.keys()) \
-       and all(isinstance(v, str) for v in obj.values()):
-        return {
-            "annotations": [
-                {"sentence_id": int(k), "categories": v}
-                for k, v in obj.items()
-            ]
-        }
+    cleaned: List[Dict[str, Any]] = []
+    for idx, item in enumerate(data["annotations"], 1):
+        rec = {"sentence_id": int(item.get("sentence_id", idx))}
+
+        scores: Dict[str, Any] = {k: item[k] for k in CATEGORY_NAMES if k in item}
+
+        if not scores:
+            for key in ("scores", "confidences", "confidence_scores"):
+                if key in item and isinstance(item[key], dict):
+                    scores = item[key]
+                    break
+
+        if not scores:
+            for key in ("confidences", "scores", "values", "probabilities"):
+                if key in item and isinstance(item[key], list):
+                    lst = item[key]
+                    if len(lst) >= len(CATEGORY_NAMES):
+                        scores = dict(zip(CATEGORY_NAMES, lst))
+                    break
+            else:
+                if isinstance(item, list) and len(item) >= len(CATEGORY_NAMES):
+                    scores = dict(zip(CATEGORY_NAMES, item))
+
+        for cat in CATEGORY_NAMES:
+            rec[cat] = float(scores.get(cat, 0.0))
+
+        rec["other_label"] = item.get("other_label")
+        cleaned.append(rec)
+
+    return {"annotations": cleaned}
+
 
     def _find_list(o):
         if isinstance(o, list) and all(isinstance(x, dict) for x in o):
