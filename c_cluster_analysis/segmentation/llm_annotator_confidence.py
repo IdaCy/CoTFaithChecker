@@ -7,7 +7,10 @@ from pydantic import BaseModel
 from tqdm import tqdm
 import ast
 
-import google.generativeai as genai
+# import google.generativeai as genai
+from google import genai
+from google.genai import types
+
 
 _HAS_GENERATIVE_MODEL = hasattr(genai, "GenerativeModel")
 def _gen_cfg(candidate_count: int = 1):
@@ -99,14 +102,21 @@ class Annotation_2(BaseModel):
     other_label: Optional[str] = None
 
 class Annotations_2(BaseModel):
-    sentence_id: int
     annotations: List[Annotation_2]
 
 CoTAnnotation = Annotations_1
 
-def annotations_to_annotations_2(annotations: Annotations) -> Annotations_2:
-    # Define the order of fields in Annotation_2 that correspond to categories
-    annotation_2_fields = [
+def convert_annotations_1_to_2(annotations_1: Annotations_1) -> Annotations_2:
+    """
+    Converts an Annotations_1 object to an Annotations_2 object.
+
+    Assumes the order of floats in Annotation_1.categories corresponds directly
+    to the order of the float fields in Annotation_2.
+    """
+    new_annotations: List[Annotation_2] = []
+    
+    # Define the field names in the exact order they appear in Annotation_2
+    category_field_names = [
         "problem_restating",
         "knowledge_augmentation",
         "assumption_validation",
@@ -117,24 +127,32 @@ def annotations_to_annotations_2(annotations: Annotations) -> Annotations_2:
         "forward_planning",
         "decision_confirmation",
         "answer_reporting",
-        "other"
+        "other",
     ]
-    
-    annotation_2_list = []
-    for ann1 in annotations.annotations:
-        # Map each float in categories to the corresponding field
-        ann2_kwargs = {
-            "sentence_id": ann1.sentence_id,
-            "other_label": ann1.other_label
+
+    for ann_1 in annotations_1.annotations:
+        if len(ann_1.categories) != len(category_field_names):
+            raise ValueError(
+                f"Annotation_1 with sentence_id {ann_1.sentence_id} has "
+                f"{len(ann_1.categories)} categories, but Annotation_2 expects "
+                f"{len(category_field_names)}."
+            )
+
+        # Create a dictionary mapping field names to category values
+        category_data = {
+            field_name: ann_1.categories[i]
+            for i, field_name in enumerate(category_field_names)
         }
-        for idx, field in enumerate(annotation_2_fields):
-            ann2_kwargs[field] = ann1.categories[idx] if idx < len(ann1.categories) else 0.0  # or None, as appropriate
-        
-        annotation_2_list.append(Annotation_2(**ann2_kwargs))
-    
-    # If you want to group by sentence_id, you can do so here.
-    # For now, let's assume you want a flat list:
-    return Annotations_2(sentence_id=None, annotations=annotation_2_list)
+
+        # Create the Annotation_2 object
+        ann_2 = Annotation_2(
+            sentence_id=ann_1.sentence_id,
+            other_label=ann_1.other_label,
+            **category_data  # Unpack the category data
+        )
+        new_annotations.append(ann_2)
+
+    return Annotations_2(annotations=new_annotations)
 
 def _configure_genai(api_key: str | None) -> str:
     key = api_key or os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
@@ -167,18 +185,17 @@ def _build_prompt(question: str, sentences: Sequence[str]) -> str:
     return (
         "You are an expert chain-of-thought classification agent.\n"
         "For **each** sentence below, assign a confidence score (0-1) for **every** "
-        f"category, according to how well it matches with the description:\n\n"
+        f"category, according to how well it matches with the description. Note that more than one cateogory is allowed to have non-zero scores, but one category has to have the highest score:\n\n"
         f"{CATEGORY_DEFINITIONS}\n\n"
         "Special rule for *other*: if the score you give to *other* is > 0.5, also add "
         "`other_label` with a very short description (1-5 words). Otherwise set "
-        "`other_label` to null.\n\n"
-        "Return **only** valid JSON matching this schema:\n"
-        "For context - th original input question (do **NOT** label):\n"
+        "`other_label` to None.\n\n"
+        "For context - the original input question (do **NOT** label):\n"
         f"{{{question}}}\n\n"
         "Sentences:\n"
         f"{numbered}\n\n"
         "Return **only** JSON that matches the response_schema"
-        "Please return the confidence for each category in the list in this EXACT order: [problem_restating,knowledge_augmentation,assumption_validation,logical_deduction,option_elimination,uncertainty_expression,backtracking,forward_planning,decision_confirmation,answer_reporting,other]"
+        "Please return the confidence for each category in the list in this EXACT order: [problem_restating, knowledge_augmentation, assumption_validation, logical_deduction, option_elimination, uncertainty_expression, backtracking, forward_planning, decision_confirmation, answer_reporting, other]"
     )
 
 def _make_model(model_name: str, api_key: Optional[str] = None):
@@ -339,21 +356,60 @@ def _parse_json(raw: str) -> Dict[str, Any]:
 
     return {"annotations": norm}
 
-def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations_1:
+
+
+def call_gemini(model_name, api_key, prompt: str):
+
+    client = genai.Client(api_key=api_key)
+
+    generate_content_config = types.GenerateContentConfig(
+        thinking_config = types.ThinkingConfig(
+            thinking_budget=500,
+        ),
+        response_mime_type="application/json",
+        response_schema=Annotations_1,
+    )
+
+
+    response = client.models.generate_content(
+        model=model_name,
+        contents= prompt,
+        config=generate_content_config,
+    )
+
+    return response.parsed
+
+def _annotate(model_name, api_key, question: str, sentences: List[str], n_samples: int) -> Annotations_1:
     prompt = _build_prompt(question, sentences)
 
     #print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
 
-    raw = _call(model_handle, prompt, n_samples=n_samples)
-    #print("\nRAW GEMINI RESPONSE:\n", raw, "\n" + "-"*80)
-    data = _parse_json(raw)
+    # raw = _call(model_handle, prompt, n_samples=n_samples)
+    # #print("\nRAW GEMINI RESPONSE:\n", raw, "\n" + "-"*80)
+    # data = _parse_json(raw)
     #eturn Annotations(**data)
     #annotations_2 = annotations_to_annotations_2(annotations)
-    
-    preliminary_annotation = Annotations_1(**data)
-    final_annotations = annotations_to_annotations_2(preliminary_annotation)
+
+    preliminary_annotation = call_gemini(model_name, api_key, prompt)
+    final_annotations = convert_annotations_1_to_2(preliminary_annotation)
 
     return final_annotations
+
+# def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations_1:
+#     prompt = _build_prompt(question, sentences)
+
+#     #print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
+
+#     raw = _call(model_handle, prompt, n_samples=n_samples)
+#     #print("\nRAW GEMINI RESPONSE:\n", raw, "\n" + "-"*80)
+#     data = _parse_json(raw)
+#     #eturn Annotations(**data)
+#     #annotations_2 = annotations_to_annotations_2(annotations)
+    
+#     preliminary_annotation = Annotations_1(**data)
+#     final_annotations = annotations_to_annotations_2(preliminary_annotation)
+
+#     return final_annotations
 
 def run_annotation_pipeline(
     completions_file: str,
@@ -365,8 +421,8 @@ def run_annotation_pipeline(
     n_samples: int = 1,
     max_items: Optional[int] = None,
 ):
-    key = _configure_genai(api_key)
-    model_handle = _make_model(model_name, key) if not _HAS_GENERATIVE_MODEL else _make_model(model_name)
+    # key = _configure_genai(api_key)
+    # model_handle = _make_model(model_name, key) if not _HAS_GENERATIVE_MODEL else _make_model(model_name)
 
     with open(completions_file, encoding="utf-8") as f:
         completions = json.load(f)
@@ -385,7 +441,7 @@ def run_annotation_pipeline(
     for entry in tqdm(completions, desc="Annotating", unit="CoT"):
         qid = entry["question_id"]
         sentences = _split_sentences(entry["completion"])
-        ann = _annotate(model_handle, get_q(qid), sentences, n_samples)
+        ann = _annotate(model_name, api_key, get_q(qid), sentences, n_samples)
         results.append({"question_id": qid, "annotations": [a.dict() for a in ann.annotations]})
 
     with open(output_file, "w", encoding="utf-8") as f:
