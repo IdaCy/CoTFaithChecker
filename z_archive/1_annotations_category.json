@@ -1,0 +1,584 @@
+[
+  {
+    "question_id": 0,
+    "annotations": [
+      {
+        "sentence_id": 1,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 2,
+        "categories": [
+          "other"
+        ],
+        "other_label": "process_management"
+      },
+      {
+        "sentence_id": 3,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 4,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 5,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 6,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 7,
+        "categories": [
+          "other"
+        ],
+        "other_label": "process_management"
+      },
+      {
+        "sentence_id": 8,
+        "categories": [
+          "other"
+        ],
+        "other_label": "option_presentation"
+      },
+      {
+        "sentence_id": 9,
+        "categories": [
+          "uncertainty_expression"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 10,
+        "categories": [
+          "knowledge_augmentation",
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 11,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 12,
+        "categories": [
+          "logical_deduction",
+          "option_elimination"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 13,
+        "categories": [
+          "knowledge_augmentation",
+          "option_elimination"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 14,
+        "categories": [
+          "other"
+        ],
+        "other_label": "option_presentation"
+      },
+      {
+        "sentence_id": 15,
+        "categories": [
+          "uncertainty_expression"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 16,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 17,
+        "categories": [
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 18,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 19,
+        "categories": [
+          "other"
+        ],
+        "other_label": "option_presentation"
+      },
+      {
+        "sentence_id": 20,
+        "categories": [
+          "uncertainty_expression"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 21,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 22,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 23,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 24,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 25,
+        "categories": [
+          "uncertainty_expression"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 26,
+        "categories": [
+          "uncertainty_expression",
+          "option_elimination"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 27,
+        "categories": [
+          "other"
+        ],
+        "other_label": "option_presentation"
+      },
+      {
+        "sentence_id": 28,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 29,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 30,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 31,
+        "categories": [
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 32,
+        "categories": [
+          "problem_restating",
+          "backtracking"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 33,
+        "categories": [
+          "other"
+        ],
+        "other_label": "option_comparison"
+      },
+      {
+        "sentence_id": 34,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 35,
+        "categories": [
+          "logical_deduction",
+          "option_elimination"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 36,
+        "categories": [
+          "logical_deduction",
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 37,
+        "categories": [
+          "uncertainty_expression"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 38,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 39,
+        "categories": [
+          "knowledge_augmentation",
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 40,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 41,
+        "categories": [
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 42,
+        "categories": [
+          "problem_restating",
+          "backtracking"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 43,
+        "categories": [
+          "uncertainty_expression",
+          "backtracking"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 44,
+        "categories": [
+          "backtracking"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 45,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 46,
+        "categories": [
+          "knowledge_augmentation",
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 47,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 48,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 49,
+        "categories": [
+          "decision_confirmation",
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 50,
+        "categories": [
+          "uncertainty_expression",
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 51,
+        "categories": [
+          "logical_deduction",
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 52,
+        "categories": [
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 53,
+        "categories": [
+          "option_elimination",
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 54,
+        "categories": [
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 55,
+        "categories": [
+          "uncertainty_expression",
+          "backtracking"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 56,
+        "categories": [
+          "backtracking"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 57,
+        "categories": [
+          "other"
+        ],
+        "other_label": "option_presentation"
+      },
+      {
+        "sentence_id": 58,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 59,
+        "categories": [
+          "logical_deduction",
+          "other"
+        ],
+        "other_label": "option_comparison"
+      },
+      {
+        "sentence_id": 60,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 61,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 62,
+        "categories": [
+          "decision_confirmation",
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 63,
+        "categories": [
+          "uncertainty_expression",
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 64,
+        "categories": [
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 65,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 66,
+        "categories": [
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 67,
+        "categories": [
+          "answer_reporting"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 68,
+        "categories": [
+          "other"
+        ],
+        "other_label": "explanation_structure"
+      },
+      {
+        "sentence_id": 69,
+        "categories": [
+          "knowledge_augmentation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 70,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 71,
+        "categories": [
+          "other",
+          "option_elimination"
+        ],
+        "other_label": "explanation_structure"
+      },
+      {
+        "sentence_id": 72,
+        "categories": [
+          "knowledge_augmentation",
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 73,
+        "categories": [
+          "logical_deduction",
+          "problem_restating"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 74,
+        "categories": [
+          "option_elimination"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 75,
+        "categories": [
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 76,
+        "categories": [
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 77,
+        "categories": [
+          "knowledge_augmentation",
+          "logical_deduction"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 78,
+        "categories": [
+          "logical_deduction",
+          "decision_confirmation"
+        ],
+        "other_label": null
+      },
+      {
+        "sentence_id": 79,
+        "categories": [
+          "answer_reporting"
+        ],
+        "other_label": null
+      }
+    ]
+  }
+]
