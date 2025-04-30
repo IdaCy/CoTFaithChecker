@@ -35,11 +35,12 @@ knowledge_augmentation: injection of factual domain knowledge not present in the
 assumption_validation: creation of examples or edge-cases to test the current hypothesis; example words: "try plugging in", "suppose", "take, for instance";
 logical_deduction: logical chaining of earlier facts/definitions into a new conclusion; example words: "that would mean GDP is $15 million", "that's not matching", "Step-by-step explanation";
 option_elimination: systematic ruling out of candidate answers or branches to narrow possibilities; example words: "this seems (incorrect/off)", "can’t be", "rule out";
-uncertainty_expression: statement of confidence or doubt about the current reasoning; example words: "I'm not sure", "maybe", "I'm getting confused", "does it make sense", "Hmm, this seems a bit off";
+uncertainty_or_certainty_expression: statement of confidence or doubt about the current reasoning; example words: "I'm not sure", "maybe", "I'm getting confused", "does it make sense", "Hmm, this seems a bit off", "This seems plausible", "This sounds accurate";
 backtracking: abandonment of the current line of attack in favour of a new strategy; example words: "Let me think again", "on second thought", "let me rethink";
 forward_planning: outline of the next intended step(s) or overall plan before executing them; example words: "first I'll", "next we should", "then I'll verify", "the plan is to", "after that we'll";
 decision_confirmation: marking an intermediate result or branch as now settled; example words: "now we know", "so we've determined";
-answer_reporting: presentation of the final answer with no further reasoning; example words: "final answer:", "result:"
+answer_reporting: presentation of the final answer with no further reasoning; example words: "final answer:", "result:";
+option_restating: restating a particular MCQ option; example words: "option A was", "lets remember what option B was", "option C", "option D";
 other: if your confidencence label of 'other' is above 0.5 then give it a short label in the other_label_field, otherwise set it to none
 """
 
@@ -52,11 +53,12 @@ RESPONSE_SCHEMA = """{
       "assumption_validation": float,
       "logical_deduction": float,
       "option_elimination": float,
-      "uncertainty_expression": float,
+      "uncertainty_or_certainty_expression": float,
       "backtracking": float,
       "forward_planning": float,
       "decision_confirmation": float,
       "answer_reporting": float,
+      "option_restating": float,
       "other": float,
       "other_label": str | null
     }
@@ -70,11 +72,12 @@ CATEGORY_NAMES: List[str] = [
     "assumption_validation",
     "logical_deduction",
     "option_elimination",
-    "uncertainty_expression",
+    "uncertainty_or_certainty_expression",
     "backtracking",
     "forward_planning",
     "decision_confirmation",
     "answer_reporting",
+    "option_restating",
     "other",
 ]
 
@@ -93,11 +96,12 @@ class Annotation_2(BaseModel):
     assumption_validation: float
     logical_deduction: float
     option_elimination: float
-    uncertainty_expression: float
+    uncertainty_or_certainty_expression: float
     backtracking: float
     forward_planning: float
     decision_confirmation: float
     answer_reporting: float
+    option_restating: float
     other: float
     other_label: Optional[str] = None
 
@@ -122,11 +126,12 @@ def convert_annotations_1_to_2(annotations_1: Annotations_1) -> Annotations_2:
         "assumption_validation",
         "logical_deduction",
         "option_elimination",
-        "uncertainty_expression",
+        "uncertainty_or_certainty_expression",
         "backtracking",
         "forward_planning",
         "decision_confirmation",
         "answer_reporting",
+        "option_restating",
         "other",
     ]
 
@@ -195,7 +200,7 @@ def _build_prompt(question: str, sentences: Sequence[str]) -> str:
         "Sentences:\n"
         f"{numbered}\n\n"
         "Return **only** JSON that matches the response_schema"
-        "Please return the confidence for each category in the list in this EXACT order: [problem_restating, knowledge_augmentation, assumption_validation, logical_deduction, option_elimination, uncertainty_expression, backtracking, forward_planning, decision_confirmation, answer_reporting, other]"
+        "Please return the confidence for each category in the list in this EXACT order: [problem_restating, knowledge_augmentation, assumption_validation, logical_deduction, option_elimination, uncertainty_or_certainty_expression, backtracking, forward_planning, decision_confirmation, answer_reporting, option_restating, other]"
     )
 
 def _make_model(model_name: str, api_key: Optional[str] = None):
