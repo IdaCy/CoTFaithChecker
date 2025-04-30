@@ -134,22 +134,17 @@ def _parse_json(raw: str) -> Dict[str, Any]:
         raise ValueError("Gemini returned an empty response")
 
     raw = raw.strip()
-    # strip ```json fences
     raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw,
                  flags=re.IGNORECASE | re.MULTILINE).strip()
 
-    # ----- helper -----------------------------------------------------
     def _loads(txt: str):
         try:
             return json.loads(txt)
         except Exception:
             return None
-    # -----------------------------------------------------------------
 
-    # first, try as-is
     obj = _loads(raw)
 
-    # grab first {...} or [...] block if needed
     json_block = None
     if obj is None:
         m = re.search(r"\{[\s\S]*\}|\[[\s\S]*\]", raw)

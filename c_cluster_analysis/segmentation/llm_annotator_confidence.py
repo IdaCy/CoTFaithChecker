@@ -171,6 +171,13 @@ def _configure_genai(api_key: str | None) -> str:
     return [s for s in re.split(r"(?<=\.)\s+", text) if s]"""
 
 def _split_sentences(text: str) -> List[str]:
+    start = text.find("<think>")
+    if start != -1:
+        text = text[start + len("<think>"):]
+    end = text.find("</think>")
+    if end != -1:
+        text = text[:end]
+
     text = re.sub(r"\s+", " ", text.strip())
     parts = [p.strip() for p in re.split(r"(?<=\.)\s+", text) if p.strip()]
 
