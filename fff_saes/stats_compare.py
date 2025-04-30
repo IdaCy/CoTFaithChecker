@@ -1,4 +1,3 @@
-
 #%%
 # Setup and Imports
 import nbformat
@@ -193,22 +192,43 @@ def get_activations(texts: list[str], batch_size=8):
                 max_length=activation_store.context_size # Use context size from store/SAE
             ).input_ids.to(DEVICE)
 
-            # Get a batch of SAE activations using get_activations
-            acts = activation_store.get_activations(batch_tokens) # Note: using get_sae_activations which returns shape (batch, seq, d_sae)
-            # Shape: (batch_size, seq_len, d_sae)
-            acts = acts.to(DEVICE) # Ensure it's on the right device
+            # Get the raw activations at the hook point using get_activations
+            hook_activations = activation_store.get_activations(batch_tokens)
+            # Shape: (batch_size, seq_len, d_in) - may have extra dim, check shape
+            # If shape is (batch, seq, 1, d_in), squeeze it:
+            if hook_activations.ndim == 4 and hook_activations.shape[2] == 1:
+                 hook_activations = hook_activations.squeeze(2)
+                 
+            hook_activations = hook_activations.to(DEVICE) # Ensure it's on the right device
+
+            # Manually encode through the SAE to get latent activations
+            # Use sae directly, as it's available in the scope
+            sae_latents = sae.encode(hook_activations) 
+            # Shape should be (batch_size, seq_len, d_sae)
 
             # Iterate through latents and collect positive activations
-            positive_acts = acts[acts > 0]
-            positive_indices = (acts > 0).nonzero(as_tuple=False) # Get indices (batch, seq, latent), use as_tuple=False
+            positive_acts = sae_latents[sae_latents > 0]
+            positive_indices = (sae_latents > 0).nonzero(as_tuple=False) # Get indices (batch, seq, latent)
+
+            # --- Add Debug Prints Here ---
+            if positive_indices.numel() > 0: # Only print if there are positive activations
+                print(f"  Batch Debug: positive_indices shape: {positive_indices.shape}")
+                print(f"  Batch Debug: First few positive_indices:\n{positive_indices[:5]}")
+                print(f"  Batch Debug: Max activation in batch: {sae_latents.max().item():.4f}")
 
             for idx_tuple, value in zip(positive_indices.tolist(), positive_acts.tolist()):
                 # idx_tuple structure: [batch_in_this_acts_tensor, seq_pos, latent_idx]
                 latent_idx = idx_tuple[2]
+
+                # --- Add Debug Print Here ---
+                if latent_idx != 0: # Print if we see a non-zero index
+                    print(f"    -> Storing value for latent_idx: {latent_idx}")
+                # --- End Debug Print ---
+
                 if latent_idx in latent_activations: # Check just in case
                      latent_activations[latent_idx].append(value)
 
-            total_processed_tokens += acts.shape[0] * acts.shape[1]
+            total_processed_tokens += sae_latents.shape[0] * sae_latents.shape[1]
 
         except StopIteration: # Should not happen with this loop structure
             print("Text generator exhausted.")
@@ -232,8 +252,8 @@ def get_activations(texts: list[str], batch_size=8):
 #%%
 # Get Activations for Faithful and Unfaithful Sets
 
-print("--- Getting Activations for Faithful Set ---")
-faithful_activations = get_activations(faithful_texts)
+# print("--- Getting Activations for Faithful Set ---")
+# faithful_activations = get_activations(faithful_texts)
 
 print("\n--- Getting Activations for Unfaithful Set ---")
 unfaithful_activations = get_activations(unfaithful_texts)
@@ -338,14 +358,6 @@ else:
 
 print("\n--- Analysis Complete ---")
 
-# %%
-# plot_df = pd.DataFrame(plot_data)
-fig = px.histogram(plot_df, x='activation', color='condition',
-                    facet_col='latent', barmode='overlay',
-                    title=f'Activation Distributions for Top {n_plots} Differentiating Latents',
-                    histnorm='probability density', nbins=50)
-fig.update_layout(yaxis_title="Density")
-fig.update_traces(opacity=0.7)
-fig.show()
+
 
 # %%
