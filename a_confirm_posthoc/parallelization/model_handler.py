@@ -103,7 +103,8 @@ def generate_completion(
                 pad_token_id=tokenizer.eos_token_id
             )
 
-        decoded = tokenizer.batch_decode(outputs, skip_special_tokens=False)
+        #decoded = tokenizer.batch_decode(outputs, skip_special_tokens=False)
+        decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)
         for qid, completion in zip(qids, decoded):
             results.append({"question_id": qid, "completion": completion})
 
