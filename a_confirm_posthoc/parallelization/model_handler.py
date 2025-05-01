@@ -74,8 +74,6 @@ def generate_completion(
                      f"{(len(prompts)+batch_size-1)//batch_size} "
                      f"(size {len(texts)}, QIDs {min(qids)}-{max(qids)})")
 
-        # enc = tokenize_instructions(tokenizer, texts, chat_template)
-
         convs = [[{"role": "user", "content": t}] for t in texts]  
         formatted_prompts = [
             tokenizer.apply_chat_template(conv, tokenize=False, add_generation_prompt=True)  
@@ -104,21 +102,6 @@ def generate_completion(
                 do_sample=False,
                 pad_token_id=tokenizer.eos_token_id
             )
-
-        # eos_tok = tokenizer.decode([tokenizer.eos_token_id], skip_special_tokens=False)
-        # for qid, out in zip(qids, outputs):
-        #     gen_ids  = out[inp_len:]
-        #     gen_text = tokenizer.decode(gen_ids, skip_special_tokens=False)
-        #     while gen_text.endswith(eos_tok):
-        #         gen_text = gen_text[:-len(eos_tok)]
-        #
-        #     gen_text = gen_text.lstrip()
-        #     think_idx = gen_text.find("<think>")
-        #     span = gen_text[think_idx:] if think_idx != -1 else gen_text
-        #     if "</think>" in span:
-        #         span = span.split("</think>")[0]
-        #
-        #     results.append({"question_id": qid, "completion": span})
 
         decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)
         decoded = [tokenizer.bos_token + d + tokenizer.eos_token for d in decoded]
