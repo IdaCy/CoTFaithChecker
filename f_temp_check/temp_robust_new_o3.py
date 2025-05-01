@@ -17,14 +17,59 @@ from typing import Dict, List, Tuple, Optional, Any
 from collections import defaultdict # Add defaultdict import
 
 
-# --- Project Specific Imports ---
-# Assuming PYTHONPATH is set correctly or script is run from workspace root
-try:
-    from a_confirm_posthoc.utils.model_handler import load_model_and_tokenizer
-except ImportError:
-    print(os.getcwd())
-    logging.error("Failed to import from a_confirm_posthoc.utils.model_handler. Ensure PYTHONPATH is set or run from project root.")
-    exit(1)
+# # --- Project Specific Imports ---
+# # Assuming PYTHONPATH is set correctly or script is run from workspace root
+# try:
+#     from a_confirm_posthoc.utils.model_handler import load_model_and_tokenizer
+# except ImportError:
+#     print(os.getcwd())
+#     logging.error("Failed to import from a_confirm_posthoc.utils.model_handler. Ensure PYTHONPATH is set or run from project root.")
+#     exit(1)
+
+def get_device():
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    return torch.device("cpu")
+
+def load_model_and_tokenizer(model_path: str) -> Tuple[AutoModelForCausalLM, AutoTokenizer, torch.device]:
+    """
+    Loads the Hugging Face model and tokenizer onto the appropriate device.
+
+    Args:
+        model_name: The name or path of the Hugging Face model to use.
+    Returns:
+        A tuple containing the loaded model, tokenizer, and the device.
+    Raises:
+        RuntimeError: If model or tokenizer loading fails.
+    """
+    device = get_device()
+    
+    logging.info(f"Loading model and tokenizer: {model_path} onto {device}")
+    try:
+        model_name = model_path.split("/")[-1]
+        tokenizer = AutoTokenizer.from_pretrained(model_path)
+        model = AutoModelForCausalLM.from_pretrained(
+            model_path, 
+            torch_dtype=torch.bfloat16,
+            device_map=device
+        )
+        model.eval() # Explicitly move model to the determined device
+        model.padding_side='left'
+        tokenizer.padding_side='left'
+        
+        if tokenizer.pad_token is None:
+            logging.warning("Tokenizer does not have a pad token. Setting pad_token to eos_token.")
+            tokenizer.pad_token = tokenizer.eos_token
+            model.config.pad_token_id = model.config.eos_token_id
+            
+        logging.info("Model and tokenizer loaded successfully.")
+        return model, tokenizer, model_name, device
+
+    except Exception as e:
+        logging.error(f"Error loading model or tokenizer: {e}")
+        raise RuntimeError(f"Failed to load model/tokenizer: {model_path}") from e
+
+
 
 # Import verification functions with aliases
 try:
@@ -563,8 +608,8 @@ config = {
     "hint_type": "sycophancy",
     "n_questions": 2001,
     "output_dir": None, # Add back with None value
-    "demo_mode_limit": None,  # Set to None to process all questions
-    "num_generations": 10,
+    "demo_mode_limit": 5,  # Set to None to process all questions
+    "num_generations": 5,
     "temperature": 0.7,
     "max_new_tokens": 5000,
     "batch_size": 50
@@ -579,6 +624,7 @@ class Args:
 args = Args(**config)
 
 # Uncomment the function you want to run
+print("DEBUG")
 run_generation_phase(args)
 run_analysis_phase(args)
 
