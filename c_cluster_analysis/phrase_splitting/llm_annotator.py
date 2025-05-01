@@ -68,8 +68,9 @@ def _build_prompt(question: str, cot: str) -> str:
         "You are an expert chain-of-thought *segment* classification agent.\n"
         "Your tasks:\n"
         "1. Read the full reasoning below (between triple back-ticks).\n"
-        "2. Split it into coherent segments whenever the rhetorical or functional role changes."
-        "3. For **each** segment, assign every category a confidence 0-1. "
+        "2. Split it into segments whenever the type of reasoning changes - even if that is within a sentence. "
+        "This means, always split, if it changes from doing one of those things to rather doing another: problem restating, knowledge augmentation, logical deduction, option elimination, uncertainty or certainty expression, backtracking, forward planning, decision confirmation, answer reporting, option restating, other reasoning."
+        "3. For **each** segment, assign at least one category a confidence 0-1. "
         f"{CATEGORY_DEFINITIONS}\n\n"
         "Return *only* valid JSON with this shape:\n"
         "{\n"
@@ -113,13 +114,43 @@ _BAD_ESCAPE_RE = re.compile(
 def _escape_bad_backslashes(txt: str) -> str:
     return _BAD_ESCAPE_RE.sub(r"\\\\", txt)
 
+def _safe_float(x, default: float = 0.0) -> float:
+    try:
+        return float(x)
+    except Exception:
+        return default
+
+_json_kw = {"null": "None", "true": "True", "false": "False"}
+
+def _fallback_literal_eval(txt: str):
+    txt = re.sub(r'(?m)^\s*([A-Za-z_][\w]*)\s*:', r'"\1":', txt)
+    txt = re.sub(r"'", r'"', txt)
+    for j, p in _json_kw.items():
+        txt = re.sub(rf"\b{j}\b", p, txt)
+    txt = re.sub(r'([}\]0-9"]) *\n *(")', r'\1,\n\2', txt)
+    return ast.literal_eval(txt)
+
 def _parse_json(raw: str) -> Dict[str, Any]:
     txt = _escape_bad_backslashes(
         _kill_trailing_commas(
             _strip_fences_and_comments(raw)
         )
     )
-    data = json.loads(txt)
+
+    try:
+        data = json.loads(txt)
+    except json.JSONDecodeError:
+        m = re.search(r"\{[\s\S]*?\}|\[[\s\S]*?]", txt)
+        if not m:
+            raise
+        chunk = _escape_bad_backslashes(
+                    _kill_trailing_commas(m.group(0))
+                )
+        try:
+            data = json.loads(chunk)
+        except json.JSONDecodeError:
+            # last resort
+            data = _fallback_literal_eval(chunk)
 
     if "annotations" not in data:
         raise ValueError("Expected top-level key 'annotations'")
@@ -129,11 +160,11 @@ def _parse_json(raw: str) -> Dict[str, Any]:
         cleaned.append(
             {
                 "segment": seg.get("segment", "").strip(),
-                "scores": {k: float(v) for k, v in seg.get("scores", {}).items()},
+                "scores": {k: _safe_float(v)
+                           for k, v in seg.get("scores", {}).items()},
             }
         )
     return {"annotations": cleaned}
-
 
 def _make_model(model_name: str, api_key: Optional[str] = None):
     if _HAS_GENERATIVE_MODEL:
@@ -141,19 +172,62 @@ def _make_model(model_name: str, api_key: Optional[str] = None):
     client = genai.Client(api_key=api_key)
     return client, model_name
 
+def _candidate_to_text(cand) -> str:
+    if cand is None:
+        return ""
+
+    if isinstance(cand, dict):
+        if "text" in cand:
+            return cand["text"]
+        if "content" in cand and isinstance(cand["content"], dict):
+            parts = cand["content"].get("parts", [])
+            return "".join(p.get("text", "") if isinstance(p, dict) else str(p)
+                           for p in parts)
+
+    if hasattr(cand, "text"):
+        return cand.text
+
+    if hasattr(cand, "content"):
+        cont = cand.content
+        parts = getattr(cont, "parts", None)
+        if parts:
+            out = []
+            for p in parts:
+                if isinstance(p, str):
+                    out.append(p)
+                elif hasattr(p, "text"):
+                    out.append(p.text)
+                else:
+                    out.append(str(p))
+            return "".join(out)
+
+    # Fallback
+    return str(cand)
+
 def _call(model_handle, prompt: str, n_samples: int = 1) -> str:
     cfg = _gen_cfg(candidate_count=n_samples)
 
-    if _HAS_GENERATIVE_MODEL:
+    if _HAS_GENERATIVE_MODEL and not isinstance(model_handle, tuple):
         response = model_handle.generate_content(prompt, generation_config=cfg)
-        return response.text or ""
+
+        txt = getattr(response, "text", None)
+        if not txt and getattr(response, "candidates", None):
+            txt = _candidate_to_text(response.candidates[0])
+        return txt or ""
+
+    client, name = model_handle
+
+    if hasattr(client, "models") and hasattr(client.models, "generate_content"):
+        rsp = client.models.generate_content(
+            model=name, contents=prompt, config=cfg
+        )
     else:
-        client, name = model_handle
-        if hasattr(client, "models") and hasattr(client.models, "generate_content"):
-            rsp = client.models.generate_content(model=name, contents=prompt, config=cfg)
-        else:
-            rsp = client.generate_content(model=name, contents=prompt, config=cfg)
-        return rsp.candidates[0].text or ""
+        rsp = client.generate_content(model=name, contents=prompt, config=cfg)
+
+    if getattr(rsp, "candidates", None):
+        return _candidate_to_text(rsp.candidates[0])
+    return _candidate_to_text(rsp)
+
 
 def _annotate(model_name: str,
               api_key: str | None,
