@@ -82,8 +82,6 @@ CATEGORY_NAMES: List[str] = [
     "other",
 ]
 
-#CategoryVec = conlist(float, min_items=12, max_items=12)
-
 class Annotation_1(BaseModel):
     sentence_id: int
     categories: List[float]
@@ -151,17 +149,6 @@ def convert_annotations_1_to_2(annotations_1: Annotations_1) -> Annotations_2:
                 f"values, expected {NUM} - trimming/padding", RuntimeWarning
             )
 
-        """cats = _truncate_or_pad(ann_1.categories, NUM)
-        category_data = {field: cats[i] for i, field in enumerate(category_field_names)}
-
-        for ann_1 in annotations_1.annotations:
-        if len(ann_1.categories) != len(category_field_names):
-            raise ValueError(
-                f"Annotation_1 with sentence_id {ann_1.sentence_id} has "
-                f"{len(ann_1.categories)} categories, but Annotation_2 expects "
-                f"{len(category_field_names)}."
-            )"""
-
         cats = _truncate_or_pad(ann_1.categories, NUM)
         category_data = dict(zip(category_field_names, cats))
 
@@ -173,20 +160,6 @@ def convert_annotations_1_to_2(annotations_1: Annotations_1) -> Annotations_2:
             )
         )
 
-        """# Create a dictionary mapping field names to category values
-        category_data = {
-            field_name: ann_1.categories[i]
-            for i, field_name in enumerate(category_field_names)
-        }
-
-        # Create the Annotation_2 object
-        ann_2 = Annotation_2(
-            sentence_id=ann_1.sentence_id,
-            other_label=ann_1.other_label,
-            **category_data  # Unpack the category data
-        )
-        new_annotations.append(ann_2)"""
-
     return Annotations_2(annotations=new_annotations)
 
 def _configure_genai(api_key: str | None) -> str:
@@ -195,10 +168,6 @@ def _configure_genai(api_key: str | None) -> str:
         raise EnvironmentError("Gemini API key missing (arg or env var)")
     genai.configure(api_key=key)
     return key
-
-"""def _split_sentences(text: str) -> List[str]:
-    text = re.sub(r"\s+", " ", text.strip())
-    return [s for s in re.split(r"(?<=\.)\s+", text) if s]"""
 
 def _split_sentences(text: str) -> List[str]:
     start = text.find("<think>")
@@ -354,10 +323,6 @@ def _parse_json(raw: str) -> Dict[str, Any]:
 
         for cat in CATEGORY_NAMES:
             rec[cat] = float(scores.get(cat, 0.0))
-        """total = sum(rec[c] for c in CATEGORY_NAMES)
-        if total > 0:
-            for c in CATEGORY_NAMES:
-                rec[c] = rec[c] / total"""
         rec["other_label"] = item.get("other_label")
         cleaned.append(rec)
 
@@ -424,34 +389,10 @@ def call_gemini(model_name, api_key, prompt: str):
 def _annotate(model_name, api_key, question: str, sentences: List[str], n_samples: int) -> Annotations_2:
     prompt = _build_prompt(question, sentences)
 
-    #print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
-
-    # raw = _call(model_handle, prompt, n_samples=n_samples)
-    # #print("\nRAW GEMINI RESPONSE:\n", raw, "\n" + "-"*80)
-    # data = _parse_json(raw)
-    #eturn Annotations(**data)
-    #annotations_2 = annotations_to_annotations_2(annotations)
-
     preliminary_annotation = call_gemini(model_name, api_key, prompt)
     final_annotations = convert_annotations_1_to_2(preliminary_annotation)
 
     return final_annotations
-
-# def _annotate(model_handle, question: str, sentences: List[str], n_samples: int) -> Annotations_1:
-#     prompt = _build_prompt(question, sentences)
-
-#     #print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)
-
-#     raw = _call(model_handle, prompt, n_samples=n_samples)
-#     #print("\nRAW GEMINI RESPONSE:\n", raw, "\n" + "-"*80)
-#     data = _parse_json(raw)
-#     #eturn Annotations(**data)
-#     #annotations_2 = annotations_to_annotations_2(annotations)
-    
-#     preliminary_annotation = Annotations_1(**data)
-#     final_annotations = annotations_to_annotations_2(preliminary_annotation)
-
-#     return final_annotations
 
 def run_annotation_pipeline(
     completions_file: str,
@@ -471,22 +412,6 @@ def run_annotation_pipeline(
             keep_ids = set(json.load(f))
             print("keep_ids")
             print(keep_ids)
-
-    """# whitelist filter
-    with open(completions_file, encoding="utf-8") as f:
-        completions = json.load(f)
-        if keep_ids is not None:
-            completions = [c for c in completions if c["question_id"] in keep_ids]
-        if max_items is not None:
-            completions = completions[:max_items]
-
-    # key = _configure_genai(api_key)
-    # model_handle = _make_model(model_name, key) if not _HAS_GENERATIVE_MODEL else _make_model(model_name)
-
-    with open(completions_file, encoding="utf-8") as f:
-        completions = json.load(f)
-        if max_items is not None:
-            completions = completions[:max_items]"""
 
     with open(completions_file, encoding="utf-8") as f:
         completions = json.load(f)
