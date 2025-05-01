@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, Sequence
 from pydantic import BaseModel
 from tqdm import tqdm
 import ast
+import warnings
 
 # import google.generativeai as genai
 from google import genai
@@ -112,6 +113,11 @@ class Annotations_2(BaseModel):
 
 CoTAnnotation = Annotations_1
 
+def _truncate_or_pad(seq, target):
+    if len(seq) >= target:
+        return seq[:target]
+    return seq + [0.0] * (target - len(seq))
+
 def convert_annotations_1_to_2(annotations_1: Annotations_1) -> Annotations_2:
     """
     Converts an Annotations_1 object to an Annotations_2 object.
@@ -119,8 +125,6 @@ def convert_annotations_1_to_2(annotations_1: Annotations_1) -> Annotations_2:
     Assumes the order of floats in Annotation_1.categories corresponds directly
     to the order of the float fields in Annotation_2.
     """
-    new_annotations: List[Annotation_2] = []
-    
     # Define the field names in the exact order they appear in Annotation_2
     category_field_names = [
         "problem_restating",
@@ -137,15 +141,39 @@ def convert_annotations_1_to_2(annotations_1: Annotations_1) -> Annotations_2:
         "other",
     ]
 
+    NUM = len(category_field_names)
+    new_annotations: List[Annotation_2] = []
+
     for ann_1 in annotations_1.annotations:
+        if len(ann_1.categories) != NUM:
+            warnings.warn(
+                f"sentence_id {ann_1.sentence_id}: got {len(ann_1.categories)} "
+                f"values, expected {NUM} - trimming/padding", RuntimeWarning
+            )
+
+        """cats = _truncate_or_pad(ann_1.categories, NUM)
+        category_data = {field: cats[i] for i, field in enumerate(category_field_names)}
+
+        for ann_1 in annotations_1.annotations:
         if len(ann_1.categories) != len(category_field_names):
             raise ValueError(
                 f"Annotation_1 with sentence_id {ann_1.sentence_id} has "
                 f"{len(ann_1.categories)} categories, but Annotation_2 expects "
                 f"{len(category_field_names)}."
-            )
+            )"""
 
-        # Create a dictionary mapping field names to category values
+        cats = _truncate_or_pad(ann_1.categories, NUM)
+        category_data = dict(zip(category_field_names, cats))
+
+        new_annotations.append(
+            Annotation_2(
+                sentence_id=ann_1.sentence_id,
+                other_label=ann_1.other_label,
+                **category_data,
+            )
+        )
+
+        """# Create a dictionary mapping field names to category values
         category_data = {
             field_name: ann_1.categories[i]
             for i, field_name in enumerate(category_field_names)
@@ -157,7 +185,7 @@ def convert_annotations_1_to_2(annotations_1: Annotations_1) -> Annotations_2:
             other_label=ann_1.other_label,
             **category_data  # Unpack the category data
         )
-        new_annotations.append(ann_2)
+        new_annotations.append(ann_2)"""
 
     return Annotations_2(annotations=new_annotations)
 
@@ -393,7 +421,7 @@ def call_gemini(model_name, api_key, prompt: str):
 
     return response.parsed
 
-def _annotate(model_name, api_key, question: str, sentences: List[str], n_samples: int) -> Annotations_1:
+def _annotate(model_name, api_key, question: str, sentences: List[str], n_samples: int) -> Annotations_2:
     prompt = _build_prompt(question, sentences)
 
     #print("\n" + "‾" * 80 + "\nPROMPT SENT TO GEMINI:\n" + prompt + "\n" + "_" * 80)

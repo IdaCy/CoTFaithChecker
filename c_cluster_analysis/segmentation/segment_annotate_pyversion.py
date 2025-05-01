@@ -77,7 +77,7 @@ from_file = "/completions_with_1001.json"
 to_base = "c_cluster_analysis/outputs/hints/mmlu/DeepSeek-R1-Distill-Llama-8B/filtered_unverbalized_annotations_confidence_"
 to_file = ".json"
 
-### NONE
+"""### NONE
 htype = "none"
 print(
     f"\nstarting {htype} "
@@ -91,7 +91,7 @@ run_annotation_pipeline(
     model_name = model_name,
     max_items=max_items,
     keep_ids_file = keep_ids_path,
-)
+)"""
 
 ### Sycophancy
 htype = "sycophancy"
@@ -141,8 +141,8 @@ run_annotation_pipeline(
     model_name = model_name,
     max_items=max_items,
     keep_ids_file = keep_ids_path,
-)
+)"""
 print(
     f"\finishing {htype} "
     f"{datetime.now(timezone.utc).astimezone().isoformat(timespec='seconds')}"
-)"""
+)
