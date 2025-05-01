@@ -76,12 +76,12 @@ def generate_completion(
 
         # enc = tokenize_instructions(tokenizer, texts, chat_template)
 
-        convs = [[{"role": "user", "content": t}] for t in texts]  # ❷
+        convs = [[{"role": "user", "content": t}] for t in texts]  
         formatted_prompts = [
-            tokenizer.apply_chat_template(conv, tokenize=False, add_generation_prompt=True)  # ❶
+            tokenizer.apply_chat_template(conv, tokenize=False, add_generation_prompt=True)  
             for conv in convs
         ]
-        enc = tokenizer(                                                  # ❸
+        enc = tokenizer(                  
             formatted_prompts,
             padding=True,
             truncation=False,
