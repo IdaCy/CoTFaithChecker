@@ -5,6 +5,7 @@
 
 from datetime import datetime, timezone
 import socket, os, sys
+from pathlib import Path
 
 start_ts = datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
 print(
@@ -20,10 +21,6 @@ ts_florida = datetime.now(ZoneInfo("America/New_York"))
 print(ts_london.isoformat(timespec="seconds"))
 print(ts_florida.isoformat(timespec="seconds"))
 
-
-import os
-from pathlib import Path
-
 print("Using os.getcwd():", os.getcwd())
 print("Using Path.cwd():",  Path.cwd())
 
@@ -37,6 +34,8 @@ os.chdir(project_root)
 print("Working directory set to:", os.getcwd())
 
 """
+python -m pip install --upgrade google-generativeai
+
 nohup python -u c_cluster_analysis/segmentation/segment_annotate_pyversion.py > logs/segm_annotate_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 
 nohup python -u -m c_cluster_analysis.segmentation.segment_annotate_pyversion \
