@@ -67,6 +67,7 @@ RESPONSE_SCHEMA = """{
 }
 """
 
+
 CATEGORY_NAMES: List[str] = [
     "problem_restating",
     "knowledge_augmentation",
