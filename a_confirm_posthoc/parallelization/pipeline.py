@@ -96,9 +96,12 @@ def generate_dataset_completions(
 
         # gather & save
         #gathered = accelerator.gather_object(results)
-        gathered = gather_object(results)
+        gathered = gather_object(results)           # list[ list[dict] ] on rank-0
         if accelerator.is_main_process:
-            merged = [item for sub in gathered for item in sub]
+            merged = [d for lst in gathered for d in (lst if isinstance(lst, list) else [lst])]
+        #gathered = gather_object(results)
+        #if accelerator.is_main_process:
+        #    merged = [item for sub in gathered for item in sub]
             save_results(merged, dataset_name, hint_type, model_name, n_questions)
 
     if accelerator.is_main_process:
