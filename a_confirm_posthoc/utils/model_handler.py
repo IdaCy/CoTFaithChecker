@@ -77,7 +77,6 @@ def generate_completion(
     tokenizer: AutoTokenizer,    
     device: torch.device,        
     prompts: List[Dict], 
-    chat_template: str,
     batch_size: int = 8, 
     max_new_tokens: Optional[int] = 512 # Allow None
     ) -> List[Dict]:
@@ -89,7 +88,6 @@ def generate_completion(
         tokenizer: The loaded Hugging Face tokenizer.
         device: The torch device the model is on.
         prompts: A list of dictionaries, containing 'question_id' and 'prompt_text'.
-        chat_template: The chat template string (must contain '{instruction}').
         batch_size: The number of prompts to process in each batch.
         max_new_tokens: Maximum number of new tokens to generate. If None, uses a large default (e.g., 2048).
 
@@ -104,22 +102,31 @@ def generate_completion(
     gen_max_tokens = max_new_tokens if max_new_tokens is not None else 2048 # Default large value
     logging.info(f"Using max_new_tokens: {gen_max_tokens}")
 
+    tokenizer.padding_side = "left"
+    tokenizer.pad_token = tokenizer.eos_token
+
     for i in range(0, len(prompts), batch_size):
         batch_prompts_data = prompts[i:i + batch_size]
-        batch_prompt_texts = [item['prompt_text'] for item in batch_prompts_data]
+        # batch_prompt_texts = [item['prompt_text'] for item in batch_prompts_data]
+        batch_prompt_texts = [[{"role": "user", "content": item['prompt_text']}] for item in batch_prompts_data]
         batch_question_ids = [item['question_id'] for item in batch_prompts_data]
         
         current_batch_size = len(batch_prompt_texts)
         logging.info(f"Processing batch {i // batch_size + 1}/{(len(prompts) + batch_size - 1) // batch_size} (Size: {current_batch_size}, QIDs: {min(batch_question_ids)}-{max(batch_question_ids)})")
 
+        formatted_prompts = [
+            tokenizer.apply_chat_template(conv, tokenize=False, add_generation_prompt=True)
+            for conv in batch_prompt_texts
+        ]
+        
         # Format prompts using the chat template *before* tokenization
-        formatted_prompts = [chat_template.format(instruction=text) for text in batch_prompt_texts]
+        encodings = tokenizer(
+            formatted_prompts,
+            padding=True,
+            truncation=False,
+            return_tensors="pt"
+        ).to(model.device)
 
-        encodings = tokenize_instructions(
-            tokenizer,
-            batch_prompt_texts, # Pass original texts here, formatting happens inside tokenize_instructions now
-            chat_template
-        )
         
         input_ids = encodings["input_ids"].to(model.device)
         attention_mask = encodings["attention_mask"].to(model.device)
@@ -134,31 +141,16 @@ def generate_completion(
                 pad_token_id=tokenizer.eos_token_id # Ensure pad token is set for generation
             )
 
-        # Decode only the generated part for each item in the batch
-        generated_texts = []
-        # Get the string representation of the EOS token used for padding
-        eos_token_str = tokenizer.decode([tokenizer.eos_token_id], skip_special_tokens=False)
+        decoded_outputs = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 
-        for j in range(outputs.shape[0]):
-            generated_ids = outputs[j, input_length:]
-            generated_text = tokenizer.decode(generated_ids, skip_special_tokens=False)
-
-            # Remove any trailing EOS tokens (which are padding in this case)
-            while generated_text.endswith(eos_token_str):
-                generated_text = generated_text[:-len(eos_token_str)]
-
-            generated_texts.append(generated_text)
-
-        # Reconstruct the full completion by prepending the original formatted prompt
-        # Note: We need the formatted prompts from *before* tokenization
-        formatted_prompts_for_batch = [chat_template.format(instruction=item['prompt_text']) for item in batch_prompts_data]
+        # For every completion add bos at the beginning and eos at the end
+        decoded_outputs = [tokenizer.bos_token + output + tokenizer.eos_token for output in decoded_outputs]
         
         # Store results for the batch
-        for qid, original_formatted_prompt, generated_part in zip(batch_question_ids, formatted_prompts_for_batch, generated_texts):
-            full_completion_text = original_formatted_prompt + "<think>\n" + generated_part
+        for qid, completion in zip(batch_question_ids, decoded_outputs):
             results.append({
                 "question_id": qid,
-                "completion": full_completion_text 
+                "completion": completion
             })
 
     return results

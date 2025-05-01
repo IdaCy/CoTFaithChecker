@@ -72,9 +72,9 @@ def split_completion(completion: str):
     """
     # Find the first instance of "assistant" in the completion
     try:
-        assistant_index = completion.lower().find("<|end_header_id|>")
+        assistant_index = completion.lower().find("<think>")
     except ValueError:
-        logging.warning(f"Failed to find <|end_header_id|> in completion; using 'assistant' instead")
+        logging.warning(f"Failed to find <think> in completion; using 'assistant' instead")
         assistant_index = completion.lower().find("assistant")
     think_index = completion.lower().rfind('</think>')
     # If "assistant" is not found, raise an error
