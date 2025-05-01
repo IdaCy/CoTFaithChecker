@@ -102,11 +102,16 @@ def generate_completion(
                 do_sample=False,
                 pad_token_id=tokenizer.eos_token_id
             )
+        for qid, out in zip(qids, outputs):
+            gen_ids  = out[inp_len:]
+            gen_text = tokenizer.decode(gen_ids, skip_special_tokens=True)
 
-        decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-        decoded = [tokenizer.bos_token + d + tokenizer.eos_token for d in decoded]
+            gen_text = gen_text.lstrip()
+            think_ix = gen_text.find("<think>")
+            span     = gen_text[think_ix:] if think_ix != -1 else gen_text
+            if "</think>" in span:
+                span = span.split("</think>")[0]
 
-        for qid, completion in zip(qids, decoded):
-            results.append({"question_id": qid, "completion": completion})
+            results.append({"question_id": qid, "completion": span})
 
     return results
