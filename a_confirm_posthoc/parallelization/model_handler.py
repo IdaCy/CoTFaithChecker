@@ -105,6 +105,7 @@ def generate_completion(
 
         #decoded = tokenizer.batch_decode(outputs, skip_special_tokens=False)
         decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        decoded = [tokenizer.bos_token + output + tokenizer.eos_token for output in decoded]
         for qid, completion in zip(qids, decoded):
             results.append({"question_id": qid, "completion": completion})
 

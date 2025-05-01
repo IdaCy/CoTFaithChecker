@@ -5,7 +5,7 @@ accelerate config
 
 then run:
 nohup accelerate launch a_confirm_posthoc/parallelization/driver.py \
-     > logs/f1_2k_xyyx_$(date +%Y%m%d_%H%M%S).log 2>&1 &
+     > logs/5_f1_2k_xyyx_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 
 i mean, i'm a fan of nohup, you can also do tmux or have it run in the foreground tho
 """
@@ -47,8 +47,8 @@ if accelerator.is_main_process:
 print(f"on host {socket.gethostname()} (PID {os.getpid()}) ===",)
 print("starting at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
-#model_path = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
-model_path = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+model_path = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+#model_path = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
 #model_path = "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"
 #model, tokenizer, model_name, device = load_model_and_tokenizer(model_path)
 model, tokenizer, model_name, _ = load_model_and_tokenizer(model_path)
@@ -57,8 +57,8 @@ device = accelerator.device
 
 dataset_name = "mmlu"
 #hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
-hint_types = ["unethical_information", "induced_urgency"]
-n_questions = 2001
+hint_types = ["unethical_information"]
+n_questions = 1
 
 print("generating completions at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
@@ -76,7 +76,7 @@ generate_dataset_completions(
 )
 print("verifying completions at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
-hint_types = ["none", "unethical_information", "induced_urgency"]
+"""hint_types = ["none", "unethical_information", "induced_urgency"]
 
 # Run llm verification to get the final model answers
 # Note that this will drop the results that are N/A (eg the model never stopped reasoning)
@@ -93,3 +93,4 @@ print("running hint verification at", datetime.now(ZoneInfo("Europe/London")).is
 run_hint_verification(dataset_name, hint_types[1:], model_name, n_questions)
 
 print("done at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+"""
