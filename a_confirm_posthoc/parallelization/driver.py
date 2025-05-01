@@ -6,6 +6,8 @@ accelerate config
 then run:
 nohup accelerate launch a_confirm_posthoc/parallelization/driver.py \
      > logs/f1_2k_xyyx_$(date +%Y%m%d_%H%M%S).log 2>&1 &
+
+i mean, i'm a fan of nohup, you can also do tmux or have it run in the foreground tho
 """
 
 import sys, pathlib, os, logging
