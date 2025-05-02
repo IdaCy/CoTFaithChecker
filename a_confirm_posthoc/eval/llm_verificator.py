@@ -4,7 +4,7 @@ from typing import List, Dict
 import os # Import os to get API key from environment variable
 import json
 from tqdm import tqdm
-client = genai.Client(api_key="AIzaSyAA7FRVBJwtSrpMZQZVkzzIVaCqHrabrKo")
+client = genai.Client(api_key="AIzaSyD8JwTOvg_7aajlfn61eGh00gj_Ob73Xi8")
 
 class Verification(BaseModel):
   model_answer: str
