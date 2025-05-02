@@ -289,7 +289,7 @@ def generate_completion_accelerate(
 
         decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)
         # Wrap with explicit BOS/EOS tokens like model_handler.generate_completion
-        decoded = [t + tokenizer.eos_token for t in decoded]
+        decoded = [tokenizer.bos_token + t + tokenizer.eos_token for t in decoded]
 
         for qid, completion in zip(qids, decoded):
             results.append({"question_id": qid, "completion": completion})
@@ -557,227 +557,6 @@ def run_generation_phase_new(args):
         logging.info("Generation phase complete.")
     
 
-# # --- Main Execution Logic ---
-# def run_generation_phase(args):
-#     """Runs the generation phase using accelerate."""
-#     # Use accelerator.is_main_process for initial setup logs
-#     if accelerator.is_main_process:
-#         logging.info("--- Starting Generation Phase ---")
-
-#     # --- 1. Setup (Main Process Only for File Paths) ---
-#     model_name_suffix = args.model_path.split("/")[-1]
-#     output_dir = args.output_dir or os.path.join("f_temp_check", "outputs", args.dataset_name, model_name_suffix, args.hint_type)
-#     # Ensure directory exists (only main process needs to create it)
-#     if accelerator.is_main_process:
-#         os.makedirs(output_dir, exist_ok=True)
-#     raw_output_file = os.path.join(output_dir, f"temp_generations_raw_{args.dataset_name}_{args.n_questions}.json")
-#     if accelerator.is_main_process:
-#         logging.info(f"Output directory: {output_dir}")
-#         logging.info(f"Raw output file: {raw_output_file}")
-
-#     # --- 2. Load Model (Using Accelerate) ---
-#     device = accelerator.device # Get device from accelerator
-#     logging.info(f"Process {accelerator.process_index}: Loading model and tokenizer: {args.model_path} onto {device}")
-#     try:
-#         # Load model and tokenizer directly here, similar to parallelization/driver.py
-#         tokenizer = AutoTokenizer.from_pretrained(args.model_path)
-#         model = AutoModelForCausalLM.from_pretrained(
-#             args.model_path,
-#             torch_dtype=torch.bfloat16 # Or adjust as needed
-#             # Add other loading args like quantization if used previously
-#         )
-#         # Set padding side for consistency
-#         model.config.use_cache = False # Often recommended with gradient checkpointing or multi-GPU
-#         tokenizer.padding_side = 'left'
-#         if tokenizer.pad_token is None:
-#             logging.warning(f"Process {accelerator.process_index}: Tokenizer does not have a pad token. Setting pad_token to eos_token.")
-#             tokenizer.pad_token = tokenizer.eos_token
-#             model.config.pad_token_id = model.config.eos_token_id # Ensure model config matches
-
-#         # Prepare model and tokenizer with accelerator
-#         model, tokenizer = accelerator.prepare(model, tokenizer)
-#         logging.info(f"Process {accelerator.process_index}: Model and tokenizer prepared.")
-
-#     except Exception as e:
-#         logging.error(f"Process {accelerator.process_index}: Failed to load or prepare model: {e}")
-#         # Ensure all processes exit if loading fails on any process
-#         accelerator.set_trigger() # Signal other processes to possibly exit gracefully
-#         return # Exit generation phase on this process
-
-#     # Check if any process triggered an exit
-#     if accelerator.check_trigger():
-#         logging.error(f"Process {accelerator.process_index}: Exiting due to trigger from another process (likely model loading failure).")
-#         return
-
-
-#     # --- 3. Load Input Data (Main Process Only) ---
-#     # Load full data only on main process to avoid redundant loads
-#     target_questions_data = []
-#     original_completions_map = {}
-#     hints_options_map = {}
-#     if accelerator.is_main_process:
-#         try:
-#             hint_verification_path = os.path.join("data", args.dataset_name, model_name_suffix, args.hint_type, f"hint_verification_with_{args.n_questions}.json")
-#             target_questions_data = load_json(hint_verification_path) # List of dicts
-
-#             completions_path = os.path.join("data", args.dataset_name, model_name_suffix, args.hint_type, f"completions_with_{args.n_questions}.json")
-#             original_completions = load_json(completions_path) # List of dicts
-#             original_completions_map = {item['question_id']: item['completion'] for item in original_completions}
-
-#             switch_analysis_path = os.path.join("data", args.dataset_name, model_name_suffix, args.hint_type, f"switch_analysis_with_{args.n_questions}.json")
-#             switch_analysis_data = load_json(switch_analysis_path) # List of dicts
-#             hints_options_map = {item['question_id']: item['hint_option'] for item in switch_analysis_data}
-
-#         except Exception as e:
-#             logging.error(f"Main process failed to load necessary input data files: {e}")
-#             # Signal other processes if main process fails critically here
-#             accelerator.set_trigger()
-#             return
-#     else:
-#         # Non-main processes don't load the full data initially
-#         pass
-
-#     # Check if main process triggered an exit during data loading
-#     if accelerator.check_trigger():
-#         logging.error(f"Process {accelerator.process_index}: Exiting due to trigger from main process (likely data loading failure).")
-#         return
-
-
-#     # --- 4. Prepare Prompts & Target Info (Main Process Prepares, then Broadcasts/Splits) ---
-#     # Let main process prepare the full list of prompts and target info
-#     all_prompts_for_generation = []
-#     all_target_info = {}
-#     if accelerator.is_main_process:
-#         logging.info("Main process preparing prompts...")
-#         questions_processed_count = 0
-#         for item in target_questions_data:
-#             qid = item['question_id']
-#             original_verbalizes = item.get('verbalizes_hint', None)
-
-#             if qid not in original_completions_map:
-#                 logging.warning(f"QID {qid} from hint verification not found in original completions. Skipping.")
-#                 continue
-#             if qid not in hints_options_map:
-#                 logging.warning(f"Hint option for QID {qid} not found in switch analysis. Skipping.")
-#                 continue
-
-#             original_completion_text = original_completions_map[qid]
-#             prompt_text = extract_prompt_text(original_completion_text)
-#             if prompt_text is None:
-#                 logging.warning(f"Could not extract prompt for QID {qid}. Skipping.")
-#                 continue
-
-#             hint_option = hints_options_map[qid]
-
-#             all_prompts_for_generation.append({'question_id': qid, 'prompt_text': prompt_text})
-#             all_target_info[qid] = {'original_verbalizes_hint': original_verbalizes, 'hint_option': hint_option}
-
-#             questions_processed_count += 1
-#             if args.demo_mode_limit is not None and questions_processed_count >= args.demo_mode_limit:
-#                 logging.info(f"Reached demo mode limit of {args.demo_mode_limit} questions.")
-#                 break
-
-#         if not all_prompts_for_generation:
-#             logging.error("Main process: No valid prompts prepared for generation. Setting trigger.")
-#             accelerator.set_trigger()
-#         else:
-#             logging.info(f"Main process prepared {len(all_prompts_for_generation)} prompts.")
-
-#     # Check trigger again after main process prompt preparation
-#     if accelerator.check_trigger():
-#         logging.warning(f"Process {accelerator.process_index}: Exiting - No prompts prepared by main process.")
-#         return
-
-#     # Distribute the prepared data. Broadcast target_info and split prompts.
-#     # Need to gather target_info on all processes for the final structuring step
-#     all_target_info_list = [all_target_info] # Wrap in list for gather_object compatibility
-#     gathered_target_info_list = gather_object(all_target_info_list)
-
-#     if accelerator.is_main_process:
-#         # Main process already has it
-#         final_target_info = gathered_target_info_list[0]
-#         prompts_for_this_process = all_prompts_for_generation[accelerator.process_index::accelerator.num_processes]
-#     else:
-#         # Non-main processes receive the target_info dict
-#         final_target_info = gathered_target_info_list[0] if gathered_target_info_list else {}
-#         # Receive the full prompts list: main sent it wrapped in a list, so index 0 is that list
-#         gathered_prompts_container = gather_object([all_prompts_for_generation])  # returns list whose items are each rank's prompt-list
-#         # Flatten to a single list of prompt dicts
-#         correct_prompts_list = []
-#         for sub in gathered_prompts_container:
-#             if isinstance(sub, list):
-#                 correct_prompts_list.extend(sub)
-#             elif isinstance(sub, dict):
-#                 # In case a rank accidentally sends a single dict
-#                 correct_prompts_list.append(sub)
-#         prompts_for_this_process = correct_prompts_list[accelerator.process_index::accelerator.num_processes]
-
-#     num_prompts_local = len(prompts_for_this_process)
-#     logging.info(f"Process {accelerator.process_index} will process {num_prompts_local} prompts.")
-
-
-#     # --- 5. Generate Completions (Distributed) ---
-#     start_time = time.time()
-#     # Each process generates completions for its subset of prompts
-#     local_generated_data = generate_n_completions_batched(
-#         prompts_data=prompts_for_this_process, # Pass the slice for this process
-#         model=model, # Pass the prepared model
-#         tokenizer=tokenizer, # Pass the prepared tokenizer
-#         device=device, # Pass the device
-#         num_generations=args.num_generations,
-#         temperature=args.temperature,
-#         max_new_tokens=args.max_new_tokens,
-#         batch_size=args.batch_size # This batch size is per-GPU
-#     )
-#     end_time = time.time()
-#     logging.info(f"Process {accelerator.process_index} finished generation in {end_time - start_time:.2f} seconds.")
-
-#     # --- 6. Gather and Structure Results (Main Process Only) ---
-#     # Gather results from all processes
-#     gathered_results = gather_object([local_generated_data])  # List of dicts, one from each process
-
-#     if accelerator.is_main_process:
-#         logging.info("Main process gathering and structuring results...")
-#         # Merge the dictionaries from all processes
-#         final_generated_data = {}
-#         for proc_result_dict in gathered_results:
-#             final_generated_data.update(proc_result_dict)
-
-#         # Structure the results using the broadcasted target_info
-#         raw_results_list = []
-#         processed_qids_count = 0
-#         for qid, generations_list in final_generated_data.items():
-#              # Use the combined final_target_info obtained earlier
-#             if qid in final_target_info:
-#                 raw_results_list.append({
-#                     'question_id': qid,
-#                     'original_verbalizes_hint': final_target_info[qid]['original_verbalizes_hint'],
-#                     'hint_option': final_target_info[qid]['hint_option'],
-#                     'generations': generations_list
-#                 })
-#                 processed_qids_count += 1
-#             else:
-#                  logging.warning(f"Generated data for QID {qid} but it wasn't in the target info. Ignoring.")
-
-#         logging.info(f"Main process structured results for {processed_qids_count} questions.")
-
-#         # Save the combined results (only on main process)
-#         config_data = vars(args) # Save command line args used
-#         full_raw_output = {'config': config_data, 'raw_generations': raw_results_list}
-#         save_json(full_raw_output, raw_output_file) # save_json already checks for main process
-#         logging.info(f"Raw generation results saved to {raw_output_file}")
-
-#     # --- 7. Cleanup ---
-#     # Accelerator handles model cleanup implicitly? Check docs if explicit deletion needed.
-#     # Explicitly delete model and tokenizer references might help release memory sooner.
-#     del model
-#     del tokenizer
-#     if torch.cuda.is_available():
-#         torch.cuda.empty_cache()
-#         logging.info(f"Process {accelerator.process_index} cleared CUDA cache.")
-
-#     if accelerator.is_main_process:
-#         logging.info("Generation phase complete.")
 
 # --- Analysis Phase ---
 def run_analysis_phase(args):
@@ -811,19 +590,19 @@ def run_analysis_phase(args):
     # --- 3. Initialize/Load Detailed Analysis ---
     detailed_analysis_list = []
     analyzed_qids = set()
-    try:
-        existing_analysis_data = load_json(detailed_analysis_file)
-        # Verify config matches if resuming?
-        if existing_analysis_data.get('config') == config_data:
-            detailed_analysis_list = existing_analysis_data.get('detailed_analysis', [])
-            analyzed_qids = {item['question_id'] for item in detailed_analysis_list}
-            logging.info(f"Resuming analysis. Found {len(analyzed_qids)} already analyzed questions.")
-        else:
-            logging.warning(f"Config mismatch in existing analysis file {detailed_analysis_file}. Starting analysis from scratch.")
-    except FileNotFoundError:
-        logging.info(f"No existing analysis file found at {detailed_analysis_file}. Starting fresh analysis.")
-    except Exception as e:
-        logging.warning(f"Could not load or parse existing analysis file {detailed_analysis_file}. Error: {e}. Starting fresh analysis.")
+    # try:
+    #     existing_analysis_data = load_json(detailed_analysis_file)
+    #     # Verify config matches if resuming?
+    #     if existing_analysis_data.get('config') == config_data:
+    #         detailed_analysis_list = existing_analysis_data.get('detailed_analysis', [])
+    #         analyzed_qids = {item['question_id'] for item in detailed_analysis_list}
+    #         logging.info(f"Resuming analysis. Found {len(analyzed_qids)} already analyzed questions.")
+    #     else:
+    #         logging.warning(f"Config mismatch in existing analysis file {detailed_analysis_file}. Starting analysis from scratch.")
+    # except FileNotFoundError:
+    #     logging.info(f"No existing analysis file found at {detailed_analysis_file}. Starting fresh analysis.")
+    # except Exception as e:
+    #     logging.warning(f"Could not load or parse existing analysis file {detailed_analysis_file}. Error: {e}. Starting fresh analysis.")
 
     # --- 4. Analysis Loop ---
     max_api_retries = 3
@@ -1042,7 +821,7 @@ config = {
     "hint_type": "sycophancy",
     "n_questions": 2001,
     "output_dir": None, # Add back with None value
-    "demo_mode_limit": 10,  # Set to None to process all questions
+    "demo_mode_limit": 20,  # Set to None to process all questions
     "num_generations": 5,
     "temperature": 0.7,
     "max_new_tokens": 5000,
