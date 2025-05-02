@@ -8,7 +8,7 @@ nohup accelerate launch a_confirm_posthoc/parallelization/driver.py \
      > logs/5_f1_2k_xyyx_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 
 no accelerate:
-nohup python a_confirm_posthoc/parallelization/driver.py \
+nohup python a_confirm_posthoc/parallelization/driver1006.py \
      > logs/5_f1_2k_xyyx_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 
 i mean, i'm a fan of nohup, you can also do tmux or have it run in the foreground tho
@@ -61,9 +61,9 @@ device = accelerator.device
 
 dataset_name = "mmlu"
 #hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
+#hint_types = ["sycophancy", "unethical_information", "induced_urgency"]
 hint_types = ["none"]
-#hint_types = ["sycophancy"]
-n_questions = 1005
+n_questions = 1006
 
 """print("generating completions at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
@@ -81,14 +81,13 @@ generate_dataset_completions(
 )
 print("verifying completions at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 """
-
 # Run llm verification to get the final model answers
 # Note that this will drop the results that are N/A (eg the model never stopped reasoning)
 run_verification(dataset_name, hint_types, model_name, n_questions)
 
-print("running switch check at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
-
 hint_types = ["none", "sycophancy"]
+
+print("running switch check at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 # Check if the model switches between none and the other hint types
 # [1:] because we don't want to check the none hint type as it's the baseline
 run_switch_check(dataset_name, hint_types[1:], model_name, n_questions)
