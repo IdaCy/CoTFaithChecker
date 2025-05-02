@@ -17,8 +17,9 @@ import re
 import time
 from typing import Dict, List, Tuple, Optional, Any
 from collections import defaultdict # Add defaultdict import
+import gc
 
-# accelerate launch f_temp_check/temp_robust_new_accelerate.py
+# accelerate launch f_temp_check/temp_robust_new_refactor.py
 
 
 # --- Project Specific Imports ---
@@ -50,7 +51,7 @@ accelerator = Accelerator()
 
 # Setup logging to be more informative and less verbose on non-main processes
 if not accelerator.is_main_process:
-    logging.getLogger().setLevel(logging.WARNING) # Reduce logging level for non-main processes
+    logging.getLogger().setLevel(logging.INFO)  # show INFO from all ranks
 else:
     # Add stream handler only for main process to see logs in console
     logging.getLogger().addHandler(logging.StreamHandler())
@@ -237,6 +238,7 @@ def generate_completion_accelerate(
     prompts: List[Dict[str, Any]],
     batch_size: int = 8,
     max_new_tokens: Optional[int] = 512,
+    temperature: float = 0.7,
 ):
     """Generate completions for a list of prompt dicts using Accelerate-prepared model.
 
@@ -260,10 +262,9 @@ def generate_completion_accelerate(
         texts = [p["prompt_text"] for p in batch]
         qids = [p["question_id"] for p in batch]
 
-        if accelerator.is_main_process:
-            logging.info(
-                f"Batch {i//batch_size+1}/{(len(prompts)+batch_size-1)//batch_size} "
-                f"(size {len(texts)}) on rank {accelerator.process_index}")
+        logging.info(
+            f"[rank {accelerator.process_index}] Batch {i//batch_size+1}/"
+            f"{(len(prompts)+batch_size-1)//batch_size} (size {len(texts)})")
 
         enc = tokenizer(
             texts,
@@ -281,7 +282,8 @@ def generate_completion_accelerate(
                 input_ids,
                 attention_mask=attention_mask,
                 max_new_tokens=gen_max,
-                do_sample=False,
+                do_sample=True,
+                temperature=temperature,
                 pad_token_id=tokenizer.eos_token_id,
             )
 
@@ -497,31 +499,49 @@ def run_generation_phase_new(args):
         local_prompts,
         batch_size=args.batch_size,
         max_new_tokens=args.max_new_tokens,
+        temperature=args.temperature,
     )
 
     # 4. Gather
     gathered = gather_object([local_results])
 
-    merged_results = []
-    for sub in gathered:
-        if isinstance(sub, list):
-            merged_results.extend(sub)
-        else:
-            merged_results.append(sub)
-    logging.info(
-        f"[run_generation_phase_new] Total completions gathered: {len(merged_results)}")
 
+    if accelerator.is_main_process:
+        merged_results = [
+            d for sub in gathered
+            for d in (sub if isinstance(sub, list) else [sub])
+        ]
 
+        logging.info(f"[rank {accelerator.process_index}] Total completions gathered: {len(merged_results)}")
 
-    grouped_results = aggregate_generation_results(
-        merged_results, base_qid_info, args.num_generations
-    )
+        # Aggregate results
+        grouped_results = aggregate_generation_results(
+            merged_results, base_qid_info, args.num_generations
+        )
 
-# Save the combined results (only on main process)
-    config_data = vars(args) # Save command line args used
-    full_raw_output = {'config': config_data, 'raw_generations': raw_results_list}
-    save_json(full_raw_output, raw_output_file) # save_json already checks for main process
-    logging.info(f"Raw generation results saved to {raw_output_file}")
+        logging.info(f"[rank {accelerator.process_index}] Total completions aggregated: {len(grouped_results)}")
+
+        # Save results
+        model_name_suffix = args.model_path.split("/")[-1]
+        output_dir = args.output_dir or os.path.join(
+            "f_temp_check", "outputs", args.dataset_name,
+            model_name_suffix, args.hint_type
+        )
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Save raw results
+        raw_output_file = os.path.join(
+            output_dir,
+            f"temp_generations_raw_{args.dataset_name}_{args.n_questions}.json"
+        )
+
+        full_raw_output = {
+            'config': vars(args),
+            'raw_generations': grouped_results
+        }
+        save_json(full_raw_output, raw_output_file)
+        logging.info(f"[rank {accelerator.process_index}] Raw generation results saved to {raw_output_file}")
+
 
     # --- 7. Cleanup ---
     # Accelerator handles model cleanup implicitly? Check docs if explicit deletion needed.
@@ -530,6 +550,7 @@ def run_generation_phase_new(args):
     del tokenizer
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
+        gc.collect()
         logging.info(f"Process {accelerator.process_index} cleared CUDA cache.")
 
     if accelerator.is_main_process:
@@ -587,6 +608,7 @@ def run_generation_phase_new(args):
 #     if accelerator.check_trigger():
 #         logging.error(f"Process {accelerator.process_index}: Exiting due to trigger from another process (likely model loading failure).")
 #         return
+
 
 #     # --- 3. Load Input Data (Main Process Only) ---
 #     # Load full data only on main process to avoid redundant loads
@@ -1020,11 +1042,11 @@ config = {
     "hint_type": "sycophancy",
     "n_questions": 2001,
     "output_dir": None, # Add back with None value
-    "demo_mode_limit": 5,  # Set to None to process all questions
-    "num_generations": 3,
+    "demo_mode_limit": 10,  # Set to None to process all questions
+    "num_generations": 5,
     "temperature": 0.7,
     "max_new_tokens": 5000,
-    "batch_size": 10
+    "batch_size": 32
 }
 
 # Create a simple args object to pass to the functions
@@ -1038,7 +1060,7 @@ if __name__ == "__main__":
     args = Args(**config) # Use default config for now
 
     # Run generation phase (all processes participate)
-    run_generation_phase(args)
+    run_generation_phase_new(args)
 
     # Wait for all processes to finish generation before analysis
     accelerator.wait_for_everyone()
