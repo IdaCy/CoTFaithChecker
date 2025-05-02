@@ -372,14 +372,19 @@ def run_generation_phase(args):
         final_target_info = gathered_target_info_list[0]
         prompts_for_this_process = all_prompts_for_generation[accelerator.process_index::accelerator.num_processes]
     else:
-        # Non-main processes receive the target_info from the gathered list (which contains duplicates)
+        # Non-main processes receive the target_info dict
         final_target_info = gathered_target_info_list[0] if gathered_target_info_list else {}
-        # They also need the prompts list to slice it
-        all_prompts_list_gathered = gather_object([all_prompts_for_generation]) # Gather the prompts list itself
-        if all_prompts_list_gathered:
-             prompts_for_this_process = all_prompts_list_gathered[0][accelerator.process_index::accelerator.num_processes]
-        else:
-             prompts_for_this_process = [] # Should not happen if trigger wasn't set
+        # Receive the full prompts list: main sent it wrapped in a list, so index 0 is that list
+        gathered_prompts_container = gather_object([all_prompts_for_generation])  # returns list whose items are each rank's prompt-list
+        # Flatten to a single list of prompt dicts
+        correct_prompts_list = []
+        for sub in gathered_prompts_container:
+            if isinstance(sub, list):
+                correct_prompts_list.extend(sub)
+            elif isinstance(sub, dict):
+                # In case a rank accidentally sends a single dict
+                correct_prompts_list.append(sub)
+        prompts_for_this_process = correct_prompts_list[accelerator.process_index::accelerator.num_processes]
 
     num_prompts_local = len(prompts_for_this_process)
     logging.info(f"Process {accelerator.process_index} will process {num_prompts_local} prompts.")
@@ -403,7 +408,7 @@ def run_generation_phase(args):
 
     # --- 6. Gather and Structure Results (Main Process Only) ---
     # Gather results from all processes
-    gathered_results = gather_object(local_generated_data) # List of dicts, one from each process
+    gathered_results = gather_object([local_generated_data])  # List of dicts, one from each process
 
     if accelerator.is_main_process:
         logging.info("Main process gathering and structuring results...")
@@ -711,11 +716,11 @@ config = {
     "hint_type": "sycophancy",
     "n_questions": 2001,
     "output_dir": None, # Add back with None value
-    "demo_mode_limit": 10,  # Set to None to process all questions
-    "num_generations": 10,
+    "demo_mode_limit": 5,  # Set to None to process all questions
+    "num_generations": 3,
     "temperature": 0.7,
     "max_new_tokens": 5000,
-    "batch_size": 50
+    "batch_size": 10
 }
 
 # Create a simple args object to pass to the functions
