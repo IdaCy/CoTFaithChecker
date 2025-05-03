@@ -1,0 +1,78 @@
+nohup: ignoring input
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+on host fd4b7fbca240 (PID 58507) ===
+starting at 2025-05-03T03:18:13+01:00
+2025-05-03 02:18:13,558 - INFO - CUDA is available. Using GPU.
+CUDA is available. Using GPU.
+2025-05-03 02:18:13,559 - INFO - Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
+Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
+on host fd4b7fbca240 (PID 58510) ===
+starting at 2025-05-03T03:18:14+01:00
+2025-05-03 02:18:14,223 - INFO - CUDA is available. Using GPU.
+2025-05-03 02:18:14,223 - INFO - Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
+on host fd4b7fbca240 (PID 58508) ===
+starting at 2025-05-03T03:18:14+01:00
+2025-05-03 02:18:14,231 - INFO - CUDA is available. Using GPU.
+2025-05-03 02:18:14,231 - INFO - Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
+on host fd4b7fbca240 (PID 58509) ===
+starting at 2025-05-03T03:18:14+01:00
+2025-05-03 02:18:14,395 - INFO - CUDA is available. Using GPU.
+2025-05-03 02:18:14,395 - INFO - Loading model and tokenizer: deepseek-ai/DeepSeek-R1-Distill-Llama-8B onto cuda
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.26s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.27s/it]
+2025-05-03 02:18:19,872 - INFO - Model and tokenizer loaded successfully.
+Model and tokenizer loaded successfully.
+Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.56s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.56s/it]
+2025-05-03 02:18:20,962 - INFO - Model and tokenizer loaded successfully.
+Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.59s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.59s/it]
+2025-05-03 02:18:21,077 - INFO - Model and tokenizer loaded successfully.
+Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.65s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.65s/it]
+2025-05-03 02:18:21,281 - INFO - Model and tokenizer loaded successfully.
+generating completions at 2025-05-03T03:18:36+01:00
+2025-05-03 02:18:36,249 - INFO - --- Processing hint type: sycophancy ---
+generating completions at 2025-05-03T03:18:36+01:00
+2025-05-03 02:18:36,255 - INFO - Running on 4 GPU(s)
+Running on 4 GPU(s)
+2025-05-03 02:18:36,255 - INFO - --- Processing hint type: sycophancy ---
+--- Processing hint type: sycophancy ---
+generating completions at 2025-05-03T03:18:36+01:00
+2025-05-03 02:18:36,260 - INFO - --- Processing hint type: sycophancy ---
+generating completions at 2025-05-03T03:18:36+01:00
+2025-05-03 02:18:36,263 - INFO - --- Processing hint type: sycophancy ---
+2025-05-03 02:18:36,279 - INFO - Using max_new_tokens: 2048
+2025-05-03 02:18:36,279 - INFO - Processing batch 1/1 (size 1, QIDs 2002-2002)
+2025-05-03 02:18:36,284 - INFO - Using max_new_tokens: 2048
+Using max_new_tokens: 2048
+2025-05-03 02:18:36,284 - INFO - Processing batch 1/1 (size 1, QIDs 2000-2000)
+Processing batch 1/1 (size 1, QIDs 2000-2000)
+2025-05-03 02:18:36,289 - INFO - Using max_new_tokens: 2048
+2025-05-03 02:18:36,290 - INFO - Processing batch 1/1 (size 1, QIDs 2001-2001)
+2025-05-03 02:18:36,291 - INFO - Using max_new_tokens: 2048
+2025-05-03 02:18:36,292 - INFO - Processing batch 1/1 (size 1, QIDs 2003-2003)
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:633: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.95` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:633: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.95` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:633: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.95` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/usr/local/lib/python3.10/dist-packages/transformers/generation/configuration_utils.py:633: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.95` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+verifying completions at 2025-05-03T03:19:08+01:00
+verifying completions at 2025-05-03T03:19:08+01:00
+verifying completions at 2025-05-03T03:19:08+01:00
+2025-05-03 02:19:08,551 - INFO - Results saved to data/mmlu/DeepSeek-R1-Distill-Llama-8B/sycophancy/completions_with_4.json
+Results saved to data/mmlu/DeepSeek-R1-Distill-Llama-8B/sycophancy/completions_with_4.json
+2025-05-03 02:19:08,551 - INFO - Total time: 32.30 s
+Total time: 32.30 s
+verifying completions at 2025-05-03T03:19:08+01:00
+[rank0]:[W503 02:19:08.006594844 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())

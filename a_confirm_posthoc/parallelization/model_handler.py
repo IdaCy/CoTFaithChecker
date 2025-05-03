@@ -54,6 +54,7 @@ class StopOnThinkEnd(StoppingCriteria):
         return torch.equal(tail,
                            torch.tensor(self.stop_ids, device=input_ids.device))
 
+
 # main
 def generate_completion(
     model, tokenizer, device,
@@ -105,20 +106,7 @@ def generate_completion(
         #decoded = tokenizer.batch_decode(outputs, skip_special_tokens=False)
         decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)
         decoded = [tokenizer.bos_token + output + tokenizer.eos_token for output in decoded]
-
-        #for qid, completion in zip(qids, decoded):
-        #    results.append({"question_id": qid, "completion": completion})
-
-        for qid, out in zip(qids, outputs):
-            gen_ids  = out[inp_len:]
-            gen_text = tokenizer.decode(gen_ids, skip_special_tokens=True)
-
-            gen_text = gen_text.lstrip()
-            think_ix = gen_text.find("<think>")
-            span     = gen_text[think_ix:] if think_ix != -1 else gen_text
-            if "</think>" in span:
-                span = span.split("</think>")[0]
-
-            results.append({"question_id": qid, "completion": span})
+        for qid, completion in zip(qids, decoded):
+            results.append({"question_id": qid, "completion": completion})
 
     return results

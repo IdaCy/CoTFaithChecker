@@ -1,0 +1,96 @@
+nohup: ignoring input
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+on host fd4b7fbca240 (PID 41183) ===
+starting at 2025-05-03T00:50:54+01:00
+on host fd4b7fbca240 (PID 41184) ===
+starting at 2025-05-03T00:50:54+01:00
+on host fd4b7fbca240 (PID 41185) ===
+starting at 2025-05-03T00:50:54+01:00
+on host fd4b7fbca240 (PID 41186) ===
+starting at 2025-05-03T00:50:54+01:00
+gather_object poly-fill; accelerator: <accelerate.accelerator.Accelerator object at 0x7d47677767a0>
+launching at 2025-05-03T00:50:58+01:00
+loading answers at 2025-05-03T00:50:58+01:00
+tokenizing1 at 2025-05-03T00:50:58+01:00
+gather_object poly-fill; accelerator: <accelerate.accelerator.Accelerator object at 0x7ea40e57a7a0>
+launching at 2025-05-03T00:50:58+01:00
+loading answers at 2025-05-03T00:50:58+01:00
+tokenizing1 at 2025-05-03T00:50:58+01:00
+[rank2]:[W502 23:50:58.914073104 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 2]  using GPU 2 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+gather_object poly-fill; accelerator: <accelerate.accelerator.Accelerator object at 0x7e19cf56e7a0>
+launching at 2025-05-03T00:50:59+01:00
+loading answers at 2025-05-03T00:50:59+01:00
+tokenizing1 at 2025-05-03T00:50:59+01:00
+[rank1]:[W502 23:50:59.262735101 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 1]  using GPU 1 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+gather_object poly-fill; accelerator: <accelerate.accelerator.Accelerator object at 0x76d32f9467a0>
+launching at 2025-05-03T00:50:59+01:00
+loading answers at 2025-05-03T00:50:59+01:00
+tokenizing1 at 2025-05-03T00:50:59+01:00
+[rank3]:[W502 23:50:59.275683439 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 3]  using GPU 3 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+[rank0]:[W502 23:50:59.393164423 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+YES id=14331  |  NO id=9173
+tokenizing2 at 2025-05-03T00:51:11+01:00
+Loading model to read out lm_head …
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]tokenizing2 at 2025-05-03T00:51:12+01:00
+tokenizing2 at 2025-05-03T00:51:12+01:00
+tokenizing2 at 2025-05-03T00:51:12+01:00
+Loading checkpoint shards:  50%|█████     | 1/2 [00:10<00:10, 10.96s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:19<00:00,  9.69s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:19<00:00,  9.88s/it]
+  ↳ done in 25.9s
+reading out lm_head at 2025-05-03T00:51:37+01:00
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Processing 592 files on 4 ranks (148 / rank)
+hidden.pt:   0%|          | 0/148 [00:00<?, ?it/s]iterating at 2025-05-03T00:51:39+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+hidden.pt:   3%|▎         | 4/148 [00:00<00:09, 15.51it/s]hidden.pt:  11%|█         | 16/148 [00:00<00:02, 52.48it/s]hidden.pt:  19%|█▉        | 28/148 [00:00<00:01, 75.18it/s]hidden.pt:  27%|██▋       | 40/148 [00:00<00:01, 89.71it/s]hidden.pt:  34%|███▍      | 51/148 [00:00<00:01, 95.62it/s]hidden.pt:  42%|████▏     | 62/148 [00:00<00:01, 64.24it/s]hidden.pt:  48%|████▊     | 71/148 [00:01<00:01, 60.47it/s]hidden.pt:  53%|█████▎    | 79/148 [00:01<00:01, 58.80it/s]hidden.pt:  58%|█████▊    | 86/148 [00:01<00:01, 57.63it/s]hidden.pt:  63%|██████▎   | 93/148 [00:01<00:00, 56.57it/s]hidden.pt:  68%|██████▊   | 100/148 [00:01<00:00, 55.86it/s]hidden.pt:  72%|███████▏  | 106/148 [00:01<00:00, 55.48it/s]hidden.pt:  76%|███████▌  | 112/148 [00:01<00:00, 55.19it/s]hidden.pt:  80%|███████▉  | 118/148 [00:01<00:00, 54.93it/s]hidden.pt:  84%|████████▍ | 124/148 [00:02<00:00, 37.75it/s]hidden.pt:  87%|████████▋ | 129/148 [00:02<00:00, 40.07it/s]hidden.pt:  91%|█████████ | 135/148 [00:02<00:00, 42.95it/s]hidden.pt:  95%|█████████▌| 141/148 [00:02<00:00, 45.50it/s]hidden.pt:  99%|█████████▉| 147/148 [00:02<00:00, 47.53it/s]                                                            collecting at 2025-05-03T00:51:41+01:00
+Rank 0: collected 156,288 samples in 0.0 min
+Loading checkpoint shards:  50%|█████     | 1/2 [00:10<00:10, 10.52s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.11s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.30s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:18<00:00,  9.25s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:18<00:00,  9.44s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:19<00:00,  9.80s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:19<00:00,  9.99s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:20<00:00, 10.03s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:20<00:00, 10.22s/it]
+reading out lm_head at 2025-05-03T00:52:03+01:00
+reading out lm_head at 2025-05-03T00:52:04+01:00
+iterating at 2025-05-03T00:52:04+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+iterating at 2025-05-03T00:52:05+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+collecting at 2025-05-03T00:52:05+01:00
+reading out lm_head at 2025-05-03T00:52:07+01:00
+collecting at 2025-05-03T00:52:08+01:00
+iterating at 2025-05-03T00:52:08+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+collecting at 2025-05-03T00:52:11+01:00
+merging at 2025-05-03T00:53:21+01:00
+All ranks gathered & merged
+  layer  0 → 14,800 samples (showing first 5 layers)
+  layer  1 → 14,800 samples (showing first 5 layers)
+  layer  2 → 14,800 samples (showing first 5 layers)
+  layer  3 → 14,800 samples (showing first 5 layers)
+  layer  4 → 14,800 samples (showing first 5 layers)
+training at 2025-05-03T00:53:21+01:00
+
+=== Training probes for 33 layers (≤ 5000 samples/layer) ===
+training2 at 2025-05-03T00:53:21+01:00
+Layer:   0%|          | 0/33 [00:00<?, ?it/s]entering loop at 2025-05-03T00:53:21+01:00
+Layer:   0%|          | 0/33 [00:04<?, ?it/s, layer=0, secs=4.6, valF1=0.674]Layer:   3%|▎         | 1/33 [00:04<02:30,  4.71s/it, layer=0, secs=4.6, valF1=0.674]Layer:   3%|▎         | 1/33 [00:15<02:30,  4.71s/it, layer=1, secs=10.3, valF1=0.544]Layer:   6%|▌         | 2/33 [00:15<04:10,  8.08s/it, layer=1, secs=10.3, valF1=0.544]Layer:   6%|▌         | 2/33 [00:28<04:10,  8.08s/it, layer=2, secs=12.7, valF1=0.324]Layer:   9%|▉         | 3/33 [00:28<05:07, 10.26s/it, layer=2, secs=12.7, valF1=0.324]Layer:   9%|▉         | 3/33 [00:56<05:07, 10.26s/it, layer=3, secs=28.5, valF1=0.355]Layer:  12%|█▏        | 4/33 [00:56<08:27, 17.52s/it, layer=3, secs=28.5, valF1=0.355]Layer:  12%|█▏        | 4/33 [01:45<08:27, 17.52s/it, layer=4, secs=48.5, valF1=0.503]  ↳ layer  4 finished | val-F1 0.503 | 48.5s
+Layer:  15%|█▌        | 5/33 [01:45<13:24, 28.73s/it, layer=4, secs=48.5, valF1=0.503]Layer:  15%|█▌        | 5/33 [02:12<13:24, 28.73s/it, layer=5, secs=27.1, valF1=0.437]Layer:  18%|█▊        | 6/33 [02:12<12:41, 28.22s/it, layer=5, secs=27.1, valF1=0.437]Layer:  18%|█▊        | 6/33 [03:14<12:41, 28.22s/it, layer=6, secs=62.0, valF1=0.504]Layer:  21%|██        | 7/33 [03:14<17:02, 39.31s/it, layer=6, secs=62.0, valF1=0.504]Layer:  21%|██        | 7/33 [04:27<17:02, 39.31s/it, layer=7, secs=72.3, valF1=0.498]Layer:  24%|██▍       | 8/33 [04:27<20:46, 49.85s/it, layer=7, secs=72.3, valF1=0.498]Layer:  24%|██▍       | 8/33 [06:31<20:46, 49.85s/it, layer=8, secs=123.9, valF1=0.504]Layer:  27%|██▋       | 9/33 [06:31<29:13, 73.05s/it, layer=8, secs=123.9, valF1=0.504]Layer:  27%|██▋       | 9/33 [06:58<29:13, 73.05s/it, layer=9, secs=27.6, valF1=0.460]   ↳ layer  9 finished | val-F1 0.460 | 27.6s
+Layer:  30%|███       | 10/33 [06:58<22:38, 59.07s/it, layer=9, secs=27.6, valF1=0.460]Layer:  30%|███       | 10/33 [08:38<22:38, 59.07s/it, layer=10, secs=99.1, valF1=0.489]Layer:  33%|███▎      | 11/33 [08:38<26:09, 71.35s/it, layer=10, secs=99.1, valF1=0.489]Layer:  33%|███▎      | 11/33 [09:21<26:09, 71.35s/it, layer=11, secs=43.0, valF1=0.542]Layer:  36%|███▋      | 12/33 [09:21<21:58, 62.78s/it, layer=11, secs=43.0, valF1=0.542]Layer:  36%|███▋      | 12/33 [10:13<21:58, 62.78s/it, layer=12, secs=52.6, valF1=0.446]Layer:  39%|███▉      | 13/33 [10:13<19:54, 59.74s/it, layer=12, secs=52.6, valF1=0.446]Layer:  39%|███▉      | 13/33 [10:57<19:54, 59.74s/it, layer=13, secs=43.3, valF1=0.523]Layer:  42%|████▏     | 14/33 [10:57<17:21, 54.82s/it, layer=13, secs=43.3, valF1=0.523]Layer:  42%|████▏     | 14/33 [11:45<17:21, 54.82s/it, layer=14, secs=47.9, valF1=0.384]  ↳ layer 14 finished | val-F1 0.384 | 47.9s
+Layer:  45%|████▌     | 15/33 [11:45<15:50, 52.79s/it, layer=14, secs=47.9, valF1=0.384]Layer:  45%|████▌     | 15/33 [12:51<15:50, 52.79s/it, layer=15, secs=65.9, valF1=0.477]Layer:  48%|████▊     | 16/33 [12:51<16:05, 56.78s/it, layer=15, secs=65.9, valF1=0.477]Layer:  48%|████▊     | 16/33 [13:57<16:05, 56.78s/it, layer=16, secs=65.5, valF1=0.474]Layer:  52%|█████▏    | 17/33 [13:57<15:51, 59.46s/it, layer=16, secs=65.5, valF1=0.474]Layer:  52%|█████▏    | 17/33 [15:27<15:51, 59.46s/it, layer=17, secs=90.3, valF1=0.408]Layer:  55%|█████▍    | 18/33 [15:27<17:11, 68.79s/it, layer=17, secs=90.3, valF1=0.408]Layer:  55%|█████▍    | 18/33 [17:19<17:11, 68.79s/it, layer=18, secs=111.4, valF1=0.416]Layer:  58%|█████▊    | 19/33 [17:19<19:02, 81.63s/it, layer=18, secs=111.4, valF1=0.416]Layer:  58%|█████▊    | 19/33 [19:41<19:02, 81.63s/it, layer=19, secs=142.1, valF1=0.453]  ↳ layer 19 finished | val-F1 0.453 | 142.1s
+Layer:  61%|██████    | 20/33 [19:41<21:37, 99.84s/it, layer=19, secs=142.1, valF1=0.453]Layer:  61%|██████    | 20/33 [22:18<21:37, 99.84s/it, layer=20, secs=157.0, valF1=0.423]Layer:  64%|██████▎   | 21/33 [22:18<23:24, 117.05s/it, layer=20, secs=157.0, valF1=0.423]Layer:  64%|██████▎   | 21/33 [24:51<23:24, 117.05s/it, layer=21, secs=153.0, valF1=0.502]Layer:  67%|██████▋   | 22/33 [24:51<23:26, 127.88s/it, layer=21, secs=153.0, valF1=0.502]Layer:  67%|██████▋   | 22/33 [27:52<23:26, 127.88s/it, layer=22, secs=180.7, valF1=0.428]Layer:  70%|██████▉   | 23/33 [27:52<23:57, 143.77s/it, layer=22, secs=180.7, valF1=0.428]Layer:  70%|██████▉   | 23/33 [31:22<23:57, 143.77s/it, layer=23, secs=209.9, valF1=0.437]Layer:  73%|███████▎  | 24/33 [31:22<24:32, 163.65s/it, layer=23, secs=209.9, valF1=0.437]Layer:  73%|███████▎  | 24/33 [35:25<24:32, 163.65s/it, layer=24, secs=242.9, valF1=0.442]  ↳ layer 24 finished | val-F1 0.442 | 242.9s
+Layer:  76%|███████▌  | 25/33 [35:25<24:59, 187.46s/it, layer=24, secs=242.9, valF1=0.442]Layer:  76%|███████▌  | 25/33 [39:32<24:59, 187.46s/it, layer=25, secs=246.8, valF1=0.413]Layer:  79%|███████▉  | 26/33 [39:32<23:57, 205.32s/it, layer=25, secs=246.8, valF1=0.413]Layer:  79%|███████▉  | 26/33 [44:35<23:57, 205.32s/it, layer=26, secs=302.8, valF1=0.430]Layer:  82%|████████▏ | 27/33 [44:35<23:27, 234.62s/it, layer=26, secs=302.8, valF1=0.430]Layer:  82%|████████▏ | 27/33 [50:12<23:27, 234.62s/it, layer=27, secs=336.9, valF1=0.455]Layer:  85%|████████▍ | 28/33 [50:12<22:06, 265.34s/it, layer=27, secs=336.9, valF1=0.455]Layer:  85%|████████▍ | 28/33 [56:14<22:06, 265.34s/it, layer=28, secs=361.7, valF1=0.434]Layer:  88%|████████▊ | 29/33 [56:14<19:37, 294.31s/it, layer=28, secs=361.7, valF1=0.434]Layer:  88%|████████▊ | 29/33 [1:02:23<19:37, 294.31s/it, layer=29, secs=369.1, valF1=0.435]  ↳ layer 29 finished | val-F1 0.435 | 369.1s
+Layer:  91%|█████████ | 30/33 [1:02:23<15:50, 316.80s/it, layer=29, secs=369.1, valF1=0.435]Layer:  91%|█████████ | 30/33 [1:09:37<15:50, 316.80s/it, layer=30, secs=433.0, valF1=0.466]Layer:  94%|█████████▍| 31/33 [1:09:37<11:43, 351.70s/it, layer=30, secs=433.0, valF1=0.466]Layer:  94%|█████████▍| 31/33 [1:20:56<11:43, 351.70s/it, layer=31, secs=679.4, valF1=0.417]Layer:  97%|█████████▋| 32/33 [1:20:56<07:30, 450.05s/it, layer=31, secs=679.4, valF1=0.417]Layer:  97%|█████████▋| 32/33 [1:37:51<07:30, 450.05s/it, layer=32, secs=1014.6, valF1=0.409]Layer: 100%|██████████| 33/33 [1:37:51<00:00, 619.45s/it, layer=32, secs=1014.6, valF1=0.409]Layer: 100%|██████████| 33/33 [1:37:51<00:00, 177.92s/it, layer=32, secs=1014.6, valF1=0.409]
+closing bar at 2025-05-03T02:31:12+01:00
+Total probe-training time: 97.9 min
+
+Best layer = 0   (F1 = 0.674)
+Probe saved → linear_probes/max_sly_5k/linear_probe_layer0.joblib
+plotting at 2025-05-03T02:31:13+01:00
+Plot saved
+layer_sample_counts.png saved
+confusion_matrix saved
+ROC curve saved
+[rank0]:[W503 01:31:16.470037863 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
