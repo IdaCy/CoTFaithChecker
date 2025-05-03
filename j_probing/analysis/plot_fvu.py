@@ -135,10 +135,9 @@ def plot_combined_fvu(
     output_path: Path
 ):
     """Creates and saves the combined FVU plot using Seaborn styles."""
-    # ---> MODIFICATION START: Apply Seaborn theme & Style Refinements <---
+    # Apply Seaborn theme with improved aesthetics
     sns.set_theme(style="whitegrid", palette="muted")
-    plt.figure(figsize=(10, 6), dpi=300) # Keep size
-    # ---> MODIFICATION END <---
+    plt.figure(figsize=(9, 8), dpi=300) # More square figure dimensions
 
     all_fvus = [
         fvu
@@ -154,45 +153,57 @@ def plot_combined_fvu(
 
     max_fvu = max(all_fvus) if all_fvus else 1.0
     min_fvu = min(all_fvus) if all_fvus else 0.0
-    # Ensure min_fvu is slightly below the actual minimum for better axis range
-    plot_min_fvu = min(min_fvu, 0.95) # Start axis slightly below lowest value or 0.95
-    plot_min_fvu = max(0, (math.floor(plot_min_fvu * 20) / 20) - 0.05) # Round down to nearest 0.05, ensure >=0
-
+    
+    # Better Y-axis limits - add only 5% padding above highest value
+    plot_min_fvu = min(0.3, min_fvu * 0.9) if min_fvu < 1.0 else min_fvu * 0.95  # Start at 30% or 90% of min, whichever is smaller
+    plot_max_fvu = max_fvu * 1.05  # Add just 5% padding above max
 
     # Custom Y-axis scale only if data spans across 1.0
+    ax = plt.gca()
     if min_fvu < 1.0 and max_fvu > 1.0:
-        transform = get_custom_scale_transform(max_fvu, plot_min_fvu, z=0.7)
-        plt.gca().set_yscale(FuncScale(plt.gca().yaxis, transform))
+        transform = get_custom_scale_transform(plot_max_fvu, plot_min_fvu, z=0.7)
+        ax.set_yscale(FuncScale(ax.yaxis, transform))
+        
         # Define ticks more dynamically
-        below_100_ticks = np.arange(plot_min_fvu, 1.0, 0.05)
-        # Sensible ticks above 100%
-        upper_bound = math.ceil(max_fvu * 10) / 10 # Go slightly above max
-        above_100_ticks = np.arange(1.0, upper_bound + 0.5 , 0.5) # Ticks every 50%
-        yticks = np.unique(np.concatenate([below_100_ticks, above_100_ticks]))
+        below_100_ticks = np.linspace(plot_min_fvu, 1.0, 8)  # 8 evenly spaced ticks below 100%
+        
+        # More sensible ticks above 100%
+        if plot_max_fvu > 1.0:
+            tick_step_above_1 = 0.1 if (plot_max_fvu - 1.0) <= 0.5 else 0.25  # Finer steps for small ranges
+            above_100_ticks = np.arange(1.0, plot_max_fvu + tick_step_above_1, tick_step_above_1)
+            yticks = np.unique(np.concatenate([below_100_ticks, above_100_ticks]))
+        else:
+            yticks = below_100_ticks
+            
         # Limit number of ticks shown if too dense
-        if len(yticks) > 20:
-            yticks = yticks[::max(1, len(yticks)//20)]
-        plt.yticks(yticks)
-        print(f"Using custom scale: min={plot_min_fvu:.2f}, max={max_fvu:.2f}")
+        if len(yticks) > 15:
+            yticks = yticks[::max(1, len(yticks)//15)]
+        ax.set_yticks(yticks)
+        
+        # Explicitly set ylim to reduce whitespace
+        ax.set_ylim(bottom=plot_min_fvu, top=plot_max_fvu)
     else:
-        # Use linear scale if all data is >= 1 or <= 1
-        plt.ylim(bottom=max(0, plot_min_fvu - 0.05), top=min(1.0, max_fvu + 0.05) if max_fvu <=1 else max_fvu + 0.05)
-        print(f"Using linear scale: min={plot_min_fvu:.2f}, max={max_fvu:.2f}")
+        # Use linear scale with better limits
+        ax.set_ylim(bottom=plot_min_fvu, top=plot_max_fvu)
+        # Add more tick marks for better readability
+        tick_step = (plot_max_fvu - plot_min_fvu) / 10
+        yticks = np.arange(plot_min_fvu, plot_max_fvu + tick_step, tick_step)
+        ax.set_yticks(yticks)
 
-
-    # Define colors/styles (adjust as needed)
-    # ---> MODIFICATION START: New Palette, Markers, Linewidths <---
+    # Define colors/styles with better contrast and visibility
     colors = {
-        "assistant": "#9467bd", # Muted Purple (from tab10)
-        "think": "#ff9e6d",     # Salmon/Orange
-        "hint": "#69b3a2"      # Teal/Green
+        "assistant": "#45B8FE",  # Vibrant baby blue
+        "think": "#FF9966",      # Salmon/coral orange (like in violin plot)
+        "hint": "#1A7F64"        # Keep the same deep teal
     }
-    # Use solid lines for all, differentiate with markers
-    linestyles = {"assistant": "-", "think": "-", "hint": "-"}
-    markers = {"assistant": "o", "think": "^", "hint": "s"}
-    linewidths = {"assistant": 2.0, "think": 2.0, "hint": 2.0}
-    markersize = 4 # Small markers
-    # ---> MODIFICATION END <---
+    
+    # More distinctive line styles for better differentiation
+    linestyles = {"assistant": "-", "think": "--", "hint": "-."}
+    markers = {"assistant": "o", "think": "D", "hint": "s"}  # Changed think marker to diamond
+    linewidths = {"assistant": 3.0, "think": 2.5, "hint": 2.5}
+    markersize = {"assistant": 8, "think": 7, "hint": 7}  # Different sizes
+    markeredgewidth = 1.5
+    markeredgecolor = {"assistant": "white", "think": "white", "hint": "white"}
 
     # Plot each position
     layers_plotted = set()
@@ -215,45 +226,59 @@ def plot_combined_fvu(
                 color=colors.get(pos_name, "black"),
                 linestyle=linestyles.get(pos_name, "-"),
                 linewidth=linewidths.get(pos_name, 1.8),
-                # Add markers
                 marker=markers.get(pos_name, 'o'),
-                markersize=markersize
+                markersize=markersize.get(pos_name, 7),  # Use the position-specific markersize
+                markeredgewidth=markeredgewidth,
+                markeredgecolor=markeredgecolor.get(pos_name, "white"),
+                alpha=0.95 if pos_name == "assistant" else 0.9,  # Slightly different alpha for assistant
+                zorder=3 if pos_name == "hint" else (2 if pos_name == "think" else 1)  # Control layer order
             )
 
-    # Use slightly lighter grid with seaborn style
-    # ---> MODIFICATION START: Lighter Grid <---
-    plt.grid(True, alpha=0.3, linestyle=':', color='#D3D3D3', linewidth=0.5)
-    # ---> MODIFICATION END <---
+    # Improved grid with better visibility
+    ax.yaxis.grid(True, alpha=0.7, linestyle='-', color='#DDDDDD', linewidth=0.8)  # Stronger horizontal grid
+    ax.xaxis.grid(True, alpha=0.3, linestyle='--', color='#DDDDDD', linewidth=0.5)  # Light vertical grid
 
     # Set x-ticks based on actual layers with data
     sorted_layers = sorted(list(layers_plotted))
     if sorted_layers:
-        # Show every 4th label if many layers, else every 2nd
-        step = 4 if n_layers > 40 else 2
-        tick_layers = [l for l in sorted_layers if l % step == 0]
-        plt.xticks(tick_layers, rotation=0, fontsize=10)
+        # Show reasonable number of tick labels
+        step = 2 if n_layers <= 32 else 4
+        tick_layers = list(range(0, n_layers, step))
+        plt.xticks(tick_layers, rotation=0, fontsize=11)
         plt.xlim(left=min(sorted_layers)-0.5, right=max(sorted_layers)+0.5) # Add padding
     else:
-         plt.xticks([]) # No data, no ticks
+        plt.xticks([]) # No data, no ticks
 
-    # Format y-axis as percentages
-    plt.gca().yaxis.set_major_formatter(FuncFormatter(lambda y, _: f"{y:.0%}"))
-    plt.yticks(fontsize=10)
+    # Format y-axis as percentages with larger font
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f"{y:.0%}"))
+    plt.yticks(fontsize=11)
 
-    plt.xlabel("Layer", fontsize=12)
-    plt.ylabel("Fraction of Variance Unexplained (FVU)\n(lower is better)", fontsize=12)
-    # Cleaner title
-    plt.title(f"{model_name} ({n_layers} layers)\nFVU by Layer and Token Position", fontsize=13, pad=15)
-    # Move legend outside plot area
-    plt.legend(title="Token Position", title_fontsize='11', fontsize='10', bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0.)
+    # Better label and title formatting with slightly smaller title to fit square plot
+    plt.xlabel("Layer", fontsize=13, weight='bold')
+    plt.ylabel("Fraction of Variance Unexplained (FVU)\n(lower is better)", fontsize=13, weight='bold')
+    plt.title(f"{model_name} ({n_layers} layers)\nFVU by Layer and Token Position", fontsize=14, weight='bold', pad=10)
+    
+    # Position legend for minimal whitespace - upper right corner works better for square plot
+    plt.legend(
+        title="Token Position", 
+        title_fontsize='12', 
+        fontsize='11', 
+        loc='upper left',  # Move to upper left
+        framealpha=0.9,
+        edgecolor='0.8',
+        borderpad=0.8  # Add padding inside legend box
+    )
 
-    # ---> MODIFICATION START: Remove top/right spines <---
+    # Remove top/right spines but make remaining spines more visible
     sns.despine()
-    # ---> MODIFICATION END <---
+    for spine in ['left', 'bottom']:
+        ax.spines[spine].set_linewidth(1.2)
+        ax.spines[spine].set_color('0.3')
 
-    plt.tight_layout(rect=[0, 0, 0.88, 1]) # Adjust layout more for legend
+    # Better layout adjustment
+    plt.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(output_path, bbox_inches='tight') # Use bbox_inches to include legend
+    plt.savefig(output_path, bbox_inches='tight')
     print(f"Plot saved to: {output_path}")
     plt.close()
 
@@ -276,10 +301,9 @@ def main():
     DATA_DIR = BASE_DIR / "data" / DS_NAME / MODEL_NAME_FOR_PATH / HINT_TYPE / N_QUESTIONS_STR
     ACTS_DIR = BASE_DIR / "acts" / DS_NAME / MODEL_NAME_FOR_PATH / HINT_TYPE / N_QUESTIONS_STR
     PROBE_DIR = BASE_DIR / "probes" / MODEL_NAME_FOR_PATH / f"seed_{SPLIT_SEED}"
-    # ---> MODIFICATION START: More descriptive filename <--- 
+    # More descriptive filename
     plot_filename = f"{MODEL_NAME_FOR_PATH}_{DS_NAME}_{HINT_TYPE}_{N_QUESTIONS_STR}_seed{SPLIT_SEED}_fvu.png"
     OUTPUT_PLOT_PATH = BASE_DIR / "analysis" / "plots" / plot_filename
-    # ---> MODIFICATION END <---
 
     # --- Load necessary data --- 
     target_map = load_target_data(DATA_DIR / "probing_data.json")
