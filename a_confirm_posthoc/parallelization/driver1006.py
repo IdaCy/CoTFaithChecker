@@ -62,7 +62,7 @@ device = accelerator.device
 dataset_name = "mmlu"
 #hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
 #hint_types = ["sycophancy", "unethical_information", "induced_urgency"]
-hint_types = ["none"]
+#hint_types = ["sycophancy"]
 n_questions = 1006
 
 """print("generating completions at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
@@ -83,7 +83,7 @@ print("verifying completions at", datetime.now(ZoneInfo("Europe/London")).isofor
 """
 # Run llm verification to get the final model answers
 # Note that this will drop the results that are N/A (eg the model never stopped reasoning)
-run_verification(dataset_name, hint_types, model_name, n_questions)
+#run_verification(dataset_name, hint_types, model_name, n_questions)
 
 hint_types = ["none", "sycophancy"]
 
