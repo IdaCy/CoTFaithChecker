@@ -24,11 +24,11 @@ original A-file).
 
 running:
 python e_confirm_xy_yx/utils/match_and_validate.py \
-    --dirA e_confirm_xy_yx/outputs/answers_gt_NO\
-    --dirB e_confirm_xy_yx/outputs/answers_gt_YES\
-    --matcher data/chainscope/questions_json/linked/gt_NO_1 \
-    --key gt \
-    --out e_confirm_xy_yx/outputs/matched_vals_gt
+    --dirA e_confirm_xy_yx/outputs/answers_lt_NO\
+    --dirB e_confirm_xy_yx/outputs/answers_lt_YES\
+    --matcher data/chainscope/questions_json/linked/lt_NO_1 \
+    --key lt \
+    --out e_confirm_xy_yx/outputs/matched_vals_lt
 
 
 Assumptions
