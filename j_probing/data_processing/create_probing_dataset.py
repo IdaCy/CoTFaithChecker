@@ -17,9 +17,10 @@ THIS_DIR = Path(__file__).resolve().parent
 
 # These variables are defined in j_probing/data_processing/data_prep.py
 DATASET_NAME = "mmlu"  # e.g. "mmlu"
-MODEL_NAME = "DeepSeek-R1-Distill-Llama-8B"       # e.g. "DeepSeek-R1-Distill-Llama-8B"
+MODEL_PATH = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+MODEL_NAME = MODEL_PATH.split("/")[-1]
 HINT_TYPE = "sycophancy"         # e.g. "sycophancy"
-N_QUESTIONS = 301     # e.g. 301
+N_QUESTIONS = 5001     # e.g. 301
 
 # --------------------------------------------------------------------------------------
 # Input paths
@@ -46,22 +47,35 @@ OUTPUT_JSON = OUTPUT_DIR / "probing_data.json"
 # --------------------------------------------------------------------------------------
 # Utility helpers
 # --------------------------------------------------------------------------------------
+
+# We rely on the model tokenizer to obtain accurate token boundaries. Some model names
+# (e.g. DeepSeek-R1-Distill-Llama-8B) may not be available on the Hugging Face hub or
+# might require custom loading logic. We therefore attempt to load the tokenizer but
+# gracefully fall back to whitespace tokenisation if that fails.
+
 THINK_DELIM = "<think>\n"  # delimiter that separates prompt from assistant reasoning
 
 
+try:
+    from transformers import AutoTokenizer  # type: ignore
+
+    _TOKENIZER = AutoTokenizer.from_pretrained(MODEL_PATH, use_fast=True)
+except Exception as _e:  # pragma: no cover – informative warning only
+    print(
+        f"[create_probing_dataset] Warning: could not load tokenizer for '{MODEL_NAME}'. "
+        "Falling back to naive whitespace tokenisation – token indices may be inaccurate."
+    )
+    _TOKENIZER = None
+
+
 def _compute_probs(agg: Dict[str, Any]) -> Dict[str, Optional[float]]:
-    """Compute prob_verb_agg and prob_verb_match from aggregated_counts."""
-    num_analyzed = agg["num_generations_analyzed_for_verbalization"]
+    """Compute prob_verb_match from aggregated_counts."""
     match_hint = agg["match_hint_count"]
 
-    prob_verb_agg = (
-        agg["verbalize_hint_count"] / num_analyzed if num_analyzed else None
-    )
     prob_verb_match = (
         agg["match_and_verbalize_count"] / match_hint if match_hint else None
     )
     return {
-        "prob_verb_agg": prob_verb_agg,
         "prob_verb_match": prob_verb_match,
     }
 
@@ -75,27 +89,54 @@ def _extract_prompt(gen_str: str) -> str:
     return gen_str[: idx + len(THINK_DELIM)]
 
 
-def _token_positions(prompt: str) -> List[int]:
-    """Derive token positions [assistant_idx, think_idx, hint_idx] using simple whitespace tokenisation.
+def _find_hint_token_idx(prompt: str) -> int:
+    """Return the *token index* (0-based) corresponding to the hinted answer in the prompt.
 
-    assistant_idx  : last token in the prompt
-    think_idx      : second-to-last token (expected to be '<think>')
-    hint_idx       : first occurrence of a token that contains the substring 'hint' (case-insensitive)
-                     If not found, returns -1 for that entry.
+    The heuristic is: locate the last occurrence of '[' (opening bracket) in the raw
+    prompt and take the very next *token* that begins at (or immediately after) that
+    position. This works for prompts of the form "... pointing to [ C ]." where the
+    bracketed letter is the hinted answer. If the bracket cannot be found or the
+    tokenizer fails, returns -1.
     """
-    tokens = prompt.strip().split()
-    if not tokens:
-        return [-1, -1, -1]
 
-    assistant_idx = len(tokens) -1
-    think_idx = len(tokens)
+    # Locate the last '[' character – this precedes the hinted option (e.g. "[ C ]")
+    char_idx = prompt.rfind("[")
+    if char_idx == -1:
+        raise ValueError("No hint token found in prompt")
 
-    # Search for the hint token (case-insensitive search)
-    hint_idx = next(
-        (i for i, tok in enumerate(tokens) if "hint" in tok.lower()),
-        -1,
-    )
-    return [-1, -2, -3]
+    if _TOKENIZER is None:
+        # Naive split fallback
+        raise ValueError("No tokenizer found")
+
+    # Use the tokenizer's encode method (without special tokens) to count tokens before
+    # the '[' character. Offsets are not returned by slow tokenisers, so we simply
+    # re-encode the substring up to the bracket.
+    sub_tokens = _TOKENIZER.encode(prompt[:char_idx], add_special_tokens=False)
+    return len(sub_tokens)
+
+
+def _token_positions(prompt: str) -> List[int]:
+    """Return `[assistant_idx, think_idx, hint_idx]` for the given prompt.
+
+    • `assistant_idx` – token index of the ``<|Assistant|>`` header immediately before
+      the final `<think>` delimiter. This is always the **third** token from the end
+      of the prompt, so we record it as `-3` (relative index).
+
+    • `think_idx` – token index of the `<think>` delimiter, which is always the second
+      token from the end (`-2`).
+
+    • `hint_idx` – token index (0-based, counting from the *start* of the prompt) of
+      the hinted answer option (e.g. the `'C'` in "[ C ]"). If the hint cannot be
+      located the function returns `-1` for this element.
+    """
+
+    # Assistant and <think> positions are fixed relative to the end of the prompt
+    assistant_idx_rel = -3  # third token from the end
+    think_idx_rel = -2      # second token from the end
+
+    hint_idx_abs = _find_hint_token_idx(prompt)
+
+    return [assistant_idx_rel, think_idx_rel, hint_idx_abs]
 
 
 # --------------------------------------------------------------------------------------
@@ -136,12 +177,32 @@ def main() -> None:
         record = {
             "question_id": qid,
             "prompt": prompt,
-            "prob_verb_agg": summary_map[qid]["prob_verb_agg"],
             "prob_verb_match": summary_map[qid]["prob_verb_match"],
             "token_pos": token_pos,
             "original_verbalizes_hint": summary_map[qid]["original_verbalizes_hint"],
         }
         probing_records.append(record)
+
+        # Sanity check: Print tokens at calculated positions
+        # if _TOKENIZER:
+        #     try:
+        #         tokens = _TOKENIZER.tokenize(prompt)
+        #         asst_idx_abs = len(tokens) + token_pos[0]  # Convert relative -3 to absolute
+        #         think_idx_abs = len(tokens) + token_pos[1] # Convert relative -2 to absolute
+        #         hint_idx_abs = token_pos[2]
+
+        #         print(f"--- QID: {qid} ---")
+        #         print(f"Token @ Assistant Idx ({token_pos[0]} -> {asst_idx_abs}): '{tokens[asst_idx_abs]}'")
+        #         print(f"Token @ Think Idx ({token_pos[1]} -> {think_idx_abs}): '{tokens[think_idx_abs]}'")
+        #         if hint_idx_abs != -1:
+        #             print(f"Token @ Hint Idx ({hint_idx_abs}): '{tokens[hint_idx_abs]}'")
+        #         else:
+        #             print("Hint token not found.")
+        #         print("-" * (13 + len(str(qid)))) # Match width of header line
+        #     except IndexError:
+        #         print(f"[create_probing_dataset] Warning: QID {qid} - Token index out of range during sanity check.")
+        #     except Exception as e:
+        #         print(f"[create_probing_dataset] Warning: QID {qid} - Error during sanity check: {e}")
 
     # 3. Write out
     with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
@@ -151,7 +212,7 @@ def main() -> None:
     del raw_data
     gc.collect()
 
-    print(f"Saved {len(probing_records)} records to {OUTPUT_JSON.relative_to(Path.cwd())}")
+    print(f"Saved {len(probing_records)} records to {OUTPUT_JSON}")
 
 
 if __name__ == "__main__":

@@ -138,7 +138,7 @@ def run(
     model = HookedTransformer.from_pretrained_no_processing(
         MODEL_PATH_ORIGINAL,
         local_files_only=True,  # Set to True if using local models
-        dtype=dtype,
+        dtype=torch.bfloat16,
         device=str(device),
         default_padding_side='left'
     )
@@ -172,7 +172,7 @@ def run(
         mm = np.memmap(
             filename=str(fpath),
             mode="w+",
-            dtype=np.float16 if dtype == torch.float16 else np.float32,
+            dtype=np.float16,
             shape=(n_prompts, d_model, 3),
         )
         layer_files.append(mm)
@@ -188,7 +188,10 @@ def run(
         )
 
         for layer, acts in enumerate(acts_batch):
-            layer_files[layer][start:end] = acts.numpy()
+            # acts is still torch.Tensor on CPU (bf16 or fp32) when it reaches here
+            acts_np = acts.to(torch.float16).cpu().numpy()   
+            layer_files[layer][start:end] = acts_np          
+            # layer_files[layer][start:end] = acts.numpy()
 
     # 5) Flush & clean up
     for mm in layer_files:
