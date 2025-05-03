@@ -63,7 +63,7 @@ dataset_name = "mmlu"
 #hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
 #hint_types = ["sycophancy", "unethical_information", "induced_urgency"]
 hint_types = ["none"]
-n_questions = 5000
+n_questions = 4
 print("generating completions 333 at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
 generate_dataset_completions(
