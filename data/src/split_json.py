@@ -9,11 +9,11 @@ Split a large JSON list into three parts:
 import json
 from pathlib import Path
 
-INPUT_FILE   = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_with_5000.json")
-OUT_CHUNK    = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_5k_333.json")
-OUT_REMAIN   = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_5k_334.json")
-SKIP         = 2001
-TAKE         = 4000
+INPUT_FILE   = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_with_3000.json")
+OUT_CHUNK    = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_with_1688.json")
+OUT_REMAIN   = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_with_1312.json")
+SKIP         = 0
+TAKE         = 1688
 
 
 def main() -> None:
