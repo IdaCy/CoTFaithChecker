@@ -1,5 +1,6 @@
 #%%
 %cd ..
+%cd ..
 
 #%% Imports and configuration
 import json
@@ -10,7 +11,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Experiment metadata
-n_questions = 301
+n_questions = 2001
 model_name = "DeepSeek-R1-Distill-Llama-8B"
 dataset_name = "mmlu"
 hint_type = "sycophancy"
