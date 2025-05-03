@@ -50,7 +50,23 @@ from accelerate.utils import gather_object
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
-q
+
+KNOWN_CHAT_TEMPLATES = {
+    "llama":  "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n",
+    "llama3": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n",
+    "qwen":   "<|im_start|>user\n{instruction}<|im_end|>\n<|im_start|>assistant\n"
+}
+
+def get_chat_template(model_name: str) -> str:
+    name = model_name.lower()
+    if "llama" in name:
+        return KNOWN_CHAT_TEMPLATES["llama3"]
+    if "qwen" in name:
+        return KNOWN_CHAT_TEMPLATES["qwen"]
+    logging.warning(f"No specific chat template for {model_name}; using llama.")
+    return KNOWN_CHAT_TEMPLATES["llama"]
+
+
 
 
 
