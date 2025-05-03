@@ -1,0 +1,86 @@
+nohup: ignoring input
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+on host fd4b7fbca240 (PID 4558) ===
+starting at 2025-05-02T22:56:42+01:00
+on host fd4b7fbca240 (PID 4556) ===
+starting at 2025-05-02T22:56:42+01:00
+on host fd4b7fbca240 (PID 4557) ===
+starting at 2025-05-02T22:56:43+01:00
+on host fd4b7fbca240 (PID 4559) ===
+starting at 2025-05-02T22:56:43+01:00
+launching at 2025-05-02T22:56:46+01:00
+loading answers at 2025-05-02T22:56:46+01:00
+tokenizing1 at 2025-05-02T22:56:46+01:00
+launching at 2025-05-02T22:56:47+01:00
+loading answers at 2025-05-02T22:56:47+01:00
+tokenizing1 at 2025-05-02T22:56:47+01:00
+[rank2]:[W502 21:56:47.424683249 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 2]  using GPU 2 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+launching at 2025-05-02T22:56:47+01:00
+loading answers at 2025-05-02T22:56:47+01:00
+tokenizing1 at 2025-05-02T22:56:47+01:00
+[rank1]:[W502 21:56:47.739299460 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 1]  using GPU 1 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+launching at 2025-05-02T22:56:47+01:00
+loading answers at 2025-05-02T22:56:47+01:00
+tokenizing1 at 2025-05-02T22:56:47+01:00
+[rank3]:[W502 21:56:47.946351433 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 3]  using GPU 3 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+[rank0]:[W502 21:56:48.175283458 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+YES id=22483  |  NO id=11698
+tokenizing2 at 2025-05-02T22:57:00+01:00
+Loading model to read out lm_head …
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+tokenizing2 at 2025-05-02T22:57:00+01:00
+tokenizing2 at 2025-05-02T22:57:00+01:00
+tokenizing2 at 2025-05-02T22:57:00+01:00
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [07:41<07:41, 461.23s/it]Fetching 2 files: 100%|██████████| 2/2 [07:41<00:00, 230.62s/it]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.25s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  6.92s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.57s/it]
+  ↳ done in 481.6s
+reading out lm_head at 2025-05-02T23:05:01+01:00
+Processing 592 files on 4 ranks (148 / rank)
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 297, in <module>
+[rank0]:     main()
+[rank0]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 187, in main
+[rank0]:     else tqdm(all_paths, desc="hidden.pt", leave=False))
+[rank0]: UnboundLocalError: local variable 'tqdm' referenced before assignment
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s][rank0]:[W502 22:05:03.086201227 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+W0502 22:05:04.540000 4383 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 4557 closing signal SIGTERM
+W0502 22:05:04.542000 4383 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 4558 closing signal SIGTERM
+W0502 22:05:04.546000 4383 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 4559 closing signal SIGTERM
+E0502 22:05:05.584000 4383 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 0 (pid: 4556) of binary: /usr/bin/python3
+Traceback (most recent call last):
+  File "/usr/local/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/launch.py", line 1204, in launch_command
+    multi_gpu_launcher(args)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/launch.py", line 825, in multi_gpu_launcher
+    distrib_run.run(args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+i_probe_steer/main/xyyx_probing.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-05-02_22:05:04
+  host      : fd4b7fbca240
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 4556)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

@@ -1,0 +1,112 @@
+nohup: ignoring input
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+on host fd4b7fbca240 (PID 23452) ===
+starting at 2025-05-02T23:46:01+01:00
+on host fd4b7fbca240 (PID 23454) ===
+starting at 2025-05-02T23:46:01+01:00
+on host fd4b7fbca240 (PID 23455) ===
+starting at 2025-05-02T23:46:01+01:00
+on host fd4b7fbca240 (PID 23453) ===
+starting at 2025-05-02T23:46:01+01:00
+gather_object poly-fill; accelerator: <accelerate.accelerator.Accelerator object at 0x7621e557a770>
+launching at 2025-05-02T23:46:05+01:00
+loading answers at 2025-05-02T23:46:05+01:00
+tokenizing1 at 2025-05-02T23:46:05+01:00
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+[rank0]:[W502 22:46:06.999062736 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+gather_object poly-fill; accelerator: <accelerate.accelerator.Accelerator object at 0x758295d7a770>
+launching at 2025-05-02T23:46:06+01:00
+loading answers at 2025-05-02T23:46:06+01:00
+tokenizing1 at 2025-05-02T23:46:06+01:00
+[rank2]:[W502 22:46:06.005225063 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 2]  using GPU 2 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+gather_object poly-fill; accelerator: <accelerate.accelerator.Accelerator object at 0x77aa22d76770>
+launching at 2025-05-02T23:46:07+01:00
+loading answers at 2025-05-02T23:46:07+01:00
+tokenizing1 at 2025-05-02T23:46:07+01:00
+gather_object poly-fill; accelerator: <accelerate.accelerator.Accelerator object at 0x7488a757a770>
+launching at 2025-05-02T23:46:07+01:00
+loading answers at 2025-05-02T23:46:07+01:00
+[rank3]:[W502 22:46:07.353606979 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 3]  using GPU 3 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+tokenizing1 at 2025-05-02T23:46:07+01:00
+[rank1]:[W502 22:46:07.355129336 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 1]  using GPU 1 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+YES id=22483  |  NO id=11698
+tokenizing2 at 2025-05-02T23:46:19+01:00
+Loading model to read out lm_head …
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+tokenizing2 at 2025-05-02T23:46:19+01:00
+tokenizing2 at 2025-05-02T23:46:19+01:00
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]tokenizing2 at 2025-05-02T23:46:19+01:00
+Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.78s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.27s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.95s/it]
+  ↳ done in 21.2s
+reading out lm_head at 2025-05-02T23:46:40+01:00
+Processing 592 files on 4 ranks (148 / rank)
+hidden.pt:   0%|          | 0/148 [00:00<?, ?it/s]iterating at 2025-05-02T23:46:41+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]hidden.pt:   3%|▎         | 4/148 [00:00<00:11, 12.82it/s]hidden.pt:   7%|▋         | 10/148 [00:00<00:05, 26.07it/s]hidden.pt:  11%|█         | 16/148 [00:00<00:03, 34.92it/s]hidden.pt:  15%|█▍        | 22/148 [00:00<00:03, 40.97it/s]hidden.pt:  19%|█▉        | 28/148 [00:00<00:02, 45.08it/s]hidden.pt:  23%|██▎       | 34/148 [00:00<00:02, 47.84it/s]hidden.pt:  27%|██▋       | 40/148 [00:00<00:02, 49.77it/s]hidden.pt:  31%|███       | 46/148 [00:01<00:01, 51.03it/s]hidden.pt:  35%|███▌      | 52/148 [00:01<00:01, 51.92it/s]hidden.pt:  39%|███▉      | 58/148 [00:01<00:02, 35.04it/s]hidden.pt:  43%|████▎     | 64/148 [00:01<00:02, 38.68it/s]hidden.pt:  47%|████▋     | 70/148 [00:01<00:01, 42.00it/s]hidden.pt:  51%|█████▏    | 76/148 [00:01<00:01, 45.08it/s]hidden.pt:  55%|█████▌    | 82/148 [00:01<00:01, 47.45it/s]hidden.pt:  59%|█████▉    | 88/148 [00:02<00:01, 49.16it/s]hidden.pt:  64%|██████▎   | 94/148 [00:02<00:01, 50.44it/s]hidden.pt:  68%|██████▊   | 100/148 [00:02<00:00, 51.41it/s]hidden.pt:  72%|███████▏  | 106/148 [00:02<00:00, 52.20it/s]hidden.pt:  76%|███████▌  | 112/148 [00:02<00:00, 52.80it/s]hidden.pt:  80%|███████▉  | 118/148 [00:02<00:00, 53.17it/s]hidden.pt:  84%|████████▍ | 124/148 [00:02<00:00, 35.42it/s]hidden.pt:  88%|████████▊ | 130/148 [00:03<00:00, 39.22it/s]hidden.pt:  92%|█████████▏| 136/148 [00:03<00:00, 42.70it/s]hidden.pt:  96%|█████████▌| 142/148 [00:03<00:00, 45.69it/s]hidden.pt: 100%|██████████| 148/148 [00:03<00:00, 47.95it/s]                                                            collecting at 2025-05-02T23:46:44+01:00
+Rank 0: collected 156,288 samples in 0.1 min
+Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.18s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.21s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.82s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  6.91s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.55s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  6.92s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.56s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.28s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.96s/it]
+reading out lm_head at 2025-05-02T23:47:01+01:00
+reading out lm_head at 2025-05-02T23:47:01+01:00
+iterating at 2025-05-02T23:47:01+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+iterating at 2025-05-02T23:47:01+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+collecting at 2025-05-02T23:47:02+01:00
+collecting at 2025-05-02T23:47:04+01:00
+reading out lm_head at 2025-05-02T23:47:05+01:00
+iterating at 2025-05-02T23:47:05+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+collecting at 2025-05-02T23:47:09+01:00
+merging at 2025-05-02T23:48:14+01:00
+All ranks gathered & merged
+  layer  0 → 14,800 samples (showing first 5 layers)
+  layer  1 → 14,800 samples (showing first 5 layers)
+  layer  2 → 14,800 samples (showing first 5 layers)
+  layer  3 → 14,800 samples (showing first 5 layers)
+  layer  4 → 14,800 samples (showing first 5 layers)
+training at 2025-05-02T23:48:14+01:00
+
+=== Training probes for 33 layers (≤ 5000 samples/layer) ===
+training2 at 2025-05-02T23:48:14+01:00
+Layer:   0%|          | 0/33 [00:00<?, ?it/s]entering loop at 2025-05-02T23:48:14+01:00
+Layer:   0%|          | 0/33 [00:04<?, ?it/s, layer=0, secs=4.8, valF1=0.664]Layer:   3%|▎         | 1/33 [00:04<02:38,  4.95s/it, layer=0, secs=4.8, valF1=0.664]Layer:   3%|▎         | 1/33 [00:15<02:38,  4.95s/it, layer=1, secs=10.6, valF1=0.626]Layer:   6%|▌         | 2/33 [00:15<04:19,  8.37s/it, layer=1, secs=10.6, valF1=0.626]Layer:   6%|▌         | 2/33 [00:36<04:19,  8.37s/it, layer=2, secs=20.8, valF1=0.487]Layer:   9%|▉         | 3/33 [00:36<07:03, 14.13s/it, layer=2, secs=20.8, valF1=0.487]Layer:   9%|▉         | 3/33 [01:02<07:03, 14.13s/it, layer=3, secs=26.2, valF1=0.553]Layer:  12%|█▏        | 4/33 [01:02<09:08, 18.93s/it, layer=3, secs=26.2, valF1=0.553]Layer:  12%|█▏        | 4/33 [01:46<09:08, 18.93s/it, layer=4, secs=43.3, valF1=0.370]  ↳ layer  4 finished | val-F1 0.370 | 43.3s
+Layer:  15%|█▌        | 5/33 [01:46<12:57, 27.76s/it, layer=4, secs=43.3, valF1=0.370]Layer:  15%|█▌        | 5/33 [01:59<12:57, 27.76s/it, layer=5, secs=12.8, valF1=0.517]Layer:  18%|█▊        | 6/33 [01:59<10:13, 22.72s/it, layer=5, secs=12.8, valF1=0.517]Layer:  18%|█▊        | 6/33 [03:22<10:13, 22.72s/it, layer=6, secs=83.2, valF1=0.493]Layer:  21%|██        | 7/33 [03:22<18:25, 42.54s/it, layer=6, secs=83.2, valF1=0.493]Layer:  21%|██        | 7/33 [03:41<18:25, 42.54s/it, layer=7, secs=19.2, valF1=0.491]Layer:  24%|██▍       | 8/33 [03:41<14:38, 35.14s/it, layer=7, secs=19.2, valF1=0.491]Layer:  24%|██▍       | 8/33 [05:44<14:38, 35.14s/it, layer=8, secs=121.9, valF1=0.455]Layer:  27%|██▋       | 9/33 [05:44<24:55, 62.32s/it, layer=8, secs=121.9, valF1=0.455]Layer:  27%|██▋       | 9/33 [07:17<24:55, 62.32s/it, layer=9, secs=93.0, valF1=0.487]   ↳ layer  9 finished | val-F1 0.487 | 93.0s
+Layer:  30%|███       | 10/33 [07:17<27:32, 71.85s/it, layer=9, secs=93.0, valF1=0.487]Layer:  30%|███       | 10/33 [09:06<27:32, 71.85s/it, layer=10, secs=109.4, valF1=0.452]Layer:  33%|███▎      | 11/33 [09:06<30:34, 83.40s/it, layer=10, secs=109.4, valF1=0.452]Layer:  33%|███▎      | 11/33 [10:13<30:34, 83.40s/it, layer=11, secs=66.5, valF1=0.420] Layer:  36%|███▋      | 12/33 [10:13<27:24, 78.29s/it, layer=11, secs=66.5, valF1=0.420]Layer:  36%|███▋      | 12/33 [10:50<27:24, 78.29s/it, layer=12, secs=36.7, valF1=0.486]Layer:  39%|███▉      | 13/33 [10:50<21:54, 65.72s/it, layer=12, secs=36.7, valF1=0.486]Layer:  39%|███▉      | 13/33 [11:47<21:54, 65.72s/it, layer=13, secs=57.5, valF1=0.419]Layer:  42%|████▏     | 14/33 [11:47<20:02, 63.30s/it, layer=13, secs=57.5, valF1=0.419]Layer:  42%|████▏     | 14/33 [12:41<20:02, 63.30s/it, layer=14, secs=53.0, valF1=0.473]  ↳ layer 14 finished | val-F1 0.473 | 53.0s
+Layer:  45%|████▌     | 15/33 [12:41<18:04, 60.23s/it, layer=14, secs=53.0, valF1=0.473]Layer:  45%|████▌     | 15/33 [13:35<18:04, 60.23s/it, layer=15, secs=54.8, valF1=0.458]Layer:  48%|████▊     | 16/33 [13:35<16:36, 58.63s/it, layer=15, secs=54.8, valF1=0.458]Layer:  48%|████▊     | 16/33 [14:43<16:36, 58.63s/it, layer=16, secs=67.3, valF1=0.501]Layer:  52%|█████▏    | 17/33 [14:43<16:20, 61.28s/it, layer=16, secs=67.3, valF1=0.501]Layer:  52%|█████▏    | 17/33 [16:17<16:20, 61.28s/it, layer=17, secs=93.5, valF1=0.423]Layer:  55%|█████▍    | 18/33 [16:17<17:45, 71.00s/it, layer=17, secs=93.5, valF1=0.423]Layer:  55%|█████▍    | 18/33 [18:11<17:45, 71.00s/it, layer=18, secs=114.2, valF1=0.475]Layer:  58%|█████▊    | 19/33 [18:11<19:36, 84.03s/it, layer=18, secs=114.2, valF1=0.475]Layer:  58%|█████▊    | 19/33 [20:12<19:36, 84.03s/it, layer=19, secs=121.2, valF1=0.424]  ↳ layer 19 finished | val-F1 0.424 | 121.2s
+Layer:  61%|██████    | 20/33 [20:12<20:37, 95.23s/it, layer=19, secs=121.2, valF1=0.424]Layer:  61%|██████    | 20/33 [22:45<20:37, 95.23s/it, layer=20, secs=153.0, valF1=0.436]Layer:  64%|██████▎   | 21/33 [22:45<22:31, 112.61s/it, layer=20, secs=153.0, valF1=0.436]W0502 23:12:46.582000 23261 torch/distributed/elastic/agent/server/api.py:704] Received Signals.SIGTERM death signal, shutting down workers
+W0502 23:12:46.584000 23261 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 23452 closing signal SIGTERM
+Traceback (most recent call last):
+  File "/usr/local/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/launch.py", line 1204, in launch_command
+    multi_gpu_launcher(args)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/launch.py", line 825, in multi_gpu_launcher
+    distrib_run.run(args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 260, in launch_agent
+    result = agent.run()
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/elastic/metrics/api.py", line 137, in wrapper
+    result = f(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/elastic/agent/server/api.py", line 696, in run
+    result = self._invoke_run(role)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/elastic/agent/server/api.py", line 855, in _invoke_run
+    time.sleep(monitor_interval)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/elastic/multiprocessing/api.py", line 84, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 23261 got signal: 15
