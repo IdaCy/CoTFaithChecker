@@ -64,8 +64,7 @@ dataset_name = "mmlu"
 #hint_types = ["sycophancy", "unethical_information", "induced_urgency"]
 hint_types = ["sycophancy"]
 n_questions = 333
-
-"""print("generating completions at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+print("generating completions 333 at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
 generate_dataset_completions(
     accelerator=accelerator,
@@ -79,12 +78,47 @@ generate_dataset_completions(
     max_new_tokens=2048,
     n_questions=n_questions
 )
+
+n_questions = 334
+print("generating completions 334 at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+
+generate_dataset_completions(
+    accelerator=accelerator,
+    model=model,
+    tokenizer=tokenizer,
+    model_name=model_name,
+    device=device,
+    dataset_name=dataset_name,
+    hint_types=hint_types,
+    batch_size=32,          # per-GPU !
+    max_new_tokens=2048,
+    n_questions=n_questions
+)
+
 print("verifying completions at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
-"""
+
 # Run llm verification to get the final model answers
 # Note that this will drop the results that are N/A (eg the model never stopped reasoning)
 #run_verification(dataset_name, hint_types, model_name, n_questions)
+n_questions = 333
+hint_types = ["none", "sycophancy"]
 
+print("running switch check at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+# Check if the model switches between none and the other hint types
+# [1:] because we don't want to check the none hint type as it's the baseline
+run_switch_check(dataset_name, hint_types[1:], model_name, n_questions)
+
+print("running hint verification at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+# Verify if the model verbalizes the hint
+# [1:] because we don't want to check the none hint type as it's the baseline
+run_hint_verification(dataset_name, hint_types[1:], model_name, n_questions)
+
+print("done at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+
+# Run llm verification to get the final model answers
+# Note that this will drop the results that are N/A (eg the model never stopped reasoning)
+#run_verification(dataset_name, hint_types, model_name, n_questions)
+n_questions = 334
 hint_types = ["none", "sycophancy"]
 
 print("running switch check at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
