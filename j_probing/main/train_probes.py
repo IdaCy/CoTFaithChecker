@@ -76,7 +76,7 @@ class TrainingConfig: # Made mutable to allow setting probe_config later
     val_freq: int = 50  # Steps between validation checks
     # --- Logging ---
     wandb_project: Optional[str] = "faithfulness_probes" # Set to None to disable wandb
-    wandb_entity: Optional[str] = None # Set to your wandb entity
+    wandb_entity: Optional[str] = "officer_k" # Set to your wandb entity
 
 @dataclass
 class CollateFnOutput:
@@ -309,7 +309,9 @@ def evaluate_probe(
 
 def train_probe(
     probe_config: ProbeConfig,
-    training_config: TrainingConfig,
+    d_model: int,
+    device: str,
+    dtype: torch.dtype,
     train_loader: DataLoader,
     val_loader: DataLoader,
     test_loader: Optional[DataLoader] = None, # Add test_loader for final eval
@@ -317,36 +319,14 @@ def train_probe(
     """Trains a single linear probe and returns best state_dict and metrics."""
 
     run_name = f"L{probe_config.layer}_{probe_config.position_name}"
-    use_wandb = training_config.wandb_project is not None
-
-    if use_wandb:
-        run = wandb.init(
-            project=training_config.wandb_project,
-            entity=training_config.wandb_entity,
-            name=run_name,
-            config={
-                **asdict(training_config.data),
-                **asdict(training_config.model),
-                **asdict(probe_config),
-                "split_seed": training_config.split_seed,
-                "max_steps": training_config.max_steps,
-                "patience": training_config.patience,
-                "val_freq": training_config.val_freq,
-                # Add other relevant TrainingConfig fields if needed
-            },
-            reinit=True, # Allows multiple runs in one script
-            save_code=False # Optional: prevents saving script to wandb
-        )
-    else:
-        run = None
+    use_wandb = False
+    run = None
 
     print(f"--- Training probe: Layer {probe_config.layer}, Pos {probe_config.position_name} ---")
 
     # --- Initialization ---
-    device = training_config.device
-    # Probe uses float32 internally for stability
     probe = LinearProbe(
-        d_model=training_config.model.d_model,
+        d_model=d_model,
         init_range=probe_config.weight_init_range,
         seed=probe_config.weight_init_seed
     ).to(device) # Initial device placement
@@ -365,9 +345,13 @@ def train_probe(
     train_iter = iter(train_loader)
     probe.train()
 
-    pbar = tqdm(total=training_config.max_steps, desc=f"Train L{probe_config.layer} P{probe_config.position_index}", leave=False)
+    max_steps = 5000
+    patience = 500
+    val_freq = 50
 
-    while steps_done < training_config.max_steps:
+    pbar = tqdm(total=max_steps, desc=f"Train L{probe_config.layer} P{probe_config.position_index}", leave=False)
+
+    while steps_done < max_steps:
         try:
             batch = next(train_iter)
             batch_acts = batch.activations.to(device) # Ensure data on correct device
@@ -392,19 +376,32 @@ def train_probe(
         pbar.update(1)
 
         # Log training loss periodically
-        if use_wandb and steps_done % training_config.val_freq == 0:
-             wandb.log({"train_loss_step": loss.item(), "step": steps_done})
+        if use_wandb and steps_done % val_freq == 0:
+             # ---> MODIFICATION START: Adjust log keys <---
+             log_data = {
+                 f"train_loss_step/L{probe_config.layer}_{probe_config.position_name}": loss.item(),
+                 "step": steps_done # Step is global across probes
+             }
+             wandb.log(log_data)
+             # ---> MODIFICATION END <---
 
 
         # --- Validation ---
-        if steps_done % training_config.val_freq == 0:
+        if steps_done % val_freq == 0:
             val_loss, val_corr = evaluate_probe(probe, val_loader, criterion, device, torch.float32)
             if math.isnan(val_loss):
                 print(f"[Warning] NaN validation loss at step {steps_done}. Stopping training for this probe.")
                 break # Stop training if validation loss is NaN
 
             if use_wandb:
-                 wandb.log({"val_loss": val_loss, "val_pearson_r": val_corr, "step": steps_done})
+                 # ---> MODIFICATION START: Adjust log keys <---
+                 log_data = {
+                     f"val_loss/L{probe_config.layer}_{probe_config.position_name}": val_loss,
+                     f"val_pearson_r/L{probe_config.layer}_{probe_config.position_name}": val_corr,
+                     "step": steps_done # Step is global across probes
+                 }
+                 wandb.log(log_data)
+                 # ---> MODIFICATION END <---
 
             if val_loss < best_val_loss:
                 best_val_loss = val_loss
@@ -412,8 +409,8 @@ def train_probe(
                 best_model_state = {k: v.detach().cpu().clone() for k, v in probe.state_dict().items()}
                 patience_counter = 0
             else:
-                patience_counter += training_config.val_freq
-                if patience_counter >= training_config.patience:
+                patience_counter += val_freq
+                if patience_counter >= patience:
                     print(f"Step {steps_done}: Early stopping triggered.")
                     break
 
@@ -429,10 +426,18 @@ def train_probe(
         # Load best model state
         probe.load_state_dict(best_model_state)
         test_loss, test_corr = evaluate_probe(probe, test_loader, criterion, device, torch.float32)
-        final_metrics["test_loss"] = test_loss
-        final_metrics["test_pearson_r"] = test_corr
+        # ---> MODIFICATION START: Cast results to standard float <---
+        final_metrics["test_loss"] = float(test_loss) if not math.isnan(test_loss) else None
+        final_metrics["test_pearson_r"] = float(test_corr) if not math.isnan(test_corr) else None
+        # ---> MODIFICATION END <---
         if use_wandb:
-             wandb.log({"final_test_loss": test_loss, "final_test_pearson_r": test_corr})
+             # ---> MODIFICATION START: Log final test metrics <---
+             wandb.log({
+                 f"final_test_loss/L{probe_config.layer}_{probe_config.position_name}": final_metrics["test_loss"],
+                 f"final_test_pearson_r/L{probe_config.layer}_{probe_config.position_name}": final_metrics["test_pearson_r"]
+                 # Log these once at the end for this specific probe
+             })
+             # ---> MODIFICATION END <---
         print(f"  Test Loss: {test_loss:.4f}, Test Pearson R: {test_corr:.4f}")
     else:
          print("  Skipping test set evaluation.")
@@ -443,8 +448,10 @@ def train_probe(
     print(f"--- Finished training: Layer {probe_config.layer}, Pos {probe_config.position_name} ---")
     print(f"Final Metrics: {final_metrics}")
 
-    if use_wandb and run:
-        run.finish() # Finish the wandb run
+    # ---> MODIFICATION START: Remove internal wandb.finish <---
+    # if use_wandb and run:
+    #     run.finish() # Finish the wandb run
+    # ---> MODIFICATION END <---
 
     return best_model_state, final_metrics
 
@@ -485,11 +492,32 @@ def run_probe_training(cfg: TrainingConfig):
         print(f"[Warning] model_name mismatch! Meta: {loaded_model_name}, Config: {cfg.model.name}. Using name from meta.json.")
 
     # Use the loaded values for the rest of the process
-    current_model_config = ModelConfig(
+    # Store the correct values back into the main cfg object for simplicity downstream
+    cfg.model = ModelConfig( 
         name=loaded_model_name,
         n_layers=loaded_n_layers,
         d_model=loaded_d_model
     )
+
+    # ---> MODIFICATION START: Initialize WandB Run Once <---
+    use_wandb = cfg.wandb_project is not None
+    run = None
+    if use_wandb:
+        run_name = f"{cfg.model.name}_L{cfg.model.n_layers}_D{cfg.model.d_model}_seed{cfg.split_seed}"
+        try:
+            run = wandb.init(
+                project=cfg.wandb_project,
+                entity=cfg.wandb_entity,
+                name=run_name,
+                config=asdict(cfg), # Log the entire config
+                save_code=False
+            )
+            print(f"Wandb run initialized: {run.url}")
+        except Exception as e:
+            print(f"[Error] Failed to initialize Wandb: {e}. Disabling Wandb for this run.")
+            use_wandb = False
+            run = None
+    # ---> MODIFICATION END <---
 
     train_qids, val_qids, test_qids = get_data_splits(
         all_qids_ordered, target_map, cfg.val_frac, cfg.test_frac, cfg.split_seed
@@ -508,7 +536,8 @@ def run_probe_training(cfg: TrainingConfig):
     test_acts_all_layers = {}
 
 
-    for layer in range(current_model_config.n_layers):
+    # Use the corrected n_layers from cfg.model
+    for layer in range(cfg.model.n_layers):
         layer_results = {}
         activation_path = cfg.data.activations_dir / f"layer_{layer:02d}.bin"
         if not activation_path.exists():
@@ -525,18 +554,19 @@ def run_probe_training(cfg: TrainingConfig):
             # --- Load Activations for this Layer/Position/Split ---
             print("    Loading activations...")
             try:
+                # Use the corrected d_model from cfg.model
                 train_acts = load_activations_for_split(
-                    activation_path, pos_idx, all_qids_ordered, train_qids, current_model_config.d_model
+                    activation_path, pos_idx, all_qids_ordered, train_qids, cfg.model.d_model
                 )
                 val_acts = load_activations_for_split(
-                    activation_path, pos_idx, all_qids_ordered, val_qids, current_model_config.d_model
+                    activation_path, pos_idx, all_qids_ordered, val_qids, cfg.model.d_model
                 )
                 # Load test activations only once per layer if needed
                 if layer not in test_acts_all_layers:
                      test_acts_all_layers[layer] = {}
                 if pos_idx not in test_acts_all_layers[layer]:
                      test_acts_all_layers[layer][pos_idx] = load_activations_for_split(
-                          activation_path, pos_idx, all_qids_ordered, test_qids, current_model_config.d_model
+                          activation_path, pos_idx, all_qids_ordered, test_qids, cfg.model.d_model
                      )
                      test_acts_layer_loaded = True # Flag that test acts were loaded for this layer
 
@@ -573,13 +603,20 @@ def run_probe_training(cfg: TrainingConfig):
                 weight_init_seed = cfg.probe_config.weight_init_seed
             )
 
+            # ---> MODIFICATION START: Pass necessary parameters directly <---
             best_state_dict, final_metrics = train_probe(
                 probe_config=current_probe_cfg,
-                training_config=cfg,
+                # Pass loaded/verified model and training params
+                d_model=cfg.model.d_model,
+                device=cfg.device,
+                dtype=cfg.dtype, # Pass activation dtype
                 train_loader=train_loader,
                 val_loader=val_loader,
-                test_loader=test_loader # Pass test loader here
+                test_loader=test_loader
+                # TODO: Consider passing max_steps, patience, val_freq if they might change per probe
+                # or keep them hardcoded/defaulted inside train_probe for now.
             )
+            # ---> MODIFICATION END <---
 
             # --- Save probe weights and metrics ---
             if best_state_dict:
@@ -612,6 +649,12 @@ def run_probe_training(cfg: TrainingConfig):
     with open(final_results_path, "w") as f:
          json.dump(all_results, f, indent=2)
 
+    # ---> MODIFICATION START: Finish WandB Run <---
+    if use_wandb and run:
+        run.finish()
+        print("Wandb run finished.")
+    # ---> MODIFICATION END <---
+
 
 
 if __name__ == "__main__":
@@ -620,7 +663,7 @@ if __name__ == "__main__":
     DS_NAME = "mmlu"
     MODEL_NAME_FOR_PATH = "DeepSeek-R1-Distill-Llama-8B" # Matches output dir name
     HINT_TYPE = "sycophancy"
-    N_QUESTIONS_STR = "301" # Adjust to your actual activation dir name
+    N_QUESTIONS_STR = "5001" # Adjust to your actual activation dir name
 
     # Construct paths using the variables
     BASE_DIR = Path("j_probing")
