@@ -130,15 +130,16 @@ def run(
     qids = [d["question_id"] for d in data]
 
     # Persist question ordering
-    with open(output_dir / "meta.json", "w", encoding="utf-8") as f:
-        json.dump({"question_ids": qids}, f, indent=2)
+    meta_content = {
+        "question_ids": qids,
+    }
 
     # 2) Load model via TransformerLens
     print(f"Loading model {model_name} …")
     model = HookedTransformer.from_pretrained_no_processing(
         MODEL_PATH_ORIGINAL,
         local_files_only=True,  # Set to True if using local models
-        dtype=torch.bfloat16,
+        dtype=dtype,
         device=str(device),
         default_padding_side='left'
     )
@@ -149,6 +150,14 @@ def run(
     n_layers = model.cfg.n_layers
     d_model = model.cfg.d_model
     n_prompts = len(prompts)
+
+    # Add model config to meta content *after* loading the model
+    meta_content["n_layers"] = n_layers
+    meta_content["d_model"] = d_model
+    meta_content["model_name_from_config"] = model.cfg.model_name
+
+    with open(output_dir / "meta.json", "w", encoding="utf-8") as f:
+        json.dump(meta_content, f, indent=2)
 
     # ------------------------------------------------------------------
     # Debug: print working directory and output paths for troubleshooting
@@ -188,10 +197,10 @@ def run(
         )
 
         for layer, acts in enumerate(acts_batch):
-            # acts is still torch.Tensor on CPU (bf16 or fp32) when it reaches here
-            acts_np = acts.to(torch.float16).cpu().numpy()   
-            layer_files[layer][start:end] = acts_np          
-            # layer_files[layer][start:end] = acts.numpy()
+            # # acts is still torch.Tensor on CPU (bf16 or fp32) when it reaches here
+            # acts_np = acts.to(torch.float16).cpu().numpy()   
+            # layer_files[layer][start:end] = acts_np          
+            layer_files[layer][start:end] = acts.numpy()
 
     # 5) Flush & clean up
     for mm in layer_files:
@@ -262,8 +271,8 @@ def main():
         dataset_name="mmlu",
         model_path=MODEL_PATH_REASONING,
         hint_type="sycophancy",
-        n_questions=301,
-        batch_size=4,
+        n_questions=5001,
+        batch_size=1,
         device="cuda" if torch.cuda.is_available() else "cpu",
         dtype=torch.float16,
     )
