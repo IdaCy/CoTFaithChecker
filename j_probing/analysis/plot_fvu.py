@@ -132,7 +132,8 @@ def plot_combined_fvu(
     fvu_by_pos_layer: Dict[str, Dict[int, float]],
     model_name: str,
     n_layers: int,
-    output_path: Path
+    output_path: Path,
+    seed: int
 ):
     """Creates and saves the combined FVU plot using Seaborn styles."""
     # Apply Seaborn theme with improved aesthetics
@@ -256,7 +257,7 @@ def plot_combined_fvu(
     # Better label and title formatting with slightly smaller title to fit square plot
     plt.xlabel("Layer", fontsize=13, weight='bold')
     plt.ylabel("Fraction of Variance Unexplained (FVU)\n(lower is better)", fontsize=13, weight='bold')
-    plt.title(f"{model_name} ({n_layers} layers)\nFVU by Layer and Token Position", fontsize=14, weight='bold', pad=10)
+    plt.title(f"FVU by Layer and Token Position ({n_layers} layers)\nSeed {seed}", fontsize=14, weight='bold', pad=10)
     
     # Position legend for minimal whitespace - upper right corner works better for square plot
     plt.legend(
@@ -295,15 +296,16 @@ def main():
     SPLIT_SEED = 42 # MUST match the seed used in train_probes.py
     VAL_FRAC = 0.10 # MUST match train_probes.py
     TEST_FRAC = 0.10 # MUST match train_probes.py
+    VAL_TYPE = "single_split"
 
     # Construct paths
     BASE_DIR = Path("j_probing")
     DATA_DIR = BASE_DIR / "data" / DS_NAME / MODEL_NAME_FOR_PATH / HINT_TYPE / N_QUESTIONS_STR
     ACTS_DIR = BASE_DIR / "acts" / DS_NAME / MODEL_NAME_FOR_PATH / HINT_TYPE / N_QUESTIONS_STR
-    PROBE_DIR = BASE_DIR / "probes" / MODEL_NAME_FOR_PATH / f"seed_{SPLIT_SEED}"
+    PROBE_DIR = BASE_DIR / "probes" / MODEL_NAME_FOR_PATH / VAL_TYPE / f"seed_{SPLIT_SEED}"
     # More descriptive filename
     plot_filename = f"{MODEL_NAME_FOR_PATH}_{DS_NAME}_{HINT_TYPE}_{N_QUESTIONS_STR}_seed{SPLIT_SEED}_fvu.png"
-    OUTPUT_PLOT_PATH = BASE_DIR / "analysis" / "plots" / plot_filename
+    OUTPUT_PLOT_PATH = BASE_DIR / "analysis" / "plots" / VAL_TYPE / plot_filename
 
     # --- Load necessary data --- 
     target_map = load_target_data(DATA_DIR / "probing_data.json")
@@ -352,7 +354,8 @@ def main():
         fvu_by_pos_layer=fvu_results,
         model_name=MODEL_NAME_FOR_PATH, # Or use a cleaner name if desired
         n_layers=n_layers,
-        output_path=OUTPUT_PLOT_PATH
+        output_path=OUTPUT_PLOT_PATH,
+        seed=SPLIT_SEED
     )
 
 if __name__ == "__main__":

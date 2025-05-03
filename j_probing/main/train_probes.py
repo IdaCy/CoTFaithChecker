@@ -462,7 +462,7 @@ def run_probe_training(cfg: TrainingConfig):
     """Loads data and runs training for all layers and positions."""
 
     # Create base output directory if it doesn't exist
-    base_output_dir = cfg.data.output_dir / cfg.model.name / f"seed_{cfg.split_seed}"
+    base_output_dir = cfg.data.output_dir / cfg.model.name / "single_split" / f"seed_{cfg.split_seed}"
     base_output_dir.mkdir(parents=True, exist_ok=True)
     print(f"Saving probes and results to: {base_output_dir}")
 
@@ -680,7 +680,8 @@ if __name__ == "__main__":
         layer=-1, # Placeholder, will be set in the loop
         position_index=-1, # Placeholder
         position_name="placeholder", # Placeholder
-        batch_size=64 # Training batch size
+        batch_size=64, # Training batch size,
+        weight_init_seed=42,
         # lr, betas, weight_init_range, weight_init_seed use defaults
     )
 
@@ -698,6 +699,7 @@ if __name__ == "__main__":
             n_layers=-1    # Placeholder
         ),
         probe_config=default_probe_config,
+        split_seed=42
         # Set wandb_project to None to disable logging
         # wandb_project=None,
         # wandb_entity="your_wandb_username_or_entity", # Set your entity if using wandb
