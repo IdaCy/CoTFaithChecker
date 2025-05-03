@@ -4,11 +4,11 @@ accelerate config
 <- select: this machine, multi-gpu, 1 node, everything default, 4 GPUs (?), bf16
 
 then run:
-nohup accelerate launch a_confirm_posthoc/parallelization/driver.py \
+nohup accelerate launch a_confirm_posthoc/parallelization/driver333.py \
      > logs/5_f1_2k_xyyx_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 
 no accelerate:
-nohup python a_confirm_posthoc/parallelization/driver1006.py \
+nohup python a_confirm_posthoc/parallelization/driver333.py \
      > logs/5_f1_2k_xyyx_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 
 i mean, i'm a fan of nohup, you can also do tmux or have it run in the foreground tho
@@ -63,7 +63,7 @@ dataset_name = "mmlu"
 #hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
 #hint_types = ["sycophancy", "unethical_information", "induced_urgency"]
 hint_types = ["none"]
-n_questions = 333
+n_questions = 5000
 print("generating completions 333 at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
 generate_dataset_completions(
@@ -78,7 +78,7 @@ generate_dataset_completions(
     max_new_tokens=2048,
     n_questions=n_questions
 )
-
+"""
 n_questions = 334
 print("generating completions 334 at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
@@ -132,3 +132,4 @@ print("running hint verification at", datetime.now(ZoneInfo("Europe/London")).is
 run_hint_verification(dataset_name, hint_types[1:], model_name, n_questions)
 
 print("done at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+"""
