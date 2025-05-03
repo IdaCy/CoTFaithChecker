@@ -131,6 +131,16 @@ def run_sentence_level_inference(
                             for lbl, tid in opt_ids.items()}
                 ans_probs  = _softmax(ans_logits)
 
+                """out_rows.append(dict(
+                    sentence_id=n_completed,
+                    sentence=sent_text,
+                    avg_att_prompt=att_prompt,
+                    avg_att_prompt_only=att_prompt_only,
+                    avg_att_hint_only=att_hint_only,
+                    answer_logits=ans_logits,
+                    answer_probs=ans_probs,
+                ))"""
+                
                 out_rows.append(dict(
                     sentence_id=n_completed,
                     sentence=sent_text,
@@ -140,6 +150,12 @@ def run_sentence_level_inference(
                     answer_logits=ans_logits,
                     answer_probs=ans_probs,
                 ))
+
+                if (n_completed % 5 == 0 and hasattr(model, "_tqdm_outer")):
+                    model._tqdm_outer.set_postfix(
+                        qid=getattr(model, "_current_qid", "?"),
+                        sent=n_completed,
+                        refresh=False)
 
             if "</think>" in decoded or n_completed >= 128:
                 break
@@ -157,13 +173,23 @@ def run_batch_from_files(
         **generation_kwargs):
     questions = json.loads(Path(questions_file).read_text(encoding="utf-8"))
     
+    whitelist_len = 0
     if whitelist_file and Path(whitelist_file).exists():
         whitelist = set(json.loads(Path(whitelist_file).read_text()))
         questions = [q for q in questions if q["question_id"] in whitelist]
         logging.info("filtered %d questions from %d",
                      len(questions), len(questions))
+        whitelist_len = len(whitelist)
+        
+    #whitelist_len = len(whitelist) if (whitelist_file and Path(whitelist_file).exists()) else 0
+    if max_questions:
+        if (whitelist_len > 0):
+            shortest_max = min(x for x in (whitelist_len, max_questions) if x is not None)
+            questions = questions[:shortest_max]
+        else:
+            questions = questions[:max_questions]
 
-    if max_questions: questions = questions[:max_questions]
+    #if max_questions: questions = questions[:max_questions]
 
     hints_map = {}
     if hints_file and Path(hints_file).exists():
@@ -176,21 +202,33 @@ def run_batch_from_files(
                 "Please answer with the letter of the correct option (eg "
                 "[ A ], [ B ], [ C ], [ D ])")
 
+    outer_bar = tqdm(questions, desc="questions", unit="q", total=len(questions))
+
     results = []
-    for q in tqdm(questions, desc="questions", unit="q"):
-        hint_obj   = hints_map.get(q["question_id"])
-        hint_text  = hint_obj["hint_text"] if hint_obj else None
+    for q in outer_bar:
+        # expose bar + qid to the inner function
+        model._tqdm_outer  = outer_bar
+        model._current_qid = q["question_id"]
+
+        hint_obj  = hints_map.get(q["question_id"])
+        hint_text = hint_obj["hint_text"] if hint_obj else None
+
         rec = run_sentence_level_inference(
-                model, tok,
-                prompt_base = make_prompt(q),
-                hint_text   = hint_text,
-                **generation_kwargs)
+                  model, tok,
+                  prompt_base = make_prompt(q),
+                  hint_text   = hint_text,
+                  **generation_kwargs)
+
         results.append(dict(
-            question_id = q["question_id"],
-            hint_option = hint_obj["hint_option"] if hint_obj else None,
-            is_correct_option = hint_obj["is_correct_option"] if hint_obj else None,
+            question_id       = q["question_id"],
+            hint_option       = hint_obj.get("hint_option")       if hint_obj else None,
+            is_correct_option = hint_obj.get("is_correct_option") if hint_obj else None,
             **rec
         ))
+
+    for _attr in ("_tqdm_outer", "_current_qid"):
+        if hasattr(model, _attr):
+            delattr(model, _attr)
 
     Path(output_file).write_text(json.dumps(results, indent=2), encoding="utf-8")
     logging.info("saved %d records to %s", len(results), output_file)
