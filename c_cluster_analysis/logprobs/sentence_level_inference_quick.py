@@ -7,6 +7,17 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from tqdm.auto import tqdm
 
+import json, os, time, logging
+from typing import List, Dict, Optional
+
+import torch
+from a_confirm_posthoc.main.prompt_constructor import construct_prompt
+from a_confirm_posthoc.parallelization.model_handler import generate_completion
+from accelerate.utils import gather_object
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
 def _device(): return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def load_model_and_tokenizer(model_path: str):
@@ -23,33 +34,6 @@ def load_model_and_tokenizer(model_path: str):
     model.eval()
     return model, tok, model_name, dev
 
-_TEMPLATES = {
-    "llama": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n"
-             "{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>",
-    "qwen": "User: {instruction}\nAssistant:",
-}
-def _chat_template(model_name: str):
-    m = model_name.lower()
-    if "llama" in m: return _TEMPLATES["llama"]
-    if "qwen"  in m: return _TEMPLATES["qwen"]
-    return "{instruction}"
-
-
-
-
-
-
-
-import json, os, time, logging
-from typing import List, Dict, Optional
-
-import torch
-from a_confirm_posthoc.utils.prompt_constructor import construct_prompt
-from a_confirm_posthoc.parallelization.model_handler import generate_completion
-from accelerate.utils import gather_object
-
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 KNOWN_CHAT_TEMPLATES = {
     "llama":  "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n",
@@ -65,15 +49,6 @@ def get_chat_template(model_name: str) -> str:
         return KNOWN_CHAT_TEMPLATES["qwen"]
     logging.warning(f"No specific chat template for {model_name}; using llama.")
     return KNOWN_CHAT_TEMPLATES["llama"]
-
-
-
-
-
-
-
-
-
 
 def _opt_token_ids(opts: List[str], tok):
     return {o: tok.encode(f" {o}", add_special_tokens=False)[0] for o in opts}
@@ -106,159 +81,124 @@ def _softmax(logits: Dict[str, float]) -> Dict[str, float]:
 
 def run_sentence_level_inference(
         model, tok,
-        prompt_base: str,
-        hint_text: Optional[str]=None,
-        option_labels: List[str]=["A","B","C","D"],
-        max_new_tokens: int=512,
-        intervention_prompt="... The final answer is [",
+        prompt_base: str,            # question + options   (NO hint)
+        hint_text: Optional[str],    # hint, or None
+        full_cot: str,               # the already-generated chain-of-thought
+        option_labels: List[str] = ["A", "B", "C", "D"],
+        intervention_prompt: str = "... The final answer is [",
         device=None):
+
     device = device or model.device
-    tmpl  = _chat_template(getattr(model.config, "name_or_path", ""))
-    prefix, suffix = tmpl.split("{instruction}")
-    tok_prefix = tok.encode(prefix,  add_special_tokens=False)
-    tok_suffix = tok.encode(suffix,  add_special_tokens=False)
-    tok_q      = tok.encode(prompt_base, add_special_tokens=False)
-    tok_hint   = tok.encode(hint_text, add_special_tokens=False) if hint_text else []
+    chat_prefix, chat_suffix = get_chat_template(
+        getattr(model.config, "name_or_path", "")).split("{instruction}")
 
-    input_ids = torch.tensor([tok_prefix + tok_q + tok_hint + tok_suffix],
-                             device=device)
-    attn_mask = torch.ones_like(input_ids)
-    idx_q      = list(range(len(tok_prefix), len(tok_prefix)+len(tok_q)))
-    idx_hint   = list(range(idx_q[-1]+1, idx_q[-1]+1+len(tok_hint)))
+    # tokens that never change 
+    ids_prefix = tok.encode(chat_prefix, add_special_tokens=False)
+    ids_q_opts = tok.encode(prompt_base,  add_special_tokens=False)
+    ids_hint   = tok.encode(hint_text,    add_special_tokens=False) if hint_text else []
+    ids_suffix = tok.encode(chat_suffix,  add_special_tokens=False)
+    idx_q      = list(range(len(ids_prefix), len(ids_prefix) + len(ids_q_opts)))
+    idx_hint   = list(range(idx_q[-1] + 1, idx_q[-1] + 1 + len(ids_hint)))
     idx_prompt = idx_q + idx_hint
-    opt_ids    = _opt_token_ids(option_labels, tok)
     intv_ids   = tok.encode(intervention_prompt, add_special_tokens=False)
+    opt_ids    = _opt_token_ids(option_labels, tok)
 
-    generated, past_kv, out_rows, n_completed = [], None, [], 0
-    with torch.no_grad():
-        for tkn_step in range(max_new_tokens):
-            out = model(input_ids=input_ids,
-                        attention_mask=attn_mask,
-                        past_key_values=past_kv,
-                        use_cache=True,
-                        output_attentions=True)
-            logits = out.logits[:, -1, :]
-            past_kv = out.past_key_values
-            last_att = out.attentions[-1][0]
+    # sentence list
+    sentences = _split_sents(full_cot)
+    out_rows  = []
+    running_ids: List[int] = []           # reasoning tokens accumulated
 
-            next_id = int(logits.argmax(-1))
-            generated.append(next_id)
-            logging.debug("token %d generated id=%d", tkn_step+1, next_id)
-            input_ids = torch.tensor([[next_id]], device=device)
-            attn_mask = torch.ones_like(input_ids)
+    for sid, sent in enumerate(sentences, 1):
+        # add current sentence's tokens to running context
+        running_ids.extend(tok.encode(sent, add_special_tokens=False))
 
-            decoded = tok.decode(generated, skip_special_tokens=True)
-            sents = _split_sents(decoded)
+        # 1) forward pass for attentions on last reasoning token
+        seq_ids = torch.tensor(
+            [ids_prefix + ids_q_opts + ids_hint + ids_suffix + running_ids],
+            device=device)
+        with torch.no_grad():
+            out = model(seq_ids, output_attentions=True, use_cache=True)
+        last_att = out.attentions[-1][0]                     # heads × tgt × src
+        att_prompt      = _avg_last_token_att(last_att, idx_prompt)
+        att_prompt_only = _avg_last_token_att(last_att, idx_q)   if hint_text else None
+        att_hint_only   = _avg_last_token_att(last_att, idx_hint) if hint_text else None
 
-            ends_with_punct = decoded.rstrip().endswith((".", "!", "?"))
-            completed_cnt   = len(sents) if ends_with_punct else len(sents) - 1
+        # 2) one extra token to get option logits-
+        with torch.no_grad():
+            logits = model(
+                input_ids = torch.tensor([intv_ids], device=device),
+                past_key_values = out.past_key_values,
+                use_cache = False).logits[0, -1]
 
-            while n_completed < completed_cnt:
-                sent_text = sents[n_completed]
-                n_completed += 1
+        ans_logits = {lbl: float(logits[tid]) for lbl, tid in opt_ids.items()}
+        ans_probs  = _softmax(ans_logits)
 
-                att_prompt      = _avg_last_token_att(last_att, idx_prompt)
-                att_prompt_only = (_avg_last_token_att(last_att, idx_q)
-                                if hint_text else None)
-                att_hint_only   = (_avg_last_token_att(last_att, idx_hint)
-                                if hint_text else None)
+        out_rows.append(dict(
+            sentence_id            = sid,
+            sentence               = sent,
+            avg_att_prompt         = att_prompt,
+            avg_att_prompt_only    = att_prompt_only,
+            avg_att_hint_only      = att_hint_only,
+            answer_logits          = ans_logits,
+            answer_probs           = ans_probs,
+        ))
 
-                # fast logits: reuse KV-cache for intervention prompt #
-                g_logits = model(
-                    input_ids=torch.tensor([intv_ids], device=device),
-                    past_key_values=past_kv,
-                    use_cache=False).logits[0, -1] 
-                ans_logits = {lbl: float(g_logits[tid].item())
-                            for lbl, tid in opt_ids.items()}
-                ans_probs  = _softmax(ans_logits)
+    return {
+        "sentences":       out_rows,
+        "completion": full_cot
+    }
 
-                """out_rows.append(dict(
-                    sentence_id=n_completed,
-                    sentence=sent_text,
-                    avg_att_prompt=att_prompt,
-                    avg_att_prompt_only=att_prompt_only,
-                    avg_att_hint_only=att_hint_only,
-                    answer_logits=ans_logits,
-                    answer_probs=ans_probs,
-                ))"""
-                
-                out_rows.append(dict(
-                    sentence_id=n_completed,
-                    sentence=sent_text,
-                    avg_att_prompt=att_prompt,
-                    avg_att_prompt_only=att_prompt_only,
-                    avg_att_hint_only=att_hint_only,
-                    answer_logits=ans_logits,
-                    answer_probs=ans_probs,
-                ))
-
-                if (n_completed % 5 == 0 and hasattr(model, "_tqdm_outer")):
-                    model._tqdm_outer.set_postfix(
-                        qid=getattr(model, "_current_qid", "?"),
-                        sent=n_completed,
-                        refresh=False)
-
-            if "</think>" in decoded or n_completed >= 128:
-                break
-
-    return {"sentences": out_rows,
-            "full_completion": tok.decode(generated, skip_special_tokens=True)}
 
 def run_batch_from_files(
         model, tok,
         questions_file: str,
-        hints_file: Optional[str]=None,
-        whitelist_file: Optional[str]=None,
-        output_file: str="sentence_level_results.json",
-        max_questions: Optional[int]=None,
-        **generation_kwargs):
-    questions = json.loads(Path(questions_file).read_text(encoding="utf-8"))
-    
-    whitelist_len = 0
-    if whitelist_file and Path(whitelist_file).exists():
-        whitelist = set(json.loads(Path(whitelist_file).read_text()))
-        questions = [q for q in questions if q["question_id"] in whitelist]
-        logging.info("filtered %d questions from %d",
-                     len(questions), len(questions))
-        whitelist_len = len(whitelist)
-        
-    #whitelist_len = len(whitelist) if (whitelist_file and Path(whitelist_file).exists()) else 0
-    if max_questions:
-        if (whitelist_len > 0):
-            shortest_max = min(x for x in (whitelist_len, max_questions) if x is not None)
-            questions = questions[:shortest_max]
-        else:
-            questions = questions[:max_questions]
+        hints_file: Optional[str]        = None,
+        full_cot_file: Optional[str]     = None,    # ← NEW
+        whitelist_file: Optional[str]    = None,
+        output_file: str = "sentence_level_results.json",
+        max_questions: Optional[int]     = None):
 
-    #if max_questions: questions = questions[:max_questions]
+    questions = json.loads(Path(questions_file).read_text("utf-8"))
+
+    if whitelist_file and Path(whitelist_file).exists():
+        wl = set(int(x) for x in json.loads(Path(whitelist_file).read_text()))
+        questions = [q for q in questions if int(q["question_id"]) in wl]
+        logging.info("kept %d questions after whitelist", len(questions))
+
+    if max_questions:
+        questions = questions[:max_questions]
 
     hints_map = {}
     if hints_file and Path(hints_file).exists():
-        hints_map = {h["question_id"]: h for h in
-                     json.loads(Path(hints_file).read_text(encoding="utf-8"))}
+        hints_map = {h["question_id"]: h
+                     for h in json.loads(Path(hints_file).read_text("utf-8"))}
 
-    def make_prompt(q):
-        opts = "\n".join(f"[ {k} ] {q[k]}" for k in ("A","B","C","D"))
-        return (f"{q['question']}\n\n{opts}\n\n"
-                "Please answer with the letter of the correct option (eg "
-                "[ A ], [ B ], [ C ], [ D ])")
+    cot_map = {}
+    if full_cot_file and Path(full_cot_file).exists():
+        cot_map = {c["question_id"]: c["completion"]
+                   for c in json.loads(Path(full_cot_file).read_text("utf-8"))}
 
     outer_bar = tqdm(questions, desc="questions", unit="q", total=len(questions))
+    results   = []
 
-    results = []
     for q in outer_bar:
-        # expose bar + qid to the inner function
         model._tqdm_outer  = outer_bar
         model._current_qid = q["question_id"]
 
         hint_obj  = hints_map.get(q["question_id"])
-        hint_text = hint_obj["hint_text"] if hint_obj else None
+        hint_text = hint_obj.get("hint_text") if hint_obj else None
+
+        # build prompt (NO hint) for attentions
+        entry_no_hint       = {**q, "hint_text": None}
+        prompt_base_no_hint = construct_prompt(entry_no_hint)
+
+        full_cot = cot_map[q["question_id"]]          # already generated
 
         rec = run_sentence_level_inference(
-                  model, tok,
-                  prompt_base = make_prompt(q),
-                  hint_text   = hint_text,
-                  **generation_kwargs)
+                model, tok,
+                prompt_base = prompt_base_no_hint,
+                hint_text   = hint_text,
+                full_cot    = full_cot)
 
         results.append(dict(
             question_id       = q["question_id"],
@@ -267,13 +207,14 @@ def run_batch_from_files(
             **rec
         ))
 
-    for _attr in ("_tqdm_outer", "_current_qid"):
-        if hasattr(model, _attr):
-            delattr(model, _attr)
+    for attr in ("_tqdm_outer", "_current_qid"):
+        if hasattr(model, attr):
+            delattr(model, attr)
 
-    Path(output_file).write_text(json.dumps(results, indent=2), encoding="utf-8")
+    Path(output_file).write_text(json.dumps(results, indent=2), "utf-8")
     logging.info("saved %d records to %s", len(results), output_file)
     return results
+
 
 __all__ = ["load_model_and_tokenizer",
            "run_sentence_level_inference",
