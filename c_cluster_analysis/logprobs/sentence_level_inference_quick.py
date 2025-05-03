@@ -34,6 +34,31 @@ def _chat_template(model_name: str):
     if "qwen"  in m: return _TEMPLATES["qwen"]
     return "{instruction}"
 
+
+
+
+
+
+
+import json, os, time, logging
+from typing import List, Dict, Optional
+
+import torch
+from a_confirm_posthoc.utils.prompt_constructor import construct_prompt
+from a_confirm_posthoc.parallelization.model_handler import generate_completion
+from accelerate.utils import gather_object
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+q
+
+
+
+
+
+
+
+
 def _opt_token_ids(opts: List[str], tok):
     return {o: tok.encode(f" {o}", add_special_tokens=False)[0] for o in opts}
 
