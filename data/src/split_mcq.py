@@ -6,6 +6,8 @@ Usage
 $ python skip_json.py input.json output.json          # skips 2 000 by default
 $ python skip_json.py input.json output.json -n 500   # skips 500
 
+python data/src/split_mcq.py data/mmlu/input_mcq_data.json data/mmlu/input_mcq_data_last3k.json
+
 If the array is shorter than N, the output file will just contain an empty list.
 """
 
