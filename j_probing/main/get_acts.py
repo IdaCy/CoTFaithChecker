@@ -26,9 +26,15 @@ from pathlib import Path
 from typing import List, Dict, Any
 
 import torch
+import numpy as np
 from transformer_lens import HookedTransformer
 from tqdm.auto import tqdm  # type: ignore
+from huggingface_hub import snapshot_download
 
+
+# Define model paths - adjust these based on your models
+MODEL_PATH_ORIGINAL = "meta-llama/Llama-3.1-8B-Instruct"  # Non-reasoning model
+MODEL_PATH_REASONING = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"  # Reasoning model
 # --------------------------------------------------------------------------------------
 # Core helpers
 # --------------------------------------------------------------------------------------
@@ -129,26 +135,47 @@ def run(
 
     # 2) Load model via TransformerLens
     print(f"Loading model {model_name} …")
-    model = HookedTransformer.from_pretrained(model_name, device=str(device), dtype=dtype)
+    model = HookedTransformer.from_pretrained_no_processing(
+        MODEL_PATH_ORIGINAL,
+        local_files_only=True,  # Set to True if using local models
+        dtype=dtype,
+        device=str(device),
+        default_padding_side='left'
+    )
+    model.tokenizer.padding_side = 'left'
+    model.tokenizer.pad_token = model.tokenizer.eos_token
     model.eval()
 
     n_layers = model.cfg.n_layers
     d_model = model.cfg.d_model
     n_prompts = len(prompts)
 
-    # 3) Pre-allocate mem-maps (one file per layer)
+    # ------------------------------------------------------------------
+    # Debug: print working directory and output paths for troubleshooting
+    # ------------------------------------------------------------------
+    cwd = Path.cwd().resolve()
+    abs_output_dir = output_dir.resolve()
+    print("[DEBUG] Current working dir:", cwd)
+    print("[DEBUG] Output dir (raw):", output_dir)
+    print("[DEBUG] Output dir (abs):", abs_output_dir)
+
+    try:
+        display_path = abs_output_dir.relative_to(cwd)
+    except ValueError:
+        display_path = abs_output_dir
+
+    print(f"Allocated mem-maps for {n_layers} layers in {display_path}")
+
     layer_files = []
     for layer in range(n_layers):
         fpath = output_dir / f"layer_{layer:02d}.bin"
-        # Create mem-map so we can write incrementally
-        mm = torch.memmap(
+        mm = np.memmap(
             filename=str(fpath),
             mode="w+",
-            dtype=dtype,
+            dtype=np.float16 if dtype == torch.float16 else np.float32,
             shape=(n_prompts, d_model, 3),
         )
         layer_files.append(mm)
-    print(f"Allocated mem-maps for {n_layers} layers in {output_dir.relative_to(Path.cwd())}")
 
     # 4) Iterate over batches and fill mem-maps
     for start in tqdm(range(0, n_prompts, batch_size), desc="Batches"):
@@ -161,7 +188,7 @@ def run(
         )
 
         for layer, acts in enumerate(acts_batch):
-            layer_files[layer][start:end] = acts  # type: ignore[index]
+            layer_files[layer][start:end] = acts.numpy()
 
     # 5) Flush & clean up
     for mm in layer_files:
@@ -170,20 +197,69 @@ def run(
 
 
 # --------------------------------------------------------------------------------------
+# Convenience wrapper to derive paths from experiment metadata
+# --------------------------------------------------------------------------------------
+
+def run_from_meta(
+    dataset_name: str,
+    model_path: str,
+    hint_type: str,
+    n_questions: int,
+    batch_size: int = 4,
+    device: str | torch.device = "cuda",
+    dtype: torch.dtype = torch.float16,
+):
+    """Compute standard paths from dataset/model/hint metadata and call `run`."""
+    model_name = model_path.split("/")[-1]
+
+    probing_json = (
+        Path("j_probing")
+        / "data"
+        / dataset_name
+        / model_name
+        / hint_type
+        / str(n_questions)
+        / "probing_data.json"
+    )
+
+    output_dir = (
+        Path("j_probing")
+        / "acts"
+        / dataset_name
+        / model_name
+        / hint_type
+        / str(n_questions)
+    )
+
+    run(
+        probing_json_path=probing_json,
+        model_name=model_name,
+        output_dir=output_dir,
+        batch_size=batch_size,
+        device=device,
+        dtype=dtype,
+    )
+
+
+# --------------------------------------------------------------------------------------
 # Example invocation – edit the paths/params below before running!
 # --------------------------------------------------------------------------------------
 
-def main():
-    PROBING_JSON = (
-        "j_probing/data/mmlu/DeepSeek-R1-Distill-Llama-8B/sycophancy/301/probing_data.json"
-    )
-    MODEL_NAME = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
-    OUTPUT_DIR = "j_probing/acts/mmlu/DeepSeek-R1-Distill-Llama-8B/sycophancy/301"
 
-    run(
-        probing_json_path=PROBING_JSON,
-        model_name=MODEL_NAME,
-        output_dir=OUTPUT_DIR,
+# # Uncomment this to download the reasoning model
+# model_path = snapshot_download(
+#     repo_id=MODEL_PATH_REASONING,
+#     local_dir=MODEL_PATH_ORIGINAL,
+#     local_dir_use_symlinks=False
+# )
+
+
+def main():
+    run_from_meta(
+        dataset_name="mmlu",
+        model_path=MODEL_PATH_REASONING,
+        hint_type="sycophancy",
+        n_questions=301,
         batch_size=4,
         device="cuda" if torch.cuda.is_available() else "cpu",
         dtype=torch.float16,
