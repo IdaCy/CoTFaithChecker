@@ -1,0 +1,56 @@
+nohup: ignoring input
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Traceback (most recent call last):
+  File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 40, in <module>
+    logging.basicConfig(
+NameError: name 'logging' is not defined
+Traceback (most recent call last):
+  File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 40, in <module>
+    logging.basicConfig(
+NameError: name 'logging' is not defined
+Traceback (most recent call last):
+  File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 40, in <module>
+    logging.basicConfig(
+NameError: name 'logging' is not defined
+Traceback (most recent call last):
+  File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 40, in <module>
+    logging.basicConfig(
+NameError: name 'logging' is not defined
+W0502 21:49:03.134000 3130 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 3289 closing signal SIGTERM
+W0502 21:49:03.136000 3130 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 3290 closing signal SIGTERM
+W0502 21:49:03.136000 3130 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 3292 closing signal SIGTERM
+E0502 21:49:03.251000 3130 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 2 (pid: 3291) of binary: /usr/bin/python3
+Traceback (most recent call last):
+  File "/usr/local/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/launch.py", line 1204, in launch_command
+    multi_gpu_launcher(args)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/launch.py", line 825, in multi_gpu_launcher
+    distrib_run.run(args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+i_probe_steer/main/xyyx_probing.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-05-02_21:49:03
+  host      : fd4b7fbca240
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 3291)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

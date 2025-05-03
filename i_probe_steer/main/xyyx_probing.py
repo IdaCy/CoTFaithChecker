@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Distributed-ready version of the logistic-regression probe trainer.
 
@@ -9,13 +10,21 @@ Distributed-ready version of the logistic-regression probe trainer.
     nohup accelerate launch \
           --num_processes 4 \
           --mixed_precision no \
-          probe_script.py \
+          i_probe_steer/main/xyyx_probing.py \
           > logs/probe_$(date +%Y%m%d_%H%M%S).log 2>&1 &
 """
 from __future__ import annotations
 import os, json, glob, re, math, random, itertools, time
 from pathlib import Path
 from collections import Counter, defaultdict
+from zoneinfo import ZoneInfo
+from datetime import datetime, timezone
+import socket, os, sys
+import sys, pathlib, os
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(PROJECT_ROOT))
+os.chdir(PROJECT_ROOT)
+print("Working dir:", PROJECT_ROOT)
 
 import torch
 import joblib
@@ -23,25 +32,38 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")                     # head-less
 import matplotlib.pyplot as plt
+from tqdm.auto import tqdm
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, confusion_matrix, roc_curve, auc  # NEW
 from sklearn.model_selection import train_test_split
 
-from accelerate import Accelerator        # NEW
+from accelerate import Accelerator
+
+import logging
+LOG_FILE = "run.log"
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(process)d - %(message)s",
+    handlers=[logging.FileHandler(LOG_FILE, mode="w")]
+)
+
+print(f"on host {socket.gethostname()} (PID {os.getpid()}) ===",)
+print("starting at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+
 
 ANSWERS_DIR      = Path("e_confirm_xy_yx/outputs/matched_vals_gt")
 ACTIVATIONS_DIR  = Path("h_hidden_space/outputs/f1_hint_xyyx/xyyx_deterministic")
-PROBE_SAVE_DIR   = Path("linear_probes"); PROBE_SAVE_DIR.mkdir(exist_ok=True)
+PROBE_SAVE_DIR   = Path("linear_probes/max_sly_5k"); PROBE_SAVE_DIR.mkdir(exist_ok=True)
 
-TOKENIZER_NAME   = "huggyllama/llama-7b"
-MODEL_PATH       = "huggyllama/llama-7b"
+TOKENIZER_NAME = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+MODEL_PATH     = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
 
 RANDOM_SEED            = 0
 MAX_FILES              = None        # None = use every *_hidden.pt file
 LOG_EVERY              = 50
-MAX_SAMPLES_PER_LAYER  = 1_000       # subsample cap per layer (None = all)
+MAX_SAMPLES_PER_LAYER  = 5_000       # subsample cap per layer (None = all)
 PRINT_EVERY_LAYERS     = 5
 SK_VERBOSE             = 0           # scikit-learn verbosity
 
@@ -53,6 +75,21 @@ np.random.seed(RANDOM_SEED)
 accelerator   = Accelerator()
 DEVICE        = accelerator.device
 is_main       = accelerator.is_main_process
+
+print(f"gather_object poly-fill; accelerator: {accelerator}")
+if not hasattr(accelerator, "gather_object"):
+    import torch.distributed as dist
+
+    def _gather_object(obj):
+        """Emulate accelerate.gather_object() on old versions."""
+        if accelerator.num_processes == 1:
+            return [obj]
+        gathered = [None for _ in range(accelerator.num_processes)]
+        dist.all_gather_object(gathered, obj)
+        return gathered
+
+    accelerator.gather_object = _gather_object
+print("launching at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
 def p(*a, **kw):                      # rank-aware print
     accelerator.print(*a, **kw)
@@ -91,6 +128,7 @@ def softmax2(a: float, b: float) -> tuple[float, float]:
     return ea / denom, eb / denom
 
 def main() -> None:
+    print("loading answers at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     if is_main:
         a_counter, b_counter, same_counter = Counter(), Counter(), Counter()
         for data, _name in iter_answer_files(ANSWERS_DIR):
@@ -118,6 +156,8 @@ def main() -> None:
         plt.savefig(PROBE_SAVE_DIR / "answer_histogram.png")
         plt.close(fig)
 
+    print("tokenizing1 at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
+
     with accelerator.main_process_first():
         tok = AutoTokenizer.from_pretrained(TOKENIZER_NAME)
         tok.pad_token = tok.eos_token
@@ -126,6 +166,8 @@ def main() -> None:
                         for t in ("YES", "NO")}
     if is_main:
         p(f"YES id={ANSWER_TOKEN_IDS['YES']}  |  NO id={ANSWER_TOKEN_IDS['NO']}")
+
+    print("tokenizing2 at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
     p("Loading model to read out lm_head …")
     t0 = time.time()
@@ -136,6 +178,8 @@ def main() -> None:
                                        low_cpu_mem_usage=True)
                       .to(DEVICE).eval())
     p(f"  ↳ done in {time.time()-t0:.1f}s")
+
+    print("reading out lm_head at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 
     W = base_model.lm_head.weight.detach().cpu()      # (vocab, h)
     b = (base_model.lm_head.bias.detach().cpu()
@@ -158,6 +202,7 @@ def main() -> None:
     iterator = (all_paths if not is_main
                 else tqdm(all_paths, desc="hidden.pt", leave=False))
 
+    print("iterating at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     start = time.time()
     for idx, hid_path in enumerate(iterator, 1):
         expected = parse_expected_from_fname(hid_path.name)      # YES / NO
@@ -175,6 +220,7 @@ def main() -> None:
         if idx % LOG_EVERY == 0 and not is_main:
             p(f"rank {accelerator.process_index}: {idx}/{len(all_paths)} done")
 
+    print("collecting at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     elapsed = time.time() - start
     p(f"Rank {accelerator.process_index}: collected "
       f"{sum(len(v) for v in layer_buckets.values()):,} samples "
@@ -188,6 +234,7 @@ def main() -> None:
         del base_model, W, layer_buckets
         return
 
+    print("merging at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     merged_buckets: dict[int, list[tuple[torch.Tensor, int]]] = defaultdict(list)
     for shard in bucket_shards:
         for L, pairs in shard.items():
@@ -198,17 +245,18 @@ def main() -> None:
     for L in sorted(layer_buckets)[:5]:
         p(f"  layer {L:2d} → {len(layer_buckets[L]):,} samples (showing first 5 layers)")
 
-
+    print("training at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     results   = {}
     layer_ids = sorted(layer_buckets)
 
     p(f"\n=== Training probes for {len(layer_ids)} layers "
       f"(≤ {MAX_SAMPLES_PER_LAYER or 'all'} samples/layer) ===")
 
-    from tqdm.auto import tqdm
+    print("training2 at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     bar = tqdm(layer_ids, desc="Layer", leave=True)
     t_global = time.time()
 
+    print("entering loop at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     for i, L in enumerate(bar, 1):
         pairs = layer_buckets[L]
         if MAX_SAMPLES_PER_LAYER and len(pairs) > MAX_SAMPLES_PER_LAYER:
@@ -238,6 +286,7 @@ def main() -> None:
         if i % PRINT_EVERY_LAYERS == 0:
             p(f"  ↳ layer {L:2d} finished | val-F1 {f1:.3f} | {dt:.1f}s")
 
+    print("closing bar at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     bar.close()
     p(f"Total probe-training time: {(time.time()-t_global)/60:.1f} min")
 
@@ -248,6 +297,7 @@ def main() -> None:
     joblib.dump(best_probe, outfile)
     p(f"Probe saved → {outfile}")
 
+    print("plotting at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
     # layer-wise F1 plot
     layers = sorted(results); f1s = [results[L][0] for L in layers]
     plt.figure(figsize=(6,3))
@@ -257,6 +307,56 @@ def main() -> None:
     plt.tight_layout()
     plt.savefig(PROBE_SAVE_DIR / "layer_f1_curve.png")
     p("Plot saved")
+
+    # ────────────── NEW POST-RUN DIAGNOSTIC GRAPHICS ─────────────
+    # 1) bar-chart: samples per layer
+    sample_counts = [len(layer_buckets[L]) for L in layers]
+    plt.figure(figsize=(6,3))
+    plt.bar(layers, sample_counts)
+    plt.xlabel("Layer #"); plt.ylabel("# samples")
+    plt.title("Samples collected per layer")
+    plt.tight_layout()
+    plt.savefig(PROBE_SAVE_DIR / "layer_sample_counts.png")
+    plt.close()
+    p("layer_sample_counts.png saved")
+
+    # 2) confusion matrix for the best layer
+    pairs_all = layer_buckets[best_layer]
+    X_all = torch.stack([p[0] for p in pairs_all]).numpy()
+    y_all = np.array([p[1] for p in pairs_all])
+    y_pred = best_probe.predict(X_all)
+    cm = confusion_matrix(y_all, y_pred)
+    plt.figure(figsize=(3,3))
+    plt.imshow(cm, cmap="Blues")
+    plt.xticks([0,1], ["Wrong", "Correct"])
+    plt.yticks([0,1], ["Wrong", "Correct"])
+    plt.xlabel("Predicted"); plt.ylabel("True")
+    for (i,j), v in np.ndenumerate(cm):
+        plt.text(j, i, f"{v:,}", ha="center", va="center", color="black")
+    plt.title(f"Confusion matrix, layer {best_layer}")
+    plt.tight_layout()
+    plt.savefig(PROBE_SAVE_DIR / f"confusion_matrix_layer{best_layer}.png")
+    plt.close()
+    p("confusion_matrix saved")
+
+    # 3) ROC curve for the best layer
+    if hasattr(best_probe, "predict_proba"):
+        probs = best_probe.predict_proba(X_all)[:,1]
+    else:                                   # liblinear fallback
+        probs = best_probe.decision_function(X_all)
+    fpr, tpr, _ = roc_curve(y_all, probs)
+    roc_auc = auc(fpr, tpr)
+    plt.figure(figsize=(4,4))
+    plt.plot(fpr, tpr, marker=".")
+    plt.plot([0,1], [0,1], linestyle="--")
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title(f"ROC (AUC={roc_auc:.3f}) layer {best_layer}")
+    plt.tight_layout()
+    plt.savefig(PROBE_SAVE_DIR / f"roc_layer{best_layer}.png")
+    plt.close()
+    p("ROC curve saved")
+    # ─────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     main()

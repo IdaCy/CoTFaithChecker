@@ -1,0 +1,126 @@
+nohup: ignoring input
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+Working dir: /root/CoTFaithChecker
+on host fd4b7fbca240 (PID 10756) ===
+starting at 2025-05-02T23:17:12+01:00
+on host fd4b7fbca240 (PID 10759) ===
+starting at 2025-05-02T23:17:12+01:00
+on host fd4b7fbca240 (PID 10758) ===
+starting at 2025-05-02T23:17:12+01:00
+on host fd4b7fbca240 (PID 10757) ===
+starting at 2025-05-02T23:17:12+01:00
+launching at 2025-05-02T23:17:15+01:00
+loading answers at 2025-05-02T23:17:15+01:00
+tokenizing1 at 2025-05-02T23:17:15+01:00
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+launching at 2025-05-02T23:17:17+01:00
+loading answers at 2025-05-02T23:17:17+01:00
+tokenizing1 at 2025-05-02T23:17:17+01:00
+[rank3]:[W502 22:17:17.352962236 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 3]  using GPU 3 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+[rank0]:[W502 22:17:17.570689946 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+launching at 2025-05-02T23:17:17+01:00
+loading answers at 2025-05-02T23:17:17+01:00
+tokenizing1 at 2025-05-02T23:17:17+01:00
+[rank2]:[W502 22:17:17.784543155 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 2]  using GPU 2 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+launching at 2025-05-02T23:17:17+01:00
+loading answers at 2025-05-02T23:17:17+01:00
+tokenizing1 at 2025-05-02T23:17:17+01:00
+[rank1]:[W502 22:17:17.871191779 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 1]  using GPU 1 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+YES id=22483  |  NO id=11698
+tokenizing2 at 2025-05-02T23:17:30+01:00
+Loading model to read out lm_head …
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+tokenizing2 at 2025-05-02T23:17:30+01:00
+tokenizing2 at 2025-05-02T23:17:30+01:00
+tokenizing2 at 2025-05-02T23:17:30+01:00
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.80s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.26s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.94s/it]
+  ↳ done in 21.2s
+reading out lm_head at 2025-05-02T23:17:51+01:00
+Processing 592 files on 4 ranks (148 / rank)
+hidden.pt:   0%|          | 0/148 [00:00<?, ?it/s]iterating at 2025-05-02T23:17:51+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:194: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]hidden.pt:   3%|▎         | 4/148 [00:00<00:10, 13.83it/s]hidden.pt:   7%|▋         | 10/148 [00:00<00:04, 28.08it/s]hidden.pt:  11%|█         | 16/148 [00:00<00:03, 36.70it/s]hidden.pt:  15%|█▍        | 22/148 [00:00<00:02, 42.32it/s]hidden.pt:  19%|█▉        | 28/148 [00:00<00:02, 45.99it/s]hidden.pt:  23%|██▎       | 34/148 [00:00<00:02, 48.47it/s]hidden.pt:  27%|██▋       | 40/148 [00:00<00:02, 50.12it/s]hidden.pt:  31%|███       | 46/148 [00:01<00:01, 51.17it/s]hidden.pt:  35%|███▌      | 52/148 [00:01<00:01, 51.95it/s]hidden.pt:  39%|███▉      | 58/148 [00:01<00:02, 34.57it/s]hidden.pt:  43%|████▎     | 64/148 [00:01<00:02, 38.80it/s]hidden.pt:  47%|████▋     | 70/148 [00:01<00:01, 42.42it/s]hidden.pt:  51%|█████▏    | 76/148 [00:01<00:01, 45.33it/s]hidden.pt:  55%|█████▌    | 82/148 [00:01<00:01, 47.68it/s]hidden.pt:  59%|█████▉    | 88/148 [00:02<00:01, 49.31it/s]hidden.pt:  64%|██████▎   | 94/148 [00:02<00:01, 50.50it/s]hidden.pt:  68%|██████▊   | 100/148 [00:02<00:00, 51.43it/s]hidden.pt:  72%|███████▏  | 106/148 [00:02<00:00, 51.20it/s]hidden.pt:  76%|███████▌  | 112/148 [00:02<00:00, 51.71it/s]hidden.pt:  80%|███████▉  | 118/148 [00:02<00:00, 52.31it/s]hidden.pt:  84%|████████▍ | 124/148 [00:02<00:00, 35.43it/s]hidden.pt:  88%|████████▊ | 130/148 [00:03<00:00, 39.48it/s]hidden.pt:  92%|█████████▏| 136/148 [00:03<00:00, 43.02it/s]hidden.pt:  96%|█████████▌| 142/148 [00:03<00:00, 45.89it/s]hidden.pt: 100%|██████████| 148/148 [00:03<00:00, 48.03it/s]                                                            collecting at 2025-05-02T23:17:54+01:00
+Rank 0: collected 156,288 samples in 0.1 min
+Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.02s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.86s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:12<00:12, 12.10s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:14<00:00,  6.81s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:14<00:00,  7.44s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.29s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:15<00:00,  7.97s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:16<00:00,  7.43s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:16<00:00,  8.13s/it]
+reading out lm_head at 2025-05-02T23:18:10+01:00
+iterating at 2025-05-02T23:18:10+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:194: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+reading out lm_head at 2025-05-02T23:18:11+01:00
+reading out lm_head at 2025-05-02T23:18:12+01:00
+iterating at 2025-05-02T23:18:12+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:194: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+iterating at 2025-05-02T23:18:12+01:00
+/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py:194: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  batch_hidden: list[torch.Tensor] = torch.load(hid_path)  # list[n_layers]
+collecting at 2025-05-02T23:18:13+01:00
+collecting at 2025-05-02T23:18:14+01:00
+collecting at 2025-05-02T23:18:15+01:00
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 297, in <module>
+[rank2]:     main()
+[rank2]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 215, in main
+[rank2]:     bucket_shards = accelerator.gather_object(layer_buckets)  # list[dict] – 1/rank
+[rank2]: AttributeError: 'Accelerator' object has no attribute 'gather_object'
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 297, in <module>
+[rank3]:     main()
+[rank3]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 215, in main
+[rank3]:     bucket_shards = accelerator.gather_object(layer_buckets)  # list[dict] – 1/rank
+[rank3]: AttributeError: 'Accelerator' object has no attribute 'gather_object'
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 297, in <module>
+[rank1]:     main()
+[rank1]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 215, in main
+[rank1]:     bucket_shards = accelerator.gather_object(layer_buckets)  # list[dict] – 1/rank
+[rank1]: AttributeError: 'Accelerator' object has no attribute 'gather_object'
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 297, in <module>
+[rank0]:     main()
+[rank0]:   File "/root/CoTFaithChecker/i_probe_steer/main/xyyx_probing.py", line 215, in main
+[rank0]:     bucket_shards = accelerator.gather_object(layer_buckets)  # list[dict] – 1/rank
+[rank0]: AttributeError: 'Accelerator' object has no attribute 'gather_object'
+[rank0]:[W502 22:18:16.481478623 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+W0502 22:18:17.476000 10585 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 10756 closing signal SIGTERM
+W0502 22:18:17.479000 10585 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 10757 closing signal SIGTERM
+W0502 22:18:17.482000 10585 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 10758 closing signal SIGTERM
+E0502 22:18:18.267000 10585 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 3 (pid: 10759) of binary: /usr/bin/python3
+Traceback (most recent call last):
+  File "/usr/local/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/launch.py", line 1204, in launch_command
+    multi_gpu_launcher(args)
+  File "/usr/local/lib/python3.10/dist-packages/accelerate/commands/launch.py", line 825, in multi_gpu_launcher
+    distrib_run.run(args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+i_probe_steer/main/xyyx_probing.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-05-02_22:18:17
+  host      : fd4b7fbca240
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 10759)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

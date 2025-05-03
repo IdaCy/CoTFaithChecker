@@ -54,7 +54,6 @@ class StopOnThinkEnd(StoppingCriteria):
         return torch.equal(tail,
                            torch.tensor(self.stop_ids, device=input_ids.device))
 
-
 # main
 def generate_completion(
     model, tokenizer, device,
