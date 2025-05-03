@@ -32,15 +32,26 @@ for p in Path.cwd().iterdir():
 project_root = Path(__file__).resolve().parents[2]
 os.chdir(project_root)
 print("Working directory set to:", os.getcwd())
+from pathlib import Path
+import sys, os
 
-%cd ../..
-%pwd
-import sys, os, json
-sys.path.append(os.path.abspath("src"))
+project_root = Path(__file__).resolve().parents[2]   # …/CoTFaithChecker
+os.chdir(project_root)                               # good for file paths
+
+# 👇 Make the repo root visible to the import machinery
+sys.path.insert(0, str(project_root))
+
+# (optional) keep `src` if you really need it
+# sys.path.append(str(project_root / "src"))
 
 from c_cluster_analysis.logprobs.sentence_level_inference import (
     load_model_and_tokenizer, run_batch_from_files
 )
+
+
+import sys, os, json
+sys.path.append(os.path.abspath("src"))
+
 
 input_count = "2001"
 verbnonverb = "unverbalized"
@@ -58,6 +69,7 @@ whitelist_file = output_dir + "/filter/"+verbnonverb+"_ids_"+input_count+".json"
 
 #out_file       = "c_cluster_analysis/outputs/hints/mmlu/DeepSeek-R1-Distill-Llama-8B/attn/sentence_level_results_sycophancy_unverbalized_ids.json"
 
+print("Running sycophancy")
 hint_type = "sycophancy"
 run_batch_from_files(
     model, tok,
@@ -71,7 +83,7 @@ run_batch_from_files(
 
 print("Done", out_file)
 
-hints_file = None
+print("Running none")
 hint_type = "none"
 run_batch_from_files(
     model, tok,
@@ -88,11 +100,26 @@ print("Done", out_file)
 
 ###################################SECOND#############################################
 
-
+print("Running sycophancy")
 input_count = "3001"
-questions_file = data_dir + "/input_mcq_data.json"
+questions_file = data_dir + "/input_mcq_data_3000.json"
 
 hint_type = "sycophancy"
+run_batch_from_files(
+    model, tok,
+    questions_file=questions_file,
+    hints_file=hints_file,
+    output_file=output_dir+"/"+hint_type+"_"+verbnonverb+"_"+input_count+".json",
+    whitelist_file=whitelist_file,
+    max_questions=None,
+    max_new_tokens=2048,
+)
+
+print("Done", out_file)
+
+print("Running none")
+hints_file = None
+hint_type = "none"
 run_batch_from_files(
     model, tok,
     questions_file=questions_file,
