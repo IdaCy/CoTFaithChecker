@@ -62,8 +62,8 @@ device = accelerator.device
 dataset_name = "mmlu"
 #hint_types = ["none", "sycophancy", "unethical_information", "induced_urgency"]
 #hint_types = ["sycophancy", "unethical_information", "induced_urgency"]
-#hint_types = ["sycophancy"]
-n_questions = 1006
+hint_types = ["none"]
+n_questions = 333
 
 """print("generating completions at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
 

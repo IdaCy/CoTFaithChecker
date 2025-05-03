@@ -9,9 +9,9 @@ Split a large JSON list into three parts:
 import json
 from pathlib import Path
 
-INPUT_FILE   = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/sycophancy/completions_with_5000.json")
-OUT_CHUNK    = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/sycophancy/completions_5k_chunk2.json")
-OUT_REMAIN   = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/sycophancy/completions_5k_chunkend.json")
+INPUT_FILE   = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_with_5000.json")
+OUT_CHUNK    = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_5k_333.json")
+OUT_REMAIN   = Path("data/mmlu/DeepSeek-R1-Distill-Llama-8B/none/completions_5k_334.json")
 SKIP         = 2001
 TAKE         = 4000
 

@@ -6,7 +6,7 @@ import os # Import os to get API key from environment variable
 import json
 from tqdm import tqdm
 import logging
-client = genai.Client(api_key="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc")
+client = genai.Client(api_key="AIzaSyBQqHyzpGK-pnn4S1XTSl0hBdhbkAM4GU0")
 
 class Verification(BaseModel):
   mentions_hint: bool
