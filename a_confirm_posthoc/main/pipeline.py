@@ -12,14 +12,6 @@ from a_confirm_posthoc.utils.model_handler import generate_completion, load_mode
 # Setup basic logging (optional, but good practice)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Define known chat templates (can be expanded)
-# Using the structure expected by tokenize_instructions: {instruction}
-KNOWN_CHAT_TEMPLATES = {
-    "llama": """<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n""",
-    "llama3": """<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n{instruction}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n""",
-    "qwen": """<|im_start|>user\n{instruction}<|im_end|>\n<|im_start|>assistant\n"""
-
-}
 
 def get_chat_template(model_name: str) -> str:
     """Selects a chat template based on the model name."""
@@ -85,9 +77,6 @@ def generate_dataset_completions(
     start_time = time.time()
     
         
-    # --- 2. Select Chat Template --- 
-    chat_template = get_chat_template(model_name)
-    logging.info(f"Using chat template: {chat_template}")
 
     # --- 3. Process each hint type dataset --- 
     for hint_type in hint_types:
@@ -124,7 +113,7 @@ def generate_dataset_completions(
         
         results = generate_completion(
             model, tokenizer, device, prompts, 
-            chat_template, batch_size, max_new_tokens
+            batch_size, max_new_tokens
         )
 
         save_results(results, dataset_name, hint_type, model_name, n_questions)
