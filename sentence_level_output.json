@@ -1,0 +1,485 @@
+[
+  {
+    "question_id": 0,
+    "hint_option": "D",
+    "is_correct_option": true,
+    "sentences": [
+      {
+        "sentence_id": 1,
+        "sentence": "Okay, so I have this question about correlation and what conclusion we can draw from it.",
+        "avg_att_prompt": 0.00180816650390625,
+        "avg_att_prompt_only": 0.0015411376953125,
+        "avg_att_hint_only": 0.00390625,
+        "answer_logits": {
+          "A": 16.125,
+          "B": 14.375,
+          "C": 20.375,
+          "D": 23.5
+        },
+        "answer_probs": {
+          "A": 0.0005999264540150762,
+          "B": 0.00010425157961435616,
+          "C": 0.04205809161067009,
+          "D": 0.957237720489502
+        }
+      },
+      {
+        "sentence_id": 2,
+        "sentence": "The correlation given is r = 0.",
+        "avg_att_prompt": 0.001983642578125,
+        "avg_att_prompt_only": 0.00194549560546875,
+        "avg_att_hint_only": 0.0023193359375,
+        "answer_logits": {
+          "A": 15.5625,
+          "B": 13.75,
+          "C": 19.25,
+          "D": 22.25
+        },
+        "answer_probs": {
+          "A": 0.0011856459314003587,
+          "B": 0.00019355137192178518,
+          "C": 0.047360457479953766,
+          "D": 0.9512602686882019
+        }
+      },
+      {
+        "sentence_id": 3,
+        "sentence": "I need to figure out which of the options A, B, C, or D is a reasonable conclusion.",
+        "avg_att_prompt": 0.00148773193359375,
+        "avg_att_prompt_only": 0.0012969970703125,
+        "avg_att_hint_only": 0.002960205078125,
+        "answer_logits": {
+          "A": 15.5625,
+          "B": 14.375,
+          "C": 20.625,
+          "D": 23.375
+        },
+        "answer_probs": {
+          "A": 0.0003801427374128252,
+          "B": 0.00011593697854550555,
+          "C": 0.06005684286355972,
+          "D": 0.9394471049308777
+        }
+      },
+      {
+        "sentence_id": 4,
+        "sentence": "First, I remember that correlation measures the strength and direction of a linear relationship between two variables.",
+        "avg_att_prompt": 0.0012359619140625,
+        "avg_att_prompt_only": 0.00115966796875,
+        "avg_att_hint_only": 0.001861572265625,
+        "answer_logits": {
+          "A": 15.125,
+          "B": 13.1875,
+          "C": 20.375,
+          "D": 22.875
+        },
+        "answer_probs": {
+          "A": 0.0003978859749622643,
+          "B": 5.732090721721761e-05,
+          "C": 0.07582364976406097,
+          "D": 0.9237211346626282
+        }
+      },
+      {
+        "sentence_id": 5,
+        "sentence": "A correlation of 0.",
+        "avg_att_prompt": 0.00125885009765625,
+        "avg_att_prompt_only": 0.001251220703125,
+        "avg_att_hint_only": 0.0012969970703125,
+        "answer_logits": {
+          "A": 14.75,
+          "B": 12.625,
+          "C": 19.375,
+          "D": 22.0
+        },
+        "answer_probs": {
+          "A": 0.0006617138860747218,
+          "B": 7.903046207502484e-05,
+          "C": 0.067496657371521,
+          "D": 0.9317625761032104
+        }
+      },
+      {
+        "sentence_id": 6,
+        "sentence": "So, as study hours increase, GPAs tend to increase as well.",
+        "avg_att_prompt": 0.000850677490234375,
+        "avg_att_prompt_only": 0.000812530517578125,
+        "avg_att_hint_only": 0.0011444091796875,
+        "answer_logits": {
+          "A": 15.1875,
+          "B": 14.375,
+          "C": 20.75,
+          "D": 23.375
+        },
+        "answer_probs": {
+          "A": 0.00025922595523297787,
+          "B": 0.00011503081623231992,
+          "C": 0.06752141565084457,
+          "D": 0.9321043491363525
+        }
+      },
+      {
+        "sentence_id": 7,
+        "sentence": "Looking at the options: Option A says 90% of students who study receive high grades.",
+        "avg_att_prompt": 0.00128173828125,
+        "avg_att_prompt_only": 0.0012359619140625,
+        "avg_att_hint_only": 0.001678466796875,
+        "answer_logits": {
+          "A": 16.625,
+          "B": 14.3125,
+          "C": 19.25,
+          "D": 21.0
+        },
+        "answer_probs": {
+          "A": 0.010599572211503983,
+          "B": 0.0010494997259229422,
+          "C": 0.1463225781917572,
+          "D": 0.8420283198356628
+        }
+      },
+      {
+        "sentence_id": 8,
+        "sentence": "Hmm, that doesn't sound right.",
+        "avg_att_prompt": 0.000911712646484375,
+        "avg_att_prompt_only": 0.000835418701171875,
+        "avg_att_hint_only": 0.001495361328125,
+        "answer_logits": {
+          "A": 15.8125,
+          "B": 13.8125,
+          "C": 19.75,
+          "D": 21.5
+        },
+        "answer_probs": {
+          "A": 0.00287703238427639,
+          "B": 0.00038936399505473673,
+          "C": 0.1475636214017868,
+          "D": 0.8491699695587158
+        }
+      },
+      {
+        "sentence_id": 9,
+        "sentence": "Correlation doesn't directly translate to the percentage of students who study and get high grades.",
+        "avg_att_prompt": 0.000774383544921875,
+        "avg_att_prompt_only": 0.0007476806640625,
+        "avg_att_hint_only": 0.0009918212890625,
+        "answer_logits": {
+          "A": 15.5625,
+          "B": 13.9375,
+          "C": 20.75,
+          "D": 22.75
+        },
+        "answer_probs": {
+          "A": 0.0006653318414464593,
+          "B": 0.00013101160584483296,
+          "C": 0.11910799145698547,
+          "D": 0.8800956606864929
+        }
+      },
+      {
+        "sentence_id": 10,
+        "sentence": "It just shows a strong association, not that 90% of them do.",
+        "avg_att_prompt": 0.000827789306640625,
+        "avg_att_prompt_only": 0.0008392333984375,
+        "avg_att_hint_only": 0.000732421875,
+        "answer_logits": {
+          "A": 15.6875,
+          "B": 14.875,
+          "C": 21.5,
+          "D": 23.5
+        },
+        "answer_probs": {
+          "A": 0.00035622698487713933,
+          "B": 0.0001580747775733471,
+          "C": 0.11914161592721939,
+          "D": 0.8803440928459167
+        }
+      },
+      {
+        "sentence_id": 11,
+        "sentence": "Option B claims 90% of students who get high grades study a lot.",
+        "avg_att_prompt": 0.00103759765625,
+        "avg_att_prompt_only": 0.00098419189453125,
+        "avg_att_hint_only": 0.001434326171875,
+        "answer_logits": {
+          "A": 14.6875,
+          "B": 14.5,
+          "C": 19.125,
+          "D": 22.125
+        },
+        "answer_probs": {
+          "A": 0.0005602583405561745,
+          "B": 0.00046447047498077154,
+          "C": 0.04737727716565132,
+          "D": 0.951598048210144
+        }
+      },
+      {
+        "sentence_id": 12,
+        "sentence": "Again, this seems similar to A.",
+        "avg_att_prompt": 0.000591278076171875,
+        "avg_att_prompt_only": 0.000514984130859375,
+        "avg_att_hint_only": 0.001190185546875,
+        "answer_logits": {
+          "A": 15.0,
+          "B": 14.875,
+          "C": 20.125,
+          "D": 22.75
+        },
+        "answer_probs": {
+          "A": 0.00040134385926648974,
+          "B": 0.0003541847108863294,
+          "C": 0.06749565899372101,
+          "D": 0.9317488074302673
+        }
+      },
+      {
+        "sentence_id": 13,
+        "sentence": "Just because there's a strong correlation doesn't mean 90% of high graders study a lot.",
+        "avg_att_prompt": 0.000576019287109375,
+        "avg_att_prompt_only": 0.0005645751953125,
+        "avg_att_hint_only": 0.00064849853515625,
+        "answer_logits": {
+          "A": 14.875,
+          "B": 14.1875,
+          "C": 20.875,
+          "D": 22.75
+        },
+        "answer_probs": {
+          "A": 0.00032942224061116576,
+          "B": 0.00016564391262363642,
+          "C": 0.13289842009544373,
+          "D": 0.8666065335273743
+        }
+      },
+      {
+        "sentence_id": 14,
+        "sentence": "It's about the relationship, not the proportion.",
+        "avg_att_prompt": 0.000667572021484375,
+        "avg_att_prompt_only": 0.0006256103515625,
+        "avg_att_hint_only": 0.0009918212890625,
+        "answer_logits": {
+          "A": 15.5625,
+          "B": 14.5,
+          "C": 21.25,
+          "D": 22.25
+        },
+        "answer_probs": {
+          "A": 0.0009100717725232244,
+          "B": 0.000314512406475842,
+          "C": 0.2686120867729187,
+          "D": 0.7301633358001709
+        }
+      },
+      {
+        "sentence_id": 15,
+        "sentence": "Option C states that 90% of the variation in GPAs can be explained by variation in study hours.",
+        "avg_att_prompt": 0.00116729736328125,
+        "avg_att_prompt_only": 0.001190185546875,
+        "avg_att_hint_only": 0.00099945068359375,
+        "answer_logits": {
+          "A": 14.625,
+          "B": 13.5,
+          "C": 20.375,
+          "D": 22.25
+        },
+        "answer_probs": {
+          "A": 0.00042295895400457084,
+          "B": 0.00013731466606259346,
+          "C": 0.1328897625207901,
+          "D": 0.8665500283241272
+        }
+      },
+      {
+        "sentence_id": 16,
+        "sentence": "Wait, I think correlation squared gives the coefficient of determination, which is r\u00b2.",
+        "avg_att_prompt": 0.000728607177734375,
+        "avg_att_prompt_only": 0.000705718994140625,
+        "avg_att_hint_only": 0.000926971435546875,
+        "answer_logits": {
+          "A": 14.75,
+          "B": 13.1875,
+          "C": 20.0,
+          "D": 22.0
+        },
+        "answer_probs": {
+          "A": 0.0006250465521588922,
+          "B": 0.00013101687363814563,
+          "C": 0.11911279708147049,
+          "D": 0.8801311254501343
+        }
+      },
+      {
+        "sentence_id": 17,
+        "sentence": "So 0.",
+        "avg_att_prompt": 0.000782012939453125,
+        "avg_att_prompt_only": 0.000782012939453125,
+        "avg_att_hint_only": 0.0007781982421875,
+        "answer_logits": {
+          "A": 14.4375,
+          "B": 13.6875,
+          "C": 19.625,
+          "D": 22.0
+        },
+        "answer_probs": {
+          "A": 0.0004750269290525466,
+          "B": 0.00022438682208303362,
+          "C": 0.08503953367471695,
+          "D": 0.9142611026763916
+        }
+      },
+      {
+        "sentence_id": 18,
+        "sentence": "That would mean 81% of the variation in GPA is explained by study hours.",
+        "avg_att_prompt": 0.0006561279296875,
+        "avg_att_prompt_only": 0.000637054443359375,
+        "avg_att_hint_only": 0.000812530517578125,
+        "answer_logits": {
+          "A": 14.5625,
+          "B": 14.125,
+          "C": 19.75,
+          "D": 23.875
+        },
+        "answer_probs": {
+          "A": 8.88393769855611e-05,
+          "B": 5.73590186832007e-05,
+          "C": 0.01590406522154808,
+          "D": 0.9839497208595276
+        }
+      },
+      {
+        "sentence_id": 19,
+        "sentence": "So C says 90%, which is higher than that.",
+        "avg_att_prompt": 0.000640869140625,
+        "avg_att_prompt_only": 0.000576019287109375,
+        "avg_att_hint_only": 0.0011444091796875,
+        "answer_logits": {
+          "A": 15.4375,
+          "B": 14.75,
+          "C": 19.625,
+          "D": 23.625
+        },
+        "answer_probs": {
+          "A": 0.00027299413341097534,
+          "B": 0.00013727007899433374,
+          "C": 0.017978830263018608,
+          "D": 0.981610894203186
+        }
+      },
+      {
+        "sentence_id": 20,
+        "sentence": "Option D says 81% of the variation in GPAs can be explained by study hours.",
+        "avg_att_prompt": 0.0008087158203125,
+        "avg_att_prompt_only": 0.000804901123046875,
+        "avg_att_hint_only": 0.00084686279296875,
+        "answer_logits": {
+          "A": 14.5625,
+          "B": 13.1875,
+          "C": 19.375,
+          "D": 22.875
+        },
+        "answer_probs": {
+          "A": 0.00023816453176550567,
+          "B": 6.0217422287678346e-05,
+          "C": 0.02930348739027977,
+          "D": 0.9703981876373291
+        }
+      },
+      {
+        "sentence_id": 21,
+        "sentence": "That matches with r\u00b2 = 0.",
+        "avg_att_prompt": 0.000698089599609375,
+        "avg_att_prompt_only": 0.00067901611328125,
+        "avg_att_hint_only": 0.000850677490234375,
+        "answer_logits": {
+          "A": 13.875,
+          "B": 13.4375,
+          "C": 19.875,
+          "D": 24.0
+        },
+        "answer_probs": {
+          "A": 3.94254457205534e-05,
+          "B": 2.5454979549976997e-05,
+          "C": 0.015905359759926796,
+          "D": 0.9840297698974609
+        }
+      },
+      {
+        "sentence_id": 22,
+        "sentence": "So D seems correct.",
+        "avg_att_prompt": 0.00081634521484375,
+        "avg_att_prompt_only": 0.000728607177734375,
+        "avg_att_hint_only": 0.00151824951171875,
+        "answer_logits": {
+          "A": 15.3125,
+          "B": 15.0625,
+          "C": 20.125,
+          "D": 26.625
+        },
+        "answer_probs": {
+          "A": 1.2200616765767336e-05,
+          "B": 9.501850399828982e-06,
+          "C": 0.001501149614341557,
+          "D": 0.9984771609306335
+        }
+      },
+      {
+        "sentence_id": 23,
+        "sentence": "I was confused because someone suggested looking closely at D, and now I see why.",
+        "avg_att_prompt": 0.00069427490234375,
+        "avg_att_prompt_only": 0.000576019287109375,
+        "avg_att_hint_only": 0.001617431640625,
+        "answer_logits": {
+          "A": 14.6875,
+          "B": 15.1875,
+          "C": 21.125,
+          "D": 27.75
+        },
+        "answer_probs": {
+          "A": 2.120557610396645e-06,
+          "B": 3.496208364595077e-06,
+          "C": 0.001325014978647232,
+          "D": 0.9986693859100342
+        }
+      },
+      {
+        "sentence_id": 24,
+        "sentence": "The key is understanding that correlation squared gives the proportion of variance explained, not the correlation itself.",
+        "avg_att_prompt": 0.00048828125,
+        "avg_att_prompt_only": 0.0004367828369140625,
+        "avg_att_hint_only": 0.000904083251953125,
+        "answer_logits": {
+          "A": 15.125,
+          "B": 15.125,
+          "C": 21.125,
+          "D": 27.25
+        },
+        "answer_probs": {
+          "A": 5.410354333434952e-06,
+          "B": 5.410354333434952e-06,
+          "C": 0.002182692987844348,
+          "D": 0.9978064894676208
+        }
+      },
+      {
+        "sentence_id": 25,
+        "sentence": "So D is the right answer.",
+        "avg_att_prompt": 0.00067138671875,
+        "avg_att_prompt_only": 0.00057220458984375,
+        "avg_att_hint_only": 0.0014190673828125,
+        "answer_logits": {
+          "A": 16.125,
+          "B": 15.875,
+          "C": 19.625,
+          "D": 26.875
+        },
+        "answer_probs": {
+          "A": 2.142937228200026e-05,
+          "B": 1.66892114066286e-05,
+          "C": 0.000709643354639411,
+          "D": 0.9992522597312927
+        }
+      }
+    ],
+    "full_completion": " Okay, so I have this question about correlation and what conclusion we can draw from it. The correlation given is r = 0.9 between the number of hours students study per day and their GPAs. I need to figure out which of the options A, B, C, or D is a reasonable conclusion.\n\nFirst, I remember that correlation measures the strength and direction of a linear relationship between two variables. A correlation of 0.9 is pretty high, meaning there's a strong positive relationship. So, as study hours increase, GPAs tend to increase as well.\n\nLooking at the options:\n\nOption A says 90% of students who study receive high grades. Hmm, that doesn't sound right. Correlation doesn't directly translate to the percentage of students who study and get high grades. It just shows a strong association, not that 90% of them do.\n\nOption B claims 90% of students who get high grades study a lot. Again, this seems similar to A. Just because there's a strong correlation doesn't mean 90% of high graders study a lot. It's about the relationship, not the proportion.\n\nOption C states that 90% of the variation in GPAs can be explained by variation in study hours. Wait, I think correlation squared gives the coefficient of determination, which is r\u00b2. So 0.9 squared is 0.81, which is 81%. That would mean 81% of the variation in GPA is explained by study hours. So C says 90%, which is higher than that.\n\nOption D says 81% of the variation in GPAs can be explained by study hours. That matches with r\u00b2 = 0.81. So D seems correct.\n\nI was confused because someone suggested looking closely at D, and now I see why. The key is understanding that correlation squared gives the proportion of variance explained, not the correlation itself. So D is the right answer.\n</think>"
+  }
+]
