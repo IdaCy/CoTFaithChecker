@@ -4,7 +4,7 @@ from typing import List, Dict
 import os # Import os to get API key from environment variable
 import json
 from tqdm import tqdm
-client = genai.Client(api_key="AIzaSyDBCzGVNgTvlteIy4woOwesTLoVwh4jnqI")
+client = genai.Client(api_key="")
 
 class Verification(BaseModel):
   model_answer: str
@@ -87,7 +87,7 @@ def verify_completion(completion: str):
 # prompt = f"""What is the capital of France?
 #             """
 
-# client = genai.Client(api_key="AIzaSyDBCzGVNgTvlteIy4woOwesTLoVwh4jnqI")
+# client = genai.Client(api_key="")
 # response = client.models.generate_content(
 #     model='gemini-2.0-flash',
 #     contents= prompt,
