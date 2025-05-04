@@ -1,0 +1,50 @@
+Okay, so I'm working on this project, right, where I am checking whether large language models verbalize the hints that are given to them in a prompt. And the way it works is that I have a set of prompts and I run it through two scenarios. Number one, I just give the lemma prompt and a collect output. number two i give it the same prompt add a hint and then it produces output and then if in scenario one in selected a let's say about the scenario scenario one it selects option a but in set it's another tool it selects option c let's say which is the option that was provided in the hint but it does not verbalize the hint it means that it used the hint in its analysis but it never explicitly stated that it did that right and so I've already run this part and I saved the cases where it produced where it changed its answer to a hint I saved the question ids of these cases into into folder data.
+
+After this what I have done is that I rerun every question where the answer has been switched to a hint 10 times and checked how many of those 10 times it switched to a hint again and how many times it verbalized the hint. So for the questions where the LLM originally switched the hint and did not verbalize it I found that it is less likely to verbalize it in future generations but if it originally verbalized it and it's more likely to verbalize it in the future generations and my current experiment is essentially training a probe on the model activations from the prompt to predict the probability that the model will verbalize the hint in the future generations. I will train the probe on a number of key tokens - think, assistant and hint tokens. hence i need to find their indexes. 
+
+I have already prepared a script to process my data. And now I'm writing a script to collect activations. 
+Note that im loading the model in a specific way - this is not a bug. HookedTransformer just doesnt natively support it so i have to do it this way.
+
+## Data Processing & Activation Collection Workflow
+
+1.  **Probing Dataset Creation (`create_probing_dataset.py`):**
+    *   Processes raw model generations and analysis summaries.
+    *   Extracts prompts, identifies key token positions (assistant: -3 relative, think: -2 relative, hint: absolute index), and computes the probability of verbalizing a matching hint (`prob_verb_match`).
+    *   Outputs a single `probing_data.json` file containing a list of records, each with `question_id`, `prompt`, `token_pos`, `prob_verb_match`, and `original_verbalizes_hint`.
+
+2.  **Activation Extraction (`get_acts.py`):**
+    *   Loads the `probing_data.json`.
+    *   Loads a specified transformer model (e.g., DeepSeek-R1-Distill-Llama-8B) using TransformerLens.
+    *   Runs each prompt through the model in batches.
+    *   Uses `model.run_with_cache` to extract `resid_post` (hidden state after the MLP/attention block) activations for each layer at the three specified token positions (assistant, think, hint).
+    *   Outputs:
+        *   `meta.json`: Contains the list of `question_id`s in the order they were processed.
+        *   `layer_XX.bin` files: One NumPy memmap file per layer, containing a tensor of shape `(num_prompts, d_model, 3)` with the extracted activations for that layer across all prompts. The data type is typically float16.
+
+3.  **Probe Training (`train_probes.py`):**
+    *   Loads activations (`layer_XX.bin`), target variable (`prob_verb_match` from `probing_data.json`), and experiment metadata (`meta.json`).
+    *   Splits data (question IDs) into random train/validation/test sets (default 80%/10%/10%).
+    *   **Iterates through each layer and each token position** (assistant, think, hint).
+    *   For each combination:
+        *   Initializes a simple `LinearProbe` (linear layer + bias).
+        *   Trains the probe using Adam optimizer and MSE loss to predict `prob_verb_match` from activations.
+        *   Uses the validation set for early stopping (based on MSE loss).
+        *   Evaluates the best probe (based on validation loss) on the test set, calculating MSE and Pearson correlation.
+        *   (Optional) Logs metrics and configuration to Weights & Biases.
+        *   Saves the trained probe weights (`probe_weights.pt`) and evaluation metrics (`metrics.json`) to a structured output directory (e.g., `j_probing/probes/MODEL_NAME/seed_X/layer_Y/position_Z/`).
+    *   Saves a summary JSON (`all_results_summary.json`) containing metrics for all trained probes.
+
+## Pre-run Checklist for `train_probes.py`
+
+Before running `python j_probing/main/train_probes.py`:
+
+1.  **Generate Activations:** Ensure you have successfully run `j_probing/main/get_acts.py` to generate the activation files (`layer_XX.bin`) and the `meta.json` file (containing `n_layers`, `d_model`, etc.) in the correct `j_probing/acts/...` directory.
+2.  **Verify Paths:** Double-check the path variables (`DS_NAME`, `MODEL_NAME_FOR_PATH`, `HINT_TYPE`, `N_QUESTIONS_STR`) inside the `if __name__ == "__main__":` block of `train_probes.py` to ensure they correctly point to the directories containing your `probing_data.json`, `meta.json`, and activation `.bin` files.
+3.  **Check Model Config:** While the script now loads `d_model` and `n_layers` from `meta.json`, ensure these values look correct for the model you used.
+4.  **Install Dependencies:** Make sure you have `torch`, `numpy`, `scipy`, `tqdm`, and potentially `wandb` installed (`pip install torch numpy scipy tqdm wandb`).
+5.  **Wandb Setup (Optional):**
+    *   If you want to use Weights & Biases logging:
+        *   Run `pip install wandb` if not already installed.
+        *   Log in via the terminal: `wandb login` (requires a free account).
+        *   Set your `wandb_entity` (username or team name) in the `TrainingConfig` within the `if __name__ == "__main__":` block.
+    *   If you *don't* want to use Wandb, set `wandb_project=None` in the `TrainingConfig`.
