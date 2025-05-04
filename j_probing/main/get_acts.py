@@ -130,8 +130,14 @@ def run(
     qids = [d["question_id"] for d in data]
 
     # Persist question ordering
+<<<<<<< HEAD
     with open(output_dir / "meta.json", "w", encoding="utf-8") as f:
         json.dump({"question_ids": qids}, f, indent=2)
+=======
+    meta_content = {
+        "question_ids": qids,
+    }
+>>>>>>> cf1995860f330ebcf3ab6acaef9fea2173531057
 
     # 2) Load model via TransformerLens
     print(f"Loading model {model_name} …")
@@ -150,6 +156,17 @@ def run(
     d_model = model.cfg.d_model
     n_prompts = len(prompts)
 
+<<<<<<< HEAD
+=======
+    # Add model config to meta content *after* loading the model
+    meta_content["n_layers"] = n_layers
+    meta_content["d_model"] = d_model
+    meta_content["model_name_from_config"] = model.cfg.model_name
+
+    with open(output_dir / "meta.json", "w", encoding="utf-8") as f:
+        json.dump(meta_content, f, indent=2)
+
+>>>>>>> cf1995860f330ebcf3ab6acaef9fea2173531057
     # ------------------------------------------------------------------
     # Debug: print working directory and output paths for troubleshooting
     # ------------------------------------------------------------------
@@ -172,7 +189,11 @@ def run(
         mm = np.memmap(
             filename=str(fpath),
             mode="w+",
+<<<<<<< HEAD
             dtype=np.float16 if dtype == torch.float16 else np.float32,
+=======
+            dtype=np.float16,
+>>>>>>> cf1995860f330ebcf3ab6acaef9fea2173531057
             shape=(n_prompts, d_model, 3),
         )
         layer_files.append(mm)
@@ -188,6 +209,12 @@ def run(
         )
 
         for layer, acts in enumerate(acts_batch):
+<<<<<<< HEAD
+=======
+            # # acts is still torch.Tensor on CPU (bf16 or fp32) when it reaches here
+            # acts_np = acts.to(torch.float16).cpu().numpy()   
+            # layer_files[layer][start:end] = acts_np          
+>>>>>>> cf1995860f330ebcf3ab6acaef9fea2173531057
             layer_files[layer][start:end] = acts.numpy()
 
     # 5) Flush & clean up
@@ -259,8 +286,13 @@ def main():
         dataset_name="mmlu",
         model_path=MODEL_PATH_REASONING,
         hint_type="sycophancy",
+<<<<<<< HEAD
         n_questions=301,
         batch_size=4,
+=======
+        n_questions=5001,
+        batch_size=1,
+>>>>>>> cf1995860f330ebcf3ab6acaef9fea2173531057
         device="cuda" if torch.cuda.is_available() else "cpu",
         dtype=torch.float16,
     )
