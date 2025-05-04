@@ -298,7 +298,6 @@ def main() -> None:
     p(f"Probe saved → {outfile}")
 
     print("plotting at", datetime.now(ZoneInfo("Europe/London")).isoformat(timespec="seconds"))
-    # layer-wise F1 plot
     layers = sorted(results); f1s = [results[L][0] for L in layers]
     plt.figure(figsize=(6,3))
     plt.plot(layers, f1s, marker="o")
@@ -308,8 +307,6 @@ def main() -> None:
     plt.savefig(PROBE_SAVE_DIR / "layer_f1_curve.png")
     p("Plot saved")
 
-    # ────────────── NEW POST-RUN DIAGNOSTIC GRAPHICS ─────────────
-    # 1) bar-chart: samples per layer
     sample_counts = [len(layer_buckets[L]) for L in layers]
     plt.figure(figsize=(6,3))
     plt.bar(layers, sample_counts)
@@ -320,7 +317,6 @@ def main() -> None:
     plt.close()
     p("layer_sample_counts.png saved")
 
-    # 2) confusion matrix for the best layer
     pairs_all = layer_buckets[best_layer]
     X_all = torch.stack([p[0] for p in pairs_all]).numpy()
     y_all = np.array([p[1] for p in pairs_all])
@@ -339,7 +335,6 @@ def main() -> None:
     plt.close()
     p("confusion_matrix saved")
 
-    # 3) ROC curve for the best layer
     if hasattr(best_probe, "predict_proba"):
         probs = best_probe.predict_proba(X_all)[:,1]
     else:                                   # liblinear fallback
@@ -356,7 +351,6 @@ def main() -> None:
     plt.savefig(PROBE_SAVE_DIR / f"roc_layer{best_layer}.png")
     plt.close()
     p("ROC curve saved")
-    # ─────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     main()
