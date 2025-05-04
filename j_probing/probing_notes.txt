@@ -1,0 +1,59 @@
+Okay, so I'm working on this project, right, where I am checking whether large language models verbalize the hints that are given to them in a prompt. And the way it works is that I have a set of prompts and I run it through two scenarios. Number one, I just give the lemma prompt and a collect output. number two i give it the same prompt add a hint and then it produces output and then if in scenario one in selected a let's say about the scenario scenario one it selects option a but in set it's another tool it selects option c let's say which is the option that was provided in the hint but it does not verbalize the hint it means that it used the hint in its analysis but it never explicitly stated that it did that right and so I've already run this part and I saved the cases where it produced where it changed its answer to a hint I saved the question ids of these cases into into folder data.
+
+After this what I have done is that I rerun every question where the answer has been switched to a hint 10 times and checked how many of those 10 times it switched to a hint again and how many times it verbalized the hint. So for the questions where the LLM originally switched the hint and did not verbalize it I found that it is less likely to verbalize it in future generations but if it originally verbalized it and it's more likely to verbalize it in the future generations and my current experiment is essentially training a probe on the model activations from the prompt to predict the probability that the model will verbalize the hint in the future generations. I will train the probe on a number of key tokens - think, assistant and hint tokens. hence i need to find their indexes. 
+
+I have already prepared a script to process my data. And now I'm writing a script to collect activations. 
+Note that im loading the model in a specific way - this is not a bug. HookedTransformer just doesnt natively support it so i have to do it this way.
+
+## Current Workflow
+
+*(Note: Common functions like data loading, probe model definition, and single probe training logic are refactored into `j_probing/utils/training_utils.py`)*
+
+1.  **Probing Dataset Creation (`create_probing_dataset.py`):**
+    *   Processes raw model generations and analysis summaries.
+    *   Extracts prompts, identifies key token positions (assistant: -3 relative, think: -2 relative, hint: absolute index), and computes the probability of verbalizing a matching hint (`prob_verb_match`).
+    *   Outputs a single `probing_data.json` file containing a list of records, each with `question_id`, `prompt`, `token_pos`, `prob_verb_match`, and `original_verbalizes_hint`.
+
+2.  **Activation Extraction (`get_acts.py`):**
+    *   Loads the `probing_data.json`.
+    *   Loads a specified transformer model (e.g., DeepSeek-R1-Distill-Llama-8B) using TransformerLens.
+    *   Runs each prompt through the model in batches.
+    *   Uses `model.run_with_cache` to extract `resid_post` (hidden state after the MLP/attention block) activations for each layer at the three specified token positions (assistant, think, hint).
+    *   Outputs:
+        *   `meta.json`: Contains the list of `question_id`s in order, `n_layers`, `d_model`, etc.
+        *   `layer_XX.bin` files: One NumPy memmap file per layer, containing a tensor of shape `(num_prompts, d_model, 3)` with the extracted activations for that layer across all prompts (typically float16).
+
+3.  **Probe Training (Two Options):**
+    *   **Option A: Single Split (`train_probes.py`)**
+        *   Loads activations, targets, and metadata.
+        *   Splits data (question IDs) into a *single* random train/validation/test set based on `split_seed`.
+        *   Iterates through each layer and token position.
+        *   For each combo, trains a `LinearProbe` (using `train_probe` utility), performs early stopping on the validation set.
+        *   Evaluates the best probe on the test set (MSE, Pearson R).
+        *   Saves individual probe weights and metrics to `j_probing/probes/MODEL_NAME/single_split/seed_X/...`.
+        *   Saves `all_results_summary.json` for the single split.
+    *   **Option B: K-Fold Cross-Validation (`train_probes_cv.py`)**
+        *   Loads activations, targets, and metadata.
+        *   Splits data into `k` folds based on `cv_split_seed`.
+        *   Iterates through layers and positions.
+        *   For each layer/position, iterates through the `k` folds:
+            *   Designates one fold as the test set, combines the rest for training.
+            *   Performs an *internal* train/validation split on the combined training folds (based on `internal_split_seed` and `internal_val_frac`) for early stopping.
+            *   Trains a `LinearProbe` (using `train_probe` utility) on the internal training set, validating on the internal validation set.
+            *   Evaluates the best probe from that fold on the held-out test fold (MSE, Pearson R).
+        *   Aggregates the test metrics (mean and std dev) across the `k` folds for each layer/position.
+        *   Saves aggregated results (mean/std MSE, mean/std Pearson R) to `all_cv_results_summary.json` in `j_probing/probes/MODEL_NAME/cv_kK/seed_X/...`.
+
+4.  **Results Visualization (Two Options corresponding to Training):**
+    *   **Option A: Single Split Plotting (`plot_fvu.py`)**
+        *   Loads results from `all_results_summary.json` (single split).
+        *   Calculates FVU based on test MSE and overall label variance.
+        *   Generates a plot showing FVU per layer/position for that specific seed.
+    *   **Option B: Cross-Validation Plotting (`plot_fvu_cv.py`, `plot_pearson_cv.py`)**
+        *   Loads aggregated results from `all_cv_results_summary.json` (CV).
+        *   `plot_fvu_cv.py`:
+            *   Calculates mean and std dev FVU based on mean/std test MSE and overall label variance.
+            *   Generates a plot showing mean FVU per layer/position with shaded error bands (+/- std dev).
+        *   `plot_pearson_cv.py`:
+            *   Loads mean and std dev Pearson correlation (`test_pearson_r_mean`, `test_pearson_r_std`).
+            *   Generates a plot showing mean Pearson R per layer/position with shaded error bands (+/- std dev).
