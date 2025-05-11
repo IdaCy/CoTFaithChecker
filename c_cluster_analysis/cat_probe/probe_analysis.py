@@ -1,6 +1,3 @@
-# ──────────────────────────────────────────────────────────────────────────────
-#  0. Imports & configuration
-# ──────────────────────────────────────────────────────────────────────────────
 import json, numpy as np, torch, sklearn.linear_model as sklin
 from pathlib import Path
 CATEGORY_NAMES = [
@@ -11,9 +8,7 @@ CATEGORY_NAMES = [
 ]
 HIDDEN_LAYER = "layer_32"
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  1. Load annotation labels
-# ──────────────────────────────────────────────────────────────────────────────
 with open("annotations.json", encoding="utf-8") as f:
     ann_raw = json.load(f)
 
@@ -24,9 +19,7 @@ for q in ann_raw:
     for sent in q["annotations"]:
         ann_map[(qid, sent["sentence_id"])] = sent
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  2. Load hidden-state captures
-# ──────────────────────────────────────────────────────────────────────────────
 rows, labels = [], []
 with open("sentence_level_hidden.json", encoding="utf-8") as f:
     data = json.load(f)
@@ -45,9 +38,7 @@ X = np.vstack(rows)
 y = np.array(labels)
 print("dataset shape:", X.shape, "labels:", y.shape)
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  3. Train logistic-regression probe
-# ──────────────────────────────────────────────────────────────────────────────
 from sklearn.model_selection import train_test_split
 X_train, X_dev, y_train, y_dev = train_test_split(X, y, test_size=0.1, random_state=42)
 
@@ -59,9 +50,7 @@ print("dev accuracy:", probe.score(X_dev, y_dev))
 # keep coefficients – shape: (n_labels, hidden_size)
 coef = probe.coef_.astype(np.float32)
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  4. Compute source→target steering direction
-# ──────────────────────────────────────────────────────────────────────────────
 SOURCE = CATEGORY_NAMES.index("backtracking")
 TARGET = CATEGORY_NAMES.index("logical_deduction")
 
@@ -72,9 +61,7 @@ direction_t = torch.tensor(direction, dtype=torch.float32)
 # save for later
 np.save("steer_direction.npy", direction)
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  5. Hook for residual-stream steering
-# ──────────────────────────────────────────────────────────────────────────────
 import transformers, types
 
 class ResidualSteerHook(torch.nn.Module):
@@ -98,9 +85,7 @@ def insert_steer_hook(model, layer_idx: int, direction: torch.Tensor, scale=1.0)
         lambda mod, inp, out: ResidualSteerHook(direction, scale)(out[0], *out[1:])
     )
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  6. Quick manual test
-# ──────────────────────────────────────────────────────────────────────────────
 # from transformers import AutoModelForCausalLM, AutoTokenizer
 # m, t = AutoModelForCausalLM.from_pretrained("TheBloke/Llama-2-7B-chat-hf",
 #                                             torch_dtype=torch.float16,

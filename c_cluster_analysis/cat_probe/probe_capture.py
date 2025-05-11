@@ -4,10 +4,9 @@ Probe-capture runner
 ====================
 
 • Splits a *pre-generated* chain-of-thought (CoT) into the exact same sentences
-  you used for annotation.  
+  used for annotation.  
 • Runs the model once per cumulative sentence, recording:
-
-    – mean-pooled hidden states for every decoder layer (you can restrict this)  
+    – mean-pooled hidden states for every decoder layer (can be restricted)  
     – (optional) attentions + logits, for continuity with earlier experiments
 
 • Saves everything to JSON (small / human-readable) or a binary `.pt` file
@@ -25,9 +24,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from tqdm.auto import tqdm
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  Utilities
-# ──────────────────────────────────────────────────────────────────────────────
 def _device() -> torch.device:
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -101,9 +98,7 @@ def _softmax(logits: Dict[str, float]) -> Dict[str, float]:
     p = torch.softmax(t, 0).tolist()
     return dict(zip(logits.keys(), p))
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  Core: run_sentence_level_inference  (now with hidden-state capture)
-# ──────────────────────────────────────────────────────────────────────────────
 def run_sentence_level_inference(
     model,
     tok,
@@ -173,7 +168,7 @@ def run_sentence_level_inference(
                    + (len(running_ids) - len(curr_sent_ids))
         sent_end   = sent_start + len(curr_sent_ids)
 
-        # ── Pool hidden states ────────────────────────────────────────────────
+        # Pool hidden states
         if layers_to_keep is None:
             layers_to_keep = [len(hidden_states) - 1]      # last layer index
 
@@ -187,7 +182,7 @@ def run_sentence_level_inference(
                   .cpu()
             )
 
-        # ── Optionally keep attention + logits (for continuity) ──────────────
+        # Optionally keep attention + logits (for continuity)
         extra: Dict[str, Any] = {}
 
         if keep_attn_and_logits:
@@ -207,7 +202,7 @@ def run_sentence_level_inference(
             extra["answer_logits"] = ans_logits
             extra["answer_probs"]  = _softmax(ans_logits)
 
-        # ── Assemble record ───────────────────────────────────────────────────
+        # Assemble recor─
         row = dict(
             sentence_id = sid,
             sentence    = sent,
@@ -221,9 +216,7 @@ def run_sentence_level_inference(
         "completion":  full_cot,
     }
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  Driver for many questions
-# ──────────────────────────────────────────────────────────────────────────────
 def run_batch_from_files(
     model,
     tok,
@@ -297,9 +290,7 @@ def run_batch_from_files(
     return results
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 #  Convenience CLI entry point
-# ──────────────────────────────────────────────────────────────────────────────
 def run_probe_capture(
     model_path: str,
     questions_file: str,
