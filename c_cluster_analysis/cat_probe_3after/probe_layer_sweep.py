@@ -27,13 +27,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
-# --- import the *original* machinery --------------------
 from probe_capture_runner import (
     load_model_and_tokenizer,
     run_batch_from_files,
 )
 
-# --------------------------------------------------------
 def _train_probe(vecs: List[List[float]],
                  labels: List[int]) -> (float, LogisticRegression):
     """tiny helper: train / eval 80-20 split, return acc and fitted clf"""
@@ -46,10 +44,10 @@ def _train_probe(vecs: List[List[float]],
 
 
 def layer_sweep(
-    model_path: str,
+    model, tok, model_name,
     questions_file: str,
     full_cot_file: str,
-    labels_file: str,                 # ⬅ category labels
+    labels_file: str,
     out_dir: str,
     *,
     sweep_step: int = 5,
@@ -58,7 +56,7 @@ def layer_sweep(
     os.makedirs(f"{out_dir}/hidden", exist_ok=True)
     os.makedirs(f"{out_dir}/probes", exist_ok=True)
 
-    model, tok, model_name, _ = load_model_and_tokenizer(model_path)
+    #model, tok, model_name, _ = load_model_and_tokenizer(model_path)
     num_layers = model.config.num_hidden_layers
     logging.info("model has %d transformer blocks", num_layers)
 
@@ -67,7 +65,7 @@ def layer_sweep(
     sweep_log = []
 
     for li in range(1, num_layers + 1, sweep_step):
-        logging.info("► capturing layer %d", li)
+        logging.info("capturing layer %d", li)
 
         hidden_json = f"{out_dir}/hidden/layer_{li}.json"
         res = run_batch_from_files(
@@ -75,13 +73,12 @@ def layer_sweep(
             questions_file = questions_file,
             full_cot_file  = full_cot_file,
             output_file    = hidden_json,
-            layers_to_keep = [li],            # <-- key line
+            layers_to_keep = [li],
             max_questions  = max_q,
         )
 
-        # ---- assemble vectors + labels ------------------
         vecs, lbls = [], []
-        for entry in res:                      # one question
+        for entry in res: 
             qid = str(entry["question_id"])
             sent_lbls = labels_map[qid]        # list[int] same len as sentences
             for srec, l in zip(entry["sentences"], sent_lbls):
@@ -93,14 +90,13 @@ def layer_sweep(
         sweep_log.append((li, acc))
         logging.info("layer %d  – dev-acc %.3f", li, acc)
 
-    # ------------- summary file -------------------------
     sweep_log.sort(key=lambda x: x[1], reverse=True)
     with open(f"{out_dir}/sweep_results.tsv", "w") as fh:
         for li, acc in sweep_log:
             fh.write(f"{li}\t{acc:.4f}\n")
 
     best_layer, best_acc = sweep_log[0]
-    logging.info("✓ best layer %d with acc %.3f", best_layer, best_acc)
+    logging.info("best layer %d with acc %.3f", best_layer, best_acc)
     return best_layer
 
 
