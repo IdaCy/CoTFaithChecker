@@ -18,6 +18,7 @@ from __future__ import annotations
 import json, logging, random, re
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional, Any
+from tqdm.auto import tqdm
 
 import numpy as np
 import torch
@@ -229,7 +230,9 @@ def run_probe_capture_for_categories(
     sums: Dict[str, Dict[str, np.ndarray]] = {}
     counts: Dict[str, Dict[str, int]]      = {}
 
-    for qid, sent_pairs in selection_map.items():
+    #for qid, sent_pairs in selection_map.items():
+    iterable = list(selection_map.items())
+    for qid, sent_pairs in tqdm(iterable, desc="capturing", unit="q"):
         if qid not in cot_data:
             logging.warning("CoT for question %d not found – skipping", qid)
             continue
@@ -311,7 +314,13 @@ def train_linear_probes(
 
     y = np.array(labels)
 
-    for layer_name, vecs in vectors_by_layer.items():
+    from tqdm.auto import tqdm  # (only once, if not already imported)
+    
+    for layer_name, vecs in tqdm(
+            vectors_by_layer.items(),
+            desc="training probes",
+            unit="layer"):
+
         X = np.vstack(vecs)
 
         X_tr, X_te, y_tr, y_te = train_test_split(
@@ -321,10 +330,9 @@ def train_linear_probes(
         )
 
         clf = LogisticRegression(
-            max_iter   = 1000,
-            multi_class= "multinomial",
-            solver     = "saga",
-            n_jobs     = 4,
+            max_iter = 1000,
+            solver   = "saga",
+            n_jobs   = 4,
         ).fit(X_tr, y_tr)
 
         y_pred  = clf.predict(X_te)
