@@ -26,3 +26,4 @@ h_hidden_states/outputs/*
 h_hidden_space/outputs/*
 c_cluster_analysis/logprobs/__pycache__/
 c_cluster_analysis/outputs/hints/mmlu/DeepSeek-R1-Distill-Llama-8B/cat_probe/
+c_cluster_analysis/outputs/hints/mmlu/DeepSeek-R1-Distill-Llama-8B/attr_vecs/hidden_capture.json
